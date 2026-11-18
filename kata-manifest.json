@@ -1,0 +1,97 @@
+{
+  "version": "1.0",
+  "generatedAt": "2026-11-17T16:53:47.979Z",
+  "components": {
+    "api": [
+      {
+        "name": "AuthApi",
+        "file": "AuthApi.ts",
+        "relativePath": "tests/components/api/AuthApi.ts",
+        "atcs": [
+          {
+            "id": "PROJ-101",
+            "method": "authenticateSuccessfully",
+            "line": 22
+          },
+          {
+            "id": "PROJ-102",
+            "method": "loginWithInvalidCredentials",
+            "line": 46
+          }
+        ]
+      },
+      {
+        "name": "ExampleApi",
+        "file": "ExampleApi.ts",
+        "relativePath": "tests/components/api/ExampleApi.ts",
+        "atcs": [
+          {
+            "id": "PROJ-121",
+            "method": "createResourceSuccessfully",
+            "line": 18
+          },
+          {
+            "id": "PROJ-122",
+            "method": "createResourceWithInvalidData",
+            "line": 38
+          }
+        ]
+      }
+    ],
+    "ui": [
+      {
+        "name": "ExamplePage",
+        "file": "ExamplePage.ts",
+        "relativePath": "tests/components/ui/ExamplePage.ts",
+        "atcs": [
+          {
+            "id": "PROJ-131",
+            "method": "submitFormWithValidData",
+            "line": 42
+          },
+          {
+            "id": "PROJ-132",
+            "method": "submitFormWithInvalidEmail",
+            "line": 54
+          }
+        ]
+      },
+      {
+        "name": "LoginPage",
+        "file": "LoginPage.ts",
+        "relativePath": "tests/components/ui/LoginPage.ts",
+        "atcs": [
+          {
+            "id": "PROJ-111",
+            "method": "loginSuccessfully",
+            "line": 29
+          },
+          {
+            "id": "PROJ-112",
+            "method": "loginWithInvalidCredentials",
+            "line": 37
+          }
+        ]
+      }
+    ]
+  },
+  "steps": [
+    {
+      "name": "ExampleSteps",
+      "file": "ExampleSteps.ts",
+      "relativePath": "tests/components/steps/ExampleSteps.ts",
+      "methods": [
+        "authenticateUser",
+        "createTestResource",
+        "navigateAsAuthenticatedUser"
+      ]
+    }
+  ],
+  "summary": {
+    "totalComponents": 4,
+    "totalATCs": 8,
+    "apiComponents": 2,
+    "uiComponents": 2,
+    "stepsModules": 1
+  }
+}
