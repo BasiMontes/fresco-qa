@@ -1,1 +1,761 @@
-{}
+{
+  "story": {
+    "jira_issue_type": {
+      "id": "10057",
+      "name": "Story"
+    },
+    "workflow_scheme": null,
+    "workflow": {
+      "id": "0c4772b3-3aba-4a7f-8c72-0251f646dfa4",
+      "name": "Software workflow for project QAFRESCO"
+    },
+    "statuses": {
+      "tareas_por_hacer": {
+        "id": "10114",
+        "name": "Tareas por hacer",
+        "category": "new"
+      },
+      "en_curso": {
+        "id": "3",
+        "name": "En curso",
+        "category": "indeterminate"
+      },
+      "en_revision": {
+        "id": "10116",
+        "name": "En revisión",
+        "category": "indeterminate"
+      },
+      "finalizada": {
+        "id": "10115",
+        "name": "Finalizada",
+        "category": "done"
+      },
+      "backlog": {
+        "id": "10114",
+        "name": "Tareas por hacer",
+        "category": "new"
+      },
+      "shift_left_qa": {
+        "id": "10114",
+        "name": "Tareas por hacer",
+        "category": "new"
+      },
+      "ready_for_dev": {
+        "id": "10116",
+        "name": "En revisión",
+        "category": "indeterminate"
+      },
+      "in_progress": {
+        "id": "3",
+        "name": "En curso",
+        "category": "indeterminate"
+      },
+      "in_review": {
+        "id": "10116",
+        "name": "En revisión",
+        "category": "indeterminate"
+      },
+      "ready_for_qa": {
+        "id": "10116",
+        "name": "En revisión",
+        "category": "indeterminate"
+      },
+      "in_test": {
+        "id": "10116",
+        "name": "En revisión",
+        "category": "indeterminate"
+      },
+      "qa_approved": {
+        "id": "10115",
+        "name": "Finalizada",
+        "category": "done"
+      },
+      "ready_for_release": {
+        "id": "10115",
+        "name": "Finalizada",
+        "category": "done"
+      },
+      "deployed_to_production": {
+        "id": "10115",
+        "name": "Finalizada",
+        "category": "done"
+      }
+    },
+    "transitions": {
+      "to_do": {
+        "id": "11",
+        "name": "To Do",
+        "from_status_id": null,
+        "to_status_id": "10114",
+        "from_canonical": null,
+        "to_canonical": "tareas_por_hacer"
+      },
+      "in_progress": {
+        "id": "21",
+        "name": "In Progress",
+        "from_status_id": null,
+        "to_status_id": "3",
+        "from_canonical": null,
+        "to_canonical": "en_curso"
+      },
+      "in_review": {
+        "id": "31",
+        "name": "In Review",
+        "from_status_id": null,
+        "to_status_id": "10116",
+        "from_canonical": null,
+        "to_canonical": "en_revision"
+      },
+      "done": {
+        "id": "41",
+        "name": "Done",
+        "from_status_id": null,
+        "to_status_id": "10115",
+        "from_canonical": null,
+        "to_canonical": "finalizada"
+      },
+      "create": {
+        "id": "1",
+        "name": "Create",
+        "from_status_id": null,
+        "to_status_id": "10114",
+        "from_canonical": null,
+        "to_canonical": "tareas_por_hacer"
+      },
+      "analyze": {
+        "id": "31",
+        "name": "In Review",
+        "from_status_id": null,
+        "to_status_id": "10116",
+        "from_canonical": null,
+        "to_canonical": "en_revision"
+      },
+      "start_working": {
+        "id": "21",
+        "name": "In Progress",
+        "from_status_id": null,
+        "to_status_id": "3",
+        "from_canonical": null,
+        "to_canonical": "en_curso"
+      },
+      "pull_request": {
+        "id": "31",
+        "name": "In Review",
+        "from_status_id": null,
+        "to_status_id": "10116",
+        "from_canonical": null,
+        "to_canonical": "en_revision"
+      },
+      "pushed": {
+        "id": "31",
+        "name": "In Review",
+        "from_status_id": null,
+        "to_status_id": "10116",
+        "from_canonical": null,
+        "to_canonical": "en_revision"
+      },
+      "deployed": {
+        "id": "31",
+        "name": "In Review",
+        "from_status_id": null,
+        "to_status_id": "10116",
+        "from_canonical": null,
+        "to_canonical": "en_revision"
+      },
+      "start_testing": {
+        "id": "31",
+        "name": "In Review",
+        "from_status_id": null,
+        "to_status_id": "10116",
+        "from_canonical": null,
+        "to_canonical": "en_revision"
+      },
+      "qa_sign_off": {
+        "id": "41",
+        "name": "Done",
+        "from_status_id": null,
+        "to_status_id": "10115",
+        "from_canonical": null,
+        "to_canonical": "finalizada"
+      },
+      "include_in_release": {
+        "id": "41",
+        "name": "Done",
+        "from_status_id": null,
+        "to_status_id": "10115",
+        "from_canonical": null,
+        "to_canonical": "finalizada"
+      },
+      "released": {
+        "id": "41",
+        "name": "Done",
+        "from_status_id": null,
+        "to_status_id": "10115",
+        "from_canonical": null,
+        "to_canonical": "finalizada"
+      },
+      "fix_defect": {
+        "id": "21",
+        "name": "In Progress",
+        "from_status_id": null,
+        "to_status_id": "3",
+        "from_canonical": null,
+        "to_canonical": "en_curso"
+      },
+      "back_from_blocked": {
+        "id": "31",
+        "name": "In Review",
+        "from_status_id": null,
+        "to_status_id": "10116",
+        "from_canonical": null,
+        "to_canonical": "en_revision"
+      },
+      "back_from_in_test": {
+        "id": "31",
+        "name": "In Review",
+        "from_status_id": null,
+        "to_status_id": "10116",
+        "from_canonical": null,
+        "to_canonical": "en_revision"
+      },
+      "back_from_qa_approved": {
+        "id": "31",
+        "name": "In Review",
+        "from_status_id": null,
+        "to_status_id": "10116",
+        "from_canonical": null,
+        "to_canonical": "en_revision"
+      },
+      "back_from_in_progress": {
+        "id": "11",
+        "name": "To Do",
+        "from_status_id": null,
+        "to_status_id": "10114",
+        "from_canonical": null,
+        "to_canonical": "tareas_por_hacer"
+      },
+      "back_from_shift_left_qa": {
+        "id": "11",
+        "name": "To Do",
+        "from_status_id": null,
+        "to_status_id": "10114",
+        "from_canonical": null,
+        "to_canonical": "tareas_por_hacer"
+      },
+      "recover": {
+        "id": "11",
+        "name": "To Do",
+        "from_status_id": null,
+        "to_status_id": "10114",
+        "from_canonical": null,
+        "to_canonical": "tareas_por_hacer"
+      }
+    }
+  },
+  "bug": {
+    "jira_issue_type": {
+      "id": "10059",
+      "name": "Bug"
+    },
+    "workflow_scheme": null,
+    "workflow": {
+      "id": "0c4772b3-3aba-4a7f-8c72-0251f646dfa4",
+      "name": "Software workflow for project QAFRESCO"
+    },
+    "statuses": {
+      "tareas_por_hacer": {
+        "id": "10114",
+        "name": "Tareas por hacer",
+        "category": "new"
+      },
+      "en_curso": {
+        "id": "3",
+        "name": "En curso",
+        "category": "indeterminate"
+      },
+      "en_revision": {
+        "id": "10116",
+        "name": "En revisión",
+        "category": "indeterminate"
+      },
+      "finalizada": {
+        "id": "10115",
+        "name": "Finalizada",
+        "category": "done"
+      },
+      "open": {
+        "id": "10114",
+        "name": "Tareas por hacer",
+        "category": "new"
+      },
+      "in_progress": {
+        "id": "3",
+        "name": "En curso",
+        "category": "indeterminate"
+      },
+      "in_review": {
+        "id": "10116",
+        "name": "En revisión",
+        "category": "indeterminate"
+      },
+      "ready_for_qa": {
+        "id": "10116",
+        "name": "En revisión",
+        "category": "indeterminate"
+      },
+      "closed": {
+        "id": "10115",
+        "name": "Finalizada",
+        "category": "done"
+      },
+      "cannot_reproduce": {
+        "id": "10115",
+        "name": "Finalizada",
+        "category": "done"
+      },
+      "duplicated": {
+        "id": "10115",
+        "name": "Finalizada",
+        "category": "done"
+      },
+      "rejected": {
+        "id": "10115",
+        "name": "Finalizada",
+        "category": "done"
+      },
+      "enhancement": {
+        "id": "10115",
+        "name": "Finalizada",
+        "category": "done"
+      }
+    },
+    "transitions": {
+      "to_do": {
+        "id": "11",
+        "name": "To Do",
+        "from_status_id": null,
+        "to_status_id": "10114",
+        "from_canonical": null,
+        "to_canonical": "tareas_por_hacer"
+      },
+      "in_progress": {
+        "id": "21",
+        "name": "In Progress",
+        "from_status_id": null,
+        "to_status_id": "3",
+        "from_canonical": null,
+        "to_canonical": "en_curso"
+      },
+      "in_review": {
+        "id": "31",
+        "name": "In Review",
+        "from_status_id": null,
+        "to_status_id": "10116",
+        "from_canonical": null,
+        "to_canonical": "en_revision"
+      },
+      "done": {
+        "id": "41",
+        "name": "Done",
+        "from_status_id": null,
+        "to_status_id": "10115",
+        "from_canonical": null,
+        "to_canonical": "finalizada"
+      },
+      "create": {
+        "id": "1",
+        "name": "Create",
+        "from_status_id": null,
+        "to_status_id": "10114",
+        "from_canonical": null,
+        "to_canonical": "tareas_por_hacer"
+      },
+      "start_fixing": {
+        "id": "21",
+        "name": "In Progress",
+        "from_status_id": null,
+        "to_status_id": "3",
+        "from_canonical": null,
+        "to_canonical": "en_curso"
+      },
+      "is_cnr": {
+        "id": "41",
+        "name": "Done",
+        "from_status_id": null,
+        "to_status_id": "10115",
+        "from_canonical": null,
+        "to_canonical": "finalizada"
+      },
+      "is_duplicated": {
+        "id": "41",
+        "name": "Done",
+        "from_status_id": null,
+        "to_status_id": "10115",
+        "from_canonical": null,
+        "to_canonical": "finalizada"
+      },
+      "is_wad": {
+        "id": "41",
+        "name": "Done",
+        "from_status_id": null,
+        "to_status_id": "10115",
+        "from_canonical": null,
+        "to_canonical": "finalizada"
+      },
+      "is_not_a_bug": {
+        "id": "41",
+        "name": "Done",
+        "from_status_id": null,
+        "to_status_id": "10115",
+        "from_canonical": null,
+        "to_canonical": "finalizada"
+      },
+      "pull_request": {
+        "id": "31",
+        "name": "In Review",
+        "from_status_id": null,
+        "to_status_id": "10116",
+        "from_canonical": null,
+        "to_canonical": "en_revision"
+      },
+      "hard_pushed": {
+        "id": "31",
+        "name": "In Review",
+        "from_status_id": null,
+        "to_status_id": "10116",
+        "from_canonical": null,
+        "to_canonical": "en_revision"
+      },
+      "fixed_and_deployed": {
+        "id": "31",
+        "name": "In Review",
+        "from_status_id": null,
+        "to_status_id": "10116",
+        "from_canonical": null,
+        "to_canonical": "en_revision"
+      },
+      "retest_passed": {
+        "id": "41",
+        "name": "Done",
+        "from_status_id": null,
+        "to_status_id": "10115",
+        "from_canonical": null,
+        "to_canonical": "finalizada"
+      },
+      "re_open": {
+        "id": "11",
+        "name": "To Do",
+        "from_status_id": null,
+        "to_status_id": "10114",
+        "from_canonical": null,
+        "to_canonical": "tareas_por_hacer"
+      },
+      "back": {
+        "id": "31",
+        "name": "In Review",
+        "from_status_id": null,
+        "to_status_id": "10116",
+        "from_canonical": null,
+        "to_canonical": "en_revision"
+      },
+      "resume_fix": {
+        "id": "21",
+        "name": "In Progress",
+        "from_status_id": null,
+        "to_status_id": "3",
+        "from_canonical": null,
+        "to_canonical": "en_curso"
+      }
+    }
+  },
+  "test_case": {
+    "jira_issue_type": null,
+    "workflow_scheme": null,
+    "workflow": null,
+    "statuses": {},
+    "transitions": {}
+  },
+  "epic": {
+    "jira_issue_type": {
+      "id": "10054",
+      "name": "Epic"
+    },
+    "workflow_scheme": null,
+    "workflow": {
+      "id": "0c4772b3-3aba-4a7f-8c72-0251f646dfa4",
+      "name": "Software workflow for project QAFRESCO"
+    },
+    "statuses": {
+      "tareas_por_hacer": {
+        "id": "10114",
+        "name": "Tareas por hacer",
+        "category": "new"
+      },
+      "en_curso": {
+        "id": "3",
+        "name": "En curso",
+        "category": "indeterminate"
+      },
+      "en_revision": {
+        "id": "10116",
+        "name": "En revisión",
+        "category": "indeterminate"
+      },
+      "finalizada": {
+        "id": "10115",
+        "name": "Finalizada",
+        "category": "done"
+      },
+      "backlog": {
+        "id": "10114",
+        "name": "Tareas por hacer",
+        "category": "new"
+      },
+      "planning": {
+        "id": "3",
+        "name": "En curso",
+        "category": "indeterminate"
+      },
+      "in_progress": {
+        "id": "3",
+        "name": "En curso",
+        "category": "indeterminate"
+      },
+      "done": {
+        "id": "10115",
+        "name": "Finalizada",
+        "category": "done"
+      }
+    },
+    "transitions": {
+      "to_do": {
+        "id": "11",
+        "name": "To Do",
+        "from_status_id": null,
+        "to_status_id": "10114",
+        "from_canonical": null,
+        "to_canonical": "tareas_por_hacer"
+      },
+      "in_progress": {
+        "id": "21",
+        "name": "In Progress",
+        "from_status_id": null,
+        "to_status_id": "3",
+        "from_canonical": null,
+        "to_canonical": "en_curso"
+      },
+      "in_review": {
+        "id": "31",
+        "name": "In Review",
+        "from_status_id": null,
+        "to_status_id": "10116",
+        "from_canonical": null,
+        "to_canonical": "en_revision"
+      },
+      "done": {
+        "id": "41",
+        "name": "Done",
+        "from_status_id": null,
+        "to_status_id": "10115",
+        "from_canonical": null,
+        "to_canonical": "finalizada"
+      },
+      "create": {
+        "id": "1",
+        "name": "Create",
+        "from_status_id": null,
+        "to_status_id": "10114",
+        "from_canonical": null,
+        "to_canonical": "tareas_por_hacer"
+      },
+      "plan": {
+        "id": "21",
+        "name": "In Progress",
+        "from_status_id": null,
+        "to_status_id": "3",
+        "from_canonical": null,
+        "to_canonical": "en_curso"
+      },
+      "ready_to_work": {
+        "id": "21",
+        "name": "In Progress",
+        "from_status_id": null,
+        "to_status_id": "3",
+        "from_canonical": null,
+        "to_canonical": "en_curso"
+      },
+      "complete": {
+        "id": "41",
+        "name": "Done",
+        "from_status_id": null,
+        "to_status_id": "10115",
+        "from_canonical": null,
+        "to_canonical": "finalizada"
+      }
+    }
+  },
+  "defect": {
+    "jira_issue_type": null,
+    "workflow_scheme": null,
+    "workflow": null,
+    "statuses": {},
+    "transitions": {}
+  },
+  "improvement": {
+    "jira_issue_type": null,
+    "workflow_scheme": null,
+    "workflow": null,
+    "statuses": {},
+    "transitions": {}
+  },
+  "tech_story": {
+    "jira_issue_type": null,
+    "workflow_scheme": null,
+    "workflow": null,
+    "statuses": {},
+    "transitions": {}
+  },
+  "tech_debt": {
+    "jira_issue_type": null,
+    "workflow_scheme": null,
+    "workflow": null,
+    "statuses": {},
+    "transitions": {}
+  },
+  "test_plan": {
+    "jira_issue_type": null,
+    "workflow_scheme": null,
+    "workflow": null,
+    "statuses": {},
+    "transitions": {}
+  },
+  "test_execution": {
+    "jira_issue_type": null,
+    "workflow_scheme": null,
+    "workflow": null,
+    "statuses": {},
+    "transitions": {}
+  },
+  "re_test_execution": {
+    "jira_issue_type": null,
+    "workflow_scheme": null,
+    "workflow": null,
+    "statuses": {},
+    "transitions": {}
+  },
+  "test_set": {
+    "jira_issue_type": null,
+    "workflow_scheme": null,
+    "workflow": null,
+    "statuses": {},
+    "transitions": {}
+  },
+  "precondition": {
+    "jira_issue_type": null,
+    "workflow_scheme": null,
+    "workflow": null,
+    "statuses": {},
+    "transitions": {}
+  },
+  "subtask": {
+    "jira_issue_type": {
+      "id": "10056",
+      "name": "Task"
+    },
+    "workflow_scheme": null,
+    "workflow": {
+      "id": "0c4772b3-3aba-4a7f-8c72-0251f646dfa4",
+      "name": "Software workflow for project QAFRESCO"
+    },
+    "statuses": {
+      "tareas_por_hacer": {
+        "id": "10114",
+        "name": "Tareas por hacer",
+        "category": "new"
+      },
+      "en_curso": {
+        "id": "3",
+        "name": "En curso",
+        "category": "indeterminate"
+      },
+      "en_revision": {
+        "id": "10116",
+        "name": "En revisión",
+        "category": "indeterminate"
+      },
+      "finalizada": {
+        "id": "10115",
+        "name": "Finalizada",
+        "category": "done"
+      },
+      "active": {
+        "id": "3",
+        "name": "En curso",
+        "category": "indeterminate"
+      },
+      "close": {
+        "id": "10115",
+        "name": "Finalizada",
+        "category": "done"
+      }
+    },
+    "transitions": {
+      "to_do": {
+        "id": "11",
+        "name": "To Do",
+        "from_status_id": null,
+        "to_status_id": "10114",
+        "from_canonical": null,
+        "to_canonical": "tareas_por_hacer"
+      },
+      "in_progress": {
+        "id": "21",
+        "name": "In Progress",
+        "from_status_id": null,
+        "to_status_id": "3",
+        "from_canonical": null,
+        "to_canonical": "en_curso"
+      },
+      "in_review": {
+        "id": "31",
+        "name": "In Review",
+        "from_status_id": null,
+        "to_status_id": "10116",
+        "from_canonical": null,
+        "to_canonical": "en_revision"
+      },
+      "done": {
+        "id": "41",
+        "name": "Done",
+        "from_status_id": null,
+        "to_status_id": "10115",
+        "from_canonical": null,
+        "to_canonical": "finalizada"
+      },
+      "create": {
+        "id": "1",
+        "name": "Create",
+        "from_status_id": null,
+        "to_status_id": "10114",
+        "from_canonical": null,
+        "to_canonical": "tareas_por_hacer"
+      },
+      "complete": {
+        "id": "41",
+        "name": "Done",
+        "from_status_id": null,
+        "to_status_id": "10115",
+        "from_canonical": null,
+        "to_canonical": "finalizada"
+      },
+      "reactive": {
+        "id": "21",
+        "name": "In Progress",
+        "from_status_id": null,
+        "to_status_id": "3",
+        "from_canonical": null,
+        "to_canonical": "en_curso"
+      }
+    }
+  }
+}
