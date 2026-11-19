@@ -189,11 +189,11 @@ A required field absent from the instance falls back to a structured comment per
 
 | Severity (`{{jira.severity}}`, option slugs declared in `.agents/jira-required.yaml`) | Priority (native) |
 |---|---|
-| `{{jira.severity.critica}}` | Highest |
-| `{{jira.severity.mayor}}` | High |
-| `{{jira.severity.moderada}}` | Medium |
-| `{{jira.severity.menor}}` | Low |
-| `{{jira.severity.trivial}}` | Lowest |
+| ``critica`` | Highest |
+| ``mayor`` | High |
+| ``moderada`` | Medium |
+| ``menor`` | Low |
+| ``trivial`` | Lowest |
 
 ---
 

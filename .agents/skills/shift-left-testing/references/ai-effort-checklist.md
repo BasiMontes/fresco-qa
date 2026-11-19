@@ -6,7 +6,7 @@
 
 `{{jira.ai_effort}}` is the categorical effort of the whole work item in an agentic workflow: implementing it and verifying it. It is neither a time nor a token estimate (tokens are measured later, in `{{jira.development_token_usage}}` and `{{jira.quality_token_usage}}`). QA sets it in shift-left, before the sprint, because QA has just read the Story end to end for risk and coverage.
 
-Option slugs come from `.agents/jira-required.yaml` (`{{jira.ai_effort.low}}`, `{{jira.ai_effort.medium}}`, `{{jira.ai_effort.high}}`). When the field is absent on the instance, post the value as a structured comment headed `## AI Effort` (the `fallback:` of the field in `.agents/jira-required.yaml`). A missing field never blocks the handoff.
+Option slugs come from `.agents/jira-required.yaml` (``low``, ``medium``, ``high``). When the field is absent on the instance, post the value as a structured comment headed `## AI Effort` (the `fallback:` of the field in `.agents/jira-required.yaml`). A missing field never blocks the handoff.
 
 ## Why this check exists
 

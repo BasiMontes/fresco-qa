@@ -110,7 +110,7 @@ This is QA's sizing call, made after the refinement is complete. Answer the orde
 [ISSUE_TRACKER_TOOL] Update Issue:
   issue: {STORY_KEY}
   fields:
-    {{jira.ai_effort}}: <low | medium | high>      # option slugs: {{jira.ai_effort.low}} / .medium / .high
+    {{jira.ai_effort}}: <low | medium | high>      # option slugs: `low` / .medium / .high
 ```
 
 Fallback when the field is absent on this instance: post a structured comment headed `## AI Effort` with the value and the question numbers that tipped it, per `.agents/jira-required.yaml` → `ai_effort.fallback`. The handoff continues. Leave `{{jira.development_token_usage}}` and `{{jira.quality_token_usage}}` alone: the dev agent and the QA agent measure and write those later.
