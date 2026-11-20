@@ -1,6 +1,9 @@
-import type { TestBooking, TestCredentials, TestHotel, TestUser } from '@data/types';
+import type { IsoWeek, TestBooking, TestCredentials, TestHotel, TestUser } from '@data/types';
 
 import { faker } from '@faker-js/faker';
+
+const MIN_FUTURE_WEEK_OFFSET = 2;
+const MAX_FUTURE_WEEK_OFFSET = 40;
 
 export class DataFactory {
   private static uniqueId(): string {
@@ -61,6 +64,25 @@ export class DataFactory {
       emailHash: faker.string.alphanumeric(32),
       ...overrides,
     };
+  }
+
+  static futureIsoWeek(offset: number, from: Date = new Date()): IsoWeek {
+    const dayMs = 86_400_000;
+    const today = Date.UTC(from.getUTCFullYear(), from.getUTCMonth(), from.getUTCDate());
+    const weekday = (new Date(today).getUTCDay() + 6) % 7;
+    const monday = today - weekday * dayMs + offset * 7 * dayMs;
+    const thursday = new Date(monday + 3 * dayMs);
+    const isoYear = thursday.getUTCFullYear();
+    const yearStart = Date.UTC(isoYear, 0, 1);
+    const week = Math.floor((thursday.getTime() - yearStart) / dayMs / 7) + 1;
+    return {
+      semana_iso: `${isoYear}-W${String(week).padStart(2, '0')}`,
+      fecha_inicio: new Date(monday).toISOString().split('T')[0],
+    };
+  }
+
+  static randomFutureIsoWeek(): IsoWeek {
+    return this.futureIsoWeek(faker.number.int({ min: MIN_FUTURE_WEEK_OFFSET, max: MAX_FUTURE_WEEK_OFFSET }));
   }
 }
 

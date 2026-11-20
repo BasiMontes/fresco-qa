@@ -6,6 +6,21 @@ import { ApiBase } from '@api/ApiBase';
 import { expect } from '@playwright/test';
 import { atc, step } from '@utils/decorators';
 
+export interface PasswordGrantResponse extends Partial<TokenResponse> {
+  user?: { id: string }
+  error?: string
+  error_description?: string
+  msg?: string
+}
+
+export interface SignInResult {
+  accessToken: string
+  tokenType: string
+  expiresIn: number
+  refreshToken: string | null
+  userId: string
+}
+
 export type { AuthErrorResponse, LoginPayload, TokenResponse, UserInfoResponse } from '@schemas/auth.types';
 
 export class AuthApi extends ApiBase {
@@ -17,6 +32,28 @@ export class AuthApi extends ApiBase {
   async getCurrentUser(): Promise<[APIResponse, UserInfoResponse]> {
     const [response, body] = await this.apiGET<UserInfoResponse>(this.config.auth.meEndpoint);
     return [response, body];
+  }
+
+  @step
+  async signInWithPassword({ email, password }: LoginPayload): Promise<SignInResult> {
+    const [response, body] = await this.apiPOST<PasswordGrantResponse, LoginPayload>(
+      this.config.auth.loginEndpoint,
+      { email, password },
+      { headers: { apikey: this.config.auth.supabaseAnonKey }, sensitive: true },
+    );
+
+    if (response.status() !== 200 || !body.access_token || !body.user?.id) {
+      const reason = body.error_description ?? body.msg ?? body.error ?? 'no message';
+      throw new Error(`signInWithPassword failed for ${email}: status ${response.status()} - ${String(reason)}`);
+    }
+
+    return {
+      accessToken: body.access_token,
+      tokenType: body.token_type ?? 'bearer',
+      expiresIn: body.expires_in ?? 0,
+      refreshToken: body.refresh_token ?? null,
+      userId: body.user.id,
+    };
   }
 
   @atc('PROJ-101')

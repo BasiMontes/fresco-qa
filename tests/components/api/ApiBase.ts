@@ -8,6 +8,7 @@ export interface RequestOptions {
   headers?: Record<string, string>
   params?: Record<string, string>
   timeout?: number
+  sensitive?: boolean
 }
 
 export class ApiBase extends TestContext {
@@ -79,7 +80,7 @@ export class ApiBase extends TestContext {
 
     const body = await this.getResponseJsonObject<TBody>(response);
 
-    await attachRequestResponseToAllure({ url: endpoint, method: 'GET', responseBody: body });
+    await this.attachExchange({ response, endpoint, method: 'GET', responseBody: body, options });
 
     return [response, body];
   }
@@ -101,11 +102,13 @@ export class ApiBase extends TestContext {
 
     const body = await this.getResponseJsonObject<TBody>(response);
 
-    await attachRequestResponseToAllure({
-      url: endpoint,
+    await this.attachExchange({
+      response,
+      endpoint,
       method: 'POST',
       responseBody: body,
       requestBody: data,
+      options,
     });
 
     return [response, body, data];
@@ -128,11 +131,13 @@ export class ApiBase extends TestContext {
 
     const body = await this.getResponseJsonObject<TBody>(response);
 
-    await attachRequestResponseToAllure({
-      url: endpoint,
+    await this.attachExchange({
+      response,
+      endpoint,
       method: 'PUT',
       responseBody: body,
       requestBody: data,
+      options,
     });
 
     return [response, body, data];
@@ -155,11 +160,13 @@ export class ApiBase extends TestContext {
 
     const body = await this.getResponseJsonObject<TBody>(response);
 
-    await attachRequestResponseToAllure({
-      url: endpoint,
+    await this.attachExchange({
+      response,
+      endpoint,
       method: 'PATCH',
       responseBody: body,
       requestBody: data,
+      options,
     });
 
     return [response, body, data];
@@ -189,11 +196,13 @@ export class ApiBase extends TestContext {
     if (safeFormData.password) {
       safeFormData.password = '***';
     }
-    await attachRequestResponseToAllure({
-      url: endpoint,
+    await this.attachExchange({
+      response,
+      endpoint,
       method: 'POST',
       responseBody: body,
       requestBody: safeFormData,
+      options,
     });
 
     return [response, body, formData];
@@ -214,9 +223,31 @@ export class ApiBase extends TestContext {
 
     const body = await this.getResponseJsonObject<TBody>(response);
 
-    await attachRequestResponseToAllure({ url: endpoint, method: 'DELETE', responseBody: body });
+    await this.attachExchange({ response, endpoint, method: 'DELETE', responseBody: body, options });
 
     return [response, body];
+  }
+
+  private async attachExchange(args: {
+    response: APIResponse
+    endpoint: string
+    method: string
+    responseBody: unknown
+    requestBody?: unknown
+    options: RequestOptions
+  }): Promise<void> {
+    const { response, endpoint, method, responseBody, requestBody, options } = args;
+
+    if (options.sensitive) {
+      await attachRequestResponseToAllure({
+        url: endpoint,
+        method,
+        responseBody: { status: response.status() },
+      });
+      return;
+    }
+
+    await attachRequestResponseToAllure({ url: endpoint, method, responseBody, requestBody });
   }
 
   apiEndpoint(endpoint: string): string {

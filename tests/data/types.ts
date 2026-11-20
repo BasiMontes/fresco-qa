@@ -1,3 +1,5 @@
+import type { AuthRole } from '@variables';
+
 // Test-only types; API contract types live in api/schemas/{domain}.types.ts.
 
 export interface TestUser {
@@ -34,4 +36,14 @@ export interface ApiState {
   refreshToken: string | null
   source: 'ui-login' | 'api-login'
   createdAt: string
+}
+
+export interface RoleState extends ApiState {
+  role: AuthRole
+  userId: string
+}
+
+export interface IsoWeek {
+  semana_iso: string
+  fecha_inicio: string
 }

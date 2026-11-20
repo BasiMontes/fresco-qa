@@ -1,42 +1,57 @@
-import type { ApiState } from '@data/types';
+import type { RoleState } from '@data/types';
 
-import { writeFileSync } from 'node:fs';
+import { chmodSync, mkdirSync, readdirSync, rmSync, writeFileSync } from 'node:fs';
 import { test as setup } from '@TestFixture';
-import { attachRequestResponseToAllure } from '@utils/allure';
-import { config } from '@variables';
+import { roleStatePath } from '@utils/roleState';
+import { config, env } from '@variables';
 
-const apiStateFile = config.auth.apiStatePath;
+class EnvironmentGuardError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = 'EnvironmentGuardError';
+  }
+}
 
-setup('API Setup: authenticate via API', async ({ api }) => {
-  console.log('[API Setup] Starting API authentication...');
-  console.log(`[API Setup] Target: ${config.apiUrl}${config.auth.loginEndpoint}`);
+class MissingAnonKeyError extends Error {
+  constructor(variable: string) {
+    super(`${variable} is empty: set it in .env for the active environment`);
+    this.name = 'MissingAnonKeyError';
+  }
+}
 
-  const credentials = {
-    email: config.testUser.email,
-    password: config.testUser.password,
-  };
-  const [response, tokenData] = await api.auth.authenticateSuccessfully(credentials);
+setup('API Setup: authenticate each role via API', async ({ api }) => {
+  if (env.current !== 'local') {
+    throw new EnvironmentGuardError('menu-safety API tests mutate data and only run against the local stack (TEST_ENV=local)');
+  }
 
-  await attachRequestResponseToAllure({
-    url: response.url(),
-    method: 'POST',
-    responseBody: tokenData,
-    requestBody: { email: credentials.email, password: '***' },
-  });
+  const anonKeyVariable = `${env.current.toUpperCase()}_SUPABASE_ANON_KEY`;
+  if (config.auth.supabaseAnonKey === '') {
+    throw new MissingAnonKeyError(anonKeyVariable);
+  }
 
-  console.log('[API Setup] Authentication successful');
-  console.log(`[API Setup] Token type: ${tokenData.token_type}`);
-  console.log(`[API Setup] Expires in: ${tokenData.expires_in} seconds`);
+  mkdirSync(config.auth.roleStateDir, { recursive: true });
+  for (const file of readdirSync(config.auth.roleStateDir)) {
+    if (file.endsWith('.json')) {
+      rmSync(`${config.auth.roleStateDir}/${file}`, { force: true });
+    }
+  }
 
-  const apiState: ApiState = {
-    token: tokenData.access_token,
-    tokenType: tokenData.token_type,
-    expiresIn: tokenData.expires_in,
-    refreshToken: tokenData.refresh_token ?? null,
-    source: 'api-login',
-    createdAt: new Date().toISOString(),
-  };
+  for (const role of config.auth.roles) {
+    const credentials = config.auth.roleCredentials(role);
+    const session = await api.auth.signInWithPassword(credentials);
 
-  writeFileSync(apiStateFile, JSON.stringify(apiState, null, 2));
-  console.log(`[API Setup] Token saved to ${apiStateFile}`);
+    const state: RoleState = {
+      token: session.accessToken,
+      tokenType: session.tokenType,
+      expiresIn: session.expiresIn,
+      refreshToken: session.refreshToken,
+      source: 'api-login',
+      createdAt: new Date().toISOString(),
+      role,
+      userId: session.userId,
+    };
+
+    writeFileSync(roleStatePath(role), JSON.stringify(state, null, 2), { mode: 0o600 });
+    chmodSync(roleStatePath(role), 0o600);
+  }
 });
