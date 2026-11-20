@@ -110,7 +110,7 @@
     "tests:map": "bun scripts/tests-map.ts",
     "sync": "bun cli/update-boilerplate.ts",
     "test": "bun --no-env-file scripts/launch.ts --warn bunx --bun playwright test",
-    "types:check": "bun check",
+    "types:check": "tsc --noEmit",
     "up": "bun cli/update-boilerplate.ts",
     "git:policy": "bun scripts/git-policy.ts",
     "vars:check": "bun scripts/lint-vars.ts",
