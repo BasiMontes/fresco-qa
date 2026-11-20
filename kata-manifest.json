@@ -1,8 +1,45 @@
 {
   "version": "1.0",
-  "generatedAt": "2026-11-17T16:53:47.979Z",
+  "generatedAt": "2026-11-19T13:54:03.718Z",
   "components": {
     "api": [
+      {
+        "name": "AccessControlApi",
+        "file": "AccessControlApi.ts",
+        "relativePath": "tests/components/api/AccessControlApi.ts",
+        "atcs": [
+          {
+            "id": "CHK-A2",
+            "method": "readOtherUsersRowsReturnsEmpty",
+            "line": 68
+          },
+          {
+            "id": "CHK-C1-1",
+            "method": "readPrivateTableWithTamperedTokenIsDenied",
+            "line": 121
+          },
+          {
+            "id": "CHK-C1-2",
+            "method": "callEdgeFunctionWithTamperedTokenIsDenied",
+            "line": 133
+          },
+          {
+            "id": "CHK-U1-1",
+            "method": "readPrivateTableWithoutSessionIsDenied",
+            "line": 83
+          },
+          {
+            "id": "CHK-U1-2",
+            "method": "callFilterRpcWithoutSessionIsDenied",
+            "line": 95
+          },
+          {
+            "id": "CHK-U1-3",
+            "method": "callEdgeFunctionWithoutSessionIsDenied",
+            "line": 110
+          }
+        ]
+      },
       {
         "name": "AuthApi",
         "file": "AuthApi.ts",
@@ -11,12 +48,12 @@
           {
             "id": "PROJ-101",
             "method": "authenticateSuccessfully",
-            "line": 22
+            "line": 59
           },
           {
             "id": "PROJ-102",
             "method": "loginWithInvalidCredentials",
-            "line": 46
+            "line": 83
           }
         ]
       },
@@ -34,6 +71,97 @@
             "id": "PROJ-122",
             "method": "createResourceWithInvalidData",
             "line": 38
+          }
+        ]
+      },
+      {
+        "name": "MealPlansApi",
+        "file": "MealPlansApi.ts",
+        "relativePath": "tests/components/api/MealPlansApi.ts",
+        "atcs": [
+          {
+            "id": "CHK-D1",
+            "method": "generateMenuWithMissingFields",
+            "line": 189
+          },
+          {
+            "id": "CHK-D2",
+            "method": "generateMenuWithInvalidWeek",
+            "line": 201
+          },
+          {
+            "id": "CHK-D3",
+            "method": "generateMenuForExistingWeekReturnsConflict",
+            "line": 213
+          },
+          {
+            "id": "TC-01",
+            "method": "generateMenuForEggAllergicProfile",
+            "line": 144
+          },
+          {
+            "id": "TC-02",
+            "method": "generateMenuOnAnotherWeekStaysEggFree",
+            "line": 155
+          },
+          {
+            "id": "TC-03",
+            "method": "generateMenuForVeganLactoseFreeProfile",
+            "line": 170
+          }
+        ]
+      },
+      {
+        "name": "ProfilesApi",
+        "file": "ProfilesApi.ts",
+        "relativePath": "tests/components/api/ProfilesApi.ts",
+        "atcs": [
+          {
+            "id": "CHK-A1",
+            "method": "listOwnProfilesReturnsOnlyOwnRow",
+            "line": 46
+          },
+          {
+            "id": "CHK-A5",
+            "method": "updateOtherUsersProfileChangesNothing",
+            "line": 57
+          },
+          {
+            "id": "TC-08-1",
+            "method": "updateHouseholdWithinLimits",
+            "line": 74
+          },
+          {
+            "id": "TC-08-2",
+            "method": "updateHouseholdOutsideLimits",
+            "line": 92
+          }
+        ]
+      },
+      {
+        "name": "RecipesApi",
+        "file": "RecipesApi.ts",
+        "relativePath": "tests/components/api/RecipesApi.ts",
+        "atcs": [
+          {
+            "id": "CHK-B2-1",
+            "method": "getFilteredRecipesExcludeDeclaredAllergens",
+            "line": 57
+          },
+          {
+            "id": "CHK-B2-2",
+            "method": "getFilteredRecipesMatchDeclaredDiet",
+            "line": 74
+          },
+          {
+            "id": "CHK-U4",
+            "method": "listCatalogWithoutSession",
+            "line": 89
+          },
+          {
+            "id": "TC-15",
+            "method": "getFilteredRecipesForAnotherUserRejected",
+            "line": 47
           }
         ]
       }
@@ -88,9 +216,9 @@
     }
   ],
   "summary": {
-    "totalComponents": 4,
-    "totalATCs": 8,
-    "apiComponents": 2,
+    "totalComponents": 8,
+    "totalATCs": 28,
+    "apiComponents": 6,
     "uiComponents": 2,
     "stepsModules": 1
   }

@@ -1,6 +1,6 @@
 import type { ApiState } from '@data/types';
 import type { APIRequestContext, Page } from '@playwright/test';
-import type { Environment } from '@variables';
+import type { AuthRole, Environment } from '@variables';
 
 import { existsSync, readFileSync } from 'node:fs';
 
@@ -8,6 +8,7 @@ import { ApiFixture } from '@ApiFixture';
 import { test as base, expect } from '@playwright/test';
 import { TestContext } from '@TestContext';
 import { UiFixture } from '@UiFixture';
+import { loadRoleState } from '@utils/roleState';
 import { config, env } from '@variables';
 import { label } from 'allure-js-commons';
 
@@ -59,6 +60,7 @@ class TestFixture extends TestContext {
 }
 
 export const test = base.extend<{
+  role: AuthRole | undefined
   test: TestFixture
   api: ApiFixture
   ui: UiFixture
@@ -79,6 +81,8 @@ export const test = base.extend<{
     { auto: true },
   ],
 
+  role: [undefined, { option: true }],
+
   test: async ({ page, request }, use) => {
     const fixture = new TestFixture(page, request);
     await use(fixture);
@@ -89,8 +93,18 @@ export const test = base.extend<{
     await use(uiFixture);
   },
 
-  api: async ({ request }, use) => {
+  api: async ({ request, role }, use) => {
     const apiFixture = new ApiFixture({ request });
+
+    if (role) {
+      const roleState = loadRoleState(role);
+      if (!roleState) {
+        throw new Error(`Role state for "${role}" is missing or unreadable: run the api-setup project to create ${config.auth.roleStateDir}/${role}.json.`);
+      }
+      apiFixture.setAuthToken(roleState.token);
+      await use(apiFixture);
+      return;
+    }
 
     const apiStatePath = config.auth.apiStatePath;
     if (existsSync(apiStatePath)) {
