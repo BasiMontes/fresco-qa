@@ -5,11 +5,21 @@
     "name": "✅ Acceptance Criteria (Gherkin)"
   },
   "acceptance_test_plan": {
+    "id": "customfield_10096",
+    "type": "string",
+    "name": "🧪 Acceptance Test Plan (ATP)"
+  },
+  "acceptance_test_plan_2": {
     "id": "customfield_10191",
     "type": "string",
     "name": "🧪 Acceptance Test Plan (ATP)"
   },
   "acceptance_test_results": {
+    "id": "customfield_10076",
+    "type": "string",
+    "name": "🧪 Acceptance Test Results (ATR)"
+  },
+  "acceptance_test_results_2": {
     "id": "customfield_10177",
     "type": "string",
     "name": "🧪 Acceptance Test Results (ATR)"
@@ -18,6 +28,16 @@
     "id": "customfield_10187",
     "type": "string",
     "name": "Actual Result (Comportamiento)"
+  },
+  "ai_effort": {
+    "id": "customfield_10302",
+    "type": "option",
+    "name": "AI Effort",
+    "options": {
+      "high": "10150",
+      "low": "10148",
+      "medium": "10149"
+    }
   },
   "business_rules_specification": {
     "id": "customfield_10178",
@@ -37,6 +57,11 @@
     "name": "Color de la incidencia",
     "system": true,
     "provider": "com.pyxis.greenhopper.jira"
+  },
+  "development_token_usage": {
+    "id": "customfield_10299",
+    "type": "number",
+    "name": "Development Token Usage (K)"
   },
   "error_type": {
     "id": "customfield_10193",
@@ -92,6 +117,16 @@
     "id": "customfield_10180",
     "type": "string",
     "name": "🏴 Out Of Scope"
+  },
+  "qa_assignee": {
+    "id": "customfield_10301",
+    "type": "user",
+    "name": "QA Assignee"
+  },
+  "quality_token_usage": {
+    "id": "customfield_10300",
+    "type": "number",
+    "name": "Quality Token Usage (K)"
   },
   "root_cause": {
     "id": "customfield_10196",

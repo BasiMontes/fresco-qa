@@ -99,12 +99,12 @@ const envDataMap: Record<
 > = {
   local: {
     base: 'http://localhost:3000',
-    api: 'http://localhost:3000/api',
+    api: 'http://127.0.0.1:54321',
     user: userCredentialsMap.local,
   },
   staging: {
-    base: 'https://dojo.upexgalaxy.com',
-    api: 'https://dojo.upexgalaxy.com/api',
+    base: 'https://fresco-pre.vercel.app',
+    api: 'https://jdqemhewjrjuopssdurn.supabase.co',
     user: userCredentialsMap.staging,
   },
 };
@@ -147,6 +147,26 @@ function readTestUser(): { email: string, password: string } {
   );
 }
 
+export type AuthRole = 'alergia' | 'vegano' | 'familia';
+
+function readRoleCredentials(role: AuthRole): { email: string, password: string } {
+  const prefix = `${env.current.toUpperCase()}_${role.toUpperCase()}`;
+  const emailVar = `${prefix}_EMAIL`;
+  const passwordVar = `${prefix}_PASSWORD`;
+  const email = process.env[emailVar] ?? '';
+  const password = process.env[passwordVar] ?? '';
+  const missing = [email === '' ? emailVar : null, password === '' ? passwordVar : null]
+    .filter((n): n is string => n !== null);
+  if (missing.length > 0) {
+    throw new Error(`Credentials for role "${role}" on TEST_ENV=${env.current} are not set: ${missing.join(', ')}.`);
+  }
+  return { email, password };
+}
+
+function readSupabaseAnonKey(): string {
+  return process.env[`${env.current.toUpperCase()}_SUPABASE_ANON_KEY`] ?? '';
+}
+
 // ============================================
 // Main Configuration Object
 // ============================================
@@ -156,15 +176,22 @@ export const config = {
   baseUrl: envData.base,
   apiUrl: envData.api,
 
-  // Authentication config (UPEX Dojo endpoints - relative to apiUrl)
   auth: {
-    loginEndpoint: '/auth/login',
-    tokenEndpoint: '/auth/login', // Endpoint to intercept for token (used by page.waitForResponse)
-    meEndpoint: '/auth/me',
+    loginEndpoint: '/auth/v1/token?grant_type=password',
+    tokenEndpoint: '/auth/v1/token', // Endpoint to intercept for token (used by page.waitForResponse)
+    meEndpoint: '/auth/v1/user',
     tokenLifetimeSeconds: 86400, // 24 hours (1 day)
     // Storage paths for authenticated sessions
     storageStatePath: '.auth/user.json',
     apiStatePath: '.auth/api-state.json',
+    roles: ['alergia', 'vegano', 'familia'] as const,
+    roleStateDir: '.auth/roles',
+    roleCredentials(role: AuthRole): { email: string, password: string } {
+      return readRoleCredentials(role);
+    },
+    get supabaseAnonKey(): string {
+      return readSupabaseAnonKey();
+    },
   },
 
   // Test User (configure in .env). A getter: validated on first read, by name.

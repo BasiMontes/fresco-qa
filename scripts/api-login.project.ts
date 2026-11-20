@@ -63,6 +63,11 @@ import type { ApiLoginContext, ExtractedToken } from './lib/api-login-core';
  */
 export const environments = ['local', 'staging'] as const;
 
+const activeEnv = (process.env.TEST_ENV ?? 'local').toUpperCase();
+export const headers: Record<string, string> = {
+  apikey: process.env[`${activeEnv}_SUPABASE_ANON_KEY`] ?? '',
+};
+
 /**
  * Build the request body for the auth endpoint.
  * Override for different auth formats (e.g. `{ username, password }`, OAuth2).

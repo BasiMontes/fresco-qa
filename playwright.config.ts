@@ -146,7 +146,12 @@ export default defineConfig({
       name: 'integration',
       testMatch: '**/integration/**/*.test.ts',
       dependencies: ['api-setup'],
-      use: {},
+      use: {
+        extraHTTPHeaders: {
+          'Accept-Language': 'en-US,en',
+          'apikey': config.auth.supabaseAnonKey,
+        },
+      },
     },
 
     // ============================================
@@ -179,8 +184,14 @@ export default defineConfig({
       name: 'smoke-api',
       grep: /@critical/,
       testMatch: '**/integration/**/*.test.ts',
+      testIgnore: ['**/menu-safety/generateSafeMenu.test.ts', '**/menu-safety/rejectInvalidMenuRequests.test.ts'],
       dependencies: ['api-setup'],
-      use: {},
+      use: {
+        extraHTTPHeaders: {
+          'Accept-Language': 'en-US,en',
+          'apikey': config.auth.supabaseAnonKey,
+        },
+      },
     },
 
     // ============================================

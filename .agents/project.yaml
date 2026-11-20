@@ -64,7 +64,7 @@ testing:
     # false = dedicated sessions by default; pair testing only on explicit request,
     #         after one confirmation. Unattended runs never pair, whatever the value.
     # Read directly by skills (not a {{VAR}} token).
-    pair_mode: null
+    pair_mode: false
 
 # Host harnesses this project uses (ADR-0012), any of: claude, opencode, codex, pi.
 # Every compatibility gate (agents:compat:check, setup:doctor, the installer, `bun sync`)
@@ -352,7 +352,7 @@ secrets:
 environments:
   local:
     web_url: 'http://localhost:3000' # Frontend URL for local env (e.g. http://localhost:3000)
-    api_url: null # TODO: API base URL for local env (e.g. http://localhost:3000/api)
+    api_url: 'http://127.0.0.1:54321' # TODO: API base URL for local env (e.g. http://localhost:3000/api)
     db_mcp: null # TODO: MCP server name for local DB (e.g. myproject-local-db)
     api_mcp: null # TODO: MCP server name for local API (e.g. myproject-local-api)
   qa:
@@ -362,7 +362,7 @@ environments:
     api_mcp: null # TODO: MCP server name for qa API (e.g. myproject-qa-api)
   staging:
     web_url: 'https://fresco-pre.vercel.app/' # Frontend URL for staging env (e.g. https://staging.myproject.com)
-    api_url: null # TODO: API base URL for staging env (e.g. https://api-staging.myproject.com)
+    api_url: 'https://jdqemhewjrjuopssdurn.supabase.co' # TODO: API base URL for staging env (e.g. https://api-staging.myproject.com)
     db_mcp: null # TODO: MCP server name for staging DB (e.g. myproject-staging-db)
     api_mcp: null # TODO: MCP server name for staging API (e.g. myproject-staging-api)
   production:
