@@ -1,6 +1,6 @@
 {
   "version": "1.0",
-  "generatedAt": "2026-11-19T13:54:03.718Z",
+  "generatedAt": "2026-11-22T16:21:42.487Z",
   "components": {
     "api": [
       {
@@ -82,32 +82,32 @@
           {
             "id": "CHK-D1",
             "method": "generateMenuWithMissingFields",
-            "line": 189
+            "line": 203
           },
           {
             "id": "CHK-D2",
             "method": "generateMenuWithInvalidWeek",
-            "line": 201
+            "line": 215
           },
           {
             "id": "CHK-D3",
             "method": "generateMenuForExistingWeekReturnsConflict",
-            "line": 213
+            "line": 227
           },
           {
             "id": "TC-01",
             "method": "generateMenuForEggAllergicProfile",
-            "line": 144
+            "line": 158
           },
           {
             "id": "TC-02",
             "method": "generateMenuOnAnotherWeekStaysEggFree",
-            "line": 155
+            "line": 169
           },
           {
             "id": "TC-03",
             "method": "generateMenuForVeganLactoseFreeProfile",
-            "line": 170
+            "line": 184
           }
         ]
       },
@@ -119,22 +119,22 @@
           {
             "id": "CHK-A1",
             "method": "listOwnProfilesReturnsOnlyOwnRow",
-            "line": 46
+            "line": 58
           },
           {
             "id": "CHK-A5",
             "method": "updateOtherUsersProfileChangesNothing",
-            "line": 57
+            "line": 69
           },
           {
             "id": "TC-08-1",
             "method": "updateHouseholdWithinLimits",
-            "line": 74
+            "line": 86
           },
           {
             "id": "TC-08-2",
             "method": "updateHouseholdOutsideLimits",
-            "line": 92
+            "line": 104
           }
         ]
       },
@@ -168,6 +168,28 @@
     ],
     "ui": [
       {
+        "name": "CalendarPage",
+        "file": "CalendarPage.ts",
+        "relativePath": "tests/components/ui/CalendarPage.ts",
+        "atcs": [
+          {
+            "id": "UI-TC-01",
+            "method": "generateMenuForEggAllergicPersona",
+            "line": 84
+          },
+          {
+            "id": "UI-TC-03",
+            "method": "generateMenuForVeganLactoseFreePersona",
+            "line": 89
+          },
+          {
+            "id": "UI-TC-11",
+            "method": "generateFullWeekWithoutRepeatedMeals",
+            "line": 94
+          }
+        ]
+      },
+      {
         "name": "ExamplePage",
         "file": "ExamplePage.ts",
         "relativePath": "tests/components/ui/ExamplePage.ts",
@@ -200,6 +222,18 @@
             "line": 37
           }
         ]
+      },
+      {
+        "name": "PreferencesPage",
+        "file": "PreferencesPage.ts",
+        "relativePath": "tests/components/ui/PreferencesPage.ts",
+        "atcs": [
+          {
+            "id": "UI-TC-14",
+            "method": "saveDietAndAllergenFiltersOnFreePlan",
+            "line": 45
+          }
+        ]
       }
     ]
   },
@@ -216,10 +250,10 @@
     }
   ],
   "summary": {
-    "totalComponents": 8,
-    "totalATCs": 28,
+    "totalComponents": 10,
+    "totalATCs": 32,
     "apiComponents": 6,
-    "uiComponents": 2,
+    "uiComponents": 4,
     "stepsModules": 1
   }
 }

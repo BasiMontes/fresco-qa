@@ -133,10 +133,10 @@ export default defineConfig({
       name: 'e2e',
       use: {
         ...devices['Desktop Chrome'],
-        storageState: config.auth.storageStatePath,
       },
       testMatch: '**/e2e/**/*.test.ts',
-      dependencies: ['ui-setup'],
+      testIgnore: ['**/module-example/**', '**/e2e/dashboard/**'],
+      dependencies: ['api-setup'],
     },
 
     // ============================================
@@ -145,6 +145,7 @@ export default defineConfig({
     {
       name: 'integration',
       testMatch: '**/integration/**/*.test.ts',
+      testIgnore: ['**/module-example/**', '**/integration/auth/**'],
       dependencies: ['api-setup'],
       use: {
         extraHTTPHeaders: {
@@ -174,17 +175,17 @@ export default defineConfig({
       name: 'smoke-ui',
       grep: /@critical/,
       testMatch: '**/e2e/**/*.test.ts',
-      dependencies: ['ui-setup'],
+      testIgnore: ['**/module-example/**', '**/menu-safety/generateSafeMenuViaCalendar.test.ts', '**/e2e/dashboard/**'],
+      dependencies: ['api-setup'],
       use: {
         ...devices['Desktop Chrome'],
-        storageState: config.auth.storageStatePath,
       },
     },
     {
       name: 'smoke-api',
       grep: /@critical/,
       testMatch: '**/integration/**/*.test.ts',
-      testIgnore: ['**/menu-safety/generateSafeMenu.test.ts', '**/menu-safety/rejectInvalidMenuRequests.test.ts'],
+      testIgnore: ['**/module-example/**', '**/menu-safety/generateSafeMenu.test.ts', '**/menu-safety/rejectInvalidMenuRequests.test.ts', '**/integration/auth/**'],
       dependencies: ['api-setup'],
       use: {
         extraHTTPHeaders: {

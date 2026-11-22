@@ -1,5 +1,5 @@
 import type { APIResponse } from '@playwright/test';
-import type { Household, PostgrestError, UserProfile } from '@schemas/profiles.types';
+import type { DietaryPreferences, Household, PostgrestError, UserProfile } from '@schemas/profiles.types';
 import type { TestContextOptions } from '@TestContext';
 
 import { ApiBase } from '@api/ApiBase';
@@ -34,6 +34,18 @@ export class ProfilesApi extends ApiBase {
 
   async restoreHousehold(snapshot: Household): Promise<[APIResponse, UserProfile[]]> {
     const [response, body] = await this.apiPATCH<UserProfile[], Household>(
+      PROFILES_ENDPOINT,
+      snapshot,
+      { params: { id: `eq.${this.callerId()}` }, headers: RETURN_REPRESENTATION },
+    );
+    expect(response.status()).toBe(200);
+    expect(body).toHaveLength(1);
+    return [response, body];
+  }
+
+  @step
+  async restoreDietaryPreferences(snapshot: DietaryPreferences): Promise<[APIResponse, UserProfile[]]> {
+    const [response, body] = await this.apiPATCH<UserProfile[], DietaryPreferences>(
       PROFILES_ENDPOINT,
       snapshot,
       { params: { id: `eq.${this.callerId()}` }, headers: RETURN_REPRESENTATION },

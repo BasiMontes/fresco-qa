@@ -27,6 +27,17 @@ export interface Household {
   ninos: number
 }
 
+export interface DietaryPreferences {
+  alergenos: string[]
+  dieta_vegetariano: boolean
+  dieta_vegano: boolean
+  dieta_sin_gluten: boolean
+  dieta_sin_lactosa: boolean
+  dieta_sin_huevo: boolean
+  dieta_keto: boolean
+  dieta_halal: boolean
+}
+
 export interface PostgrestError {
   code?: string
   message?: string
@@ -34,4 +45,17 @@ export interface PostgrestError {
 
 export function toHousehold(profile: UserProfile): Household {
   return { num_personas: profile.num_personas, adultos: profile.adultos, ninos: profile.ninos };
+}
+
+export function toDietaryPreferences(profile: UserProfile): DietaryPreferences {
+  return {
+    alergenos: [...profile.alergenos].sort(),
+    dieta_vegetariano: profile.dieta_vegetariano,
+    dieta_vegano: profile.dieta_vegano,
+    dieta_sin_gluten: profile.dieta_sin_gluten,
+    dieta_sin_lactosa: profile.dieta_sin_lactosa,
+    dieta_sin_huevo: profile.dieta_sin_huevo,
+    dieta_keto: profile.dieta_keto,
+    dieta_halal: profile.dieta_halal,
+  };
 }

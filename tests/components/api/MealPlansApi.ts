@@ -12,6 +12,8 @@ import { RateLimitError } from '@utils/quota';
 export interface MenuRecipeRow {
   id: string
   recipe_id: string | null
+  dia: string | number
+  tipo_plato: string
   recipes: Pick<Recipe, 'nombre' | 'alergenos' | 'dieta'> | null
 }
 
@@ -53,7 +55,7 @@ export class MealPlansApi extends ApiBase {
   async getMealPlanRecipes(planId: string): Promise<[APIResponse, MenuRecipeRow[]]> {
     const [response, body] = await this.apiGET<MenuRecipeRow[]>(
       '/rest/v1/meal_plan_recipes',
-      { params: { select: 'id,recipe_id,recipes(nombre,alergenos,dieta)', meal_plan_id: `eq.${planId}` } },
+      { params: { select: 'id,recipe_id,dia,tipo_plato,recipes(nombre,alergenos,dieta)', meal_plan_id: `eq.${planId}` } },
     );
     expect(response.status()).toBe(200);
     return [response, body];
@@ -69,6 +71,18 @@ export class MealPlansApi extends ApiBase {
       }
     }
     throw new Error(`No free ISO week found after ${MAX_WEEK_DRAWS} draws.`);
+  }
+
+  @step
+  async readMenuForWeek(week: GenerateMealPlanPayload): Promise<GeneratedMenu> {
+    return this.readMenu(week);
+  }
+
+  @step
+  async deleteMenuForWeek(week: GenerateMealPlanPayload): Promise<string[]> {
+    const [, plans] = await this.listOwnMealPlans();
+    const ids = plans.filter(plan => plan.semana_iso === week.semana_iso).map(plan => plan.id);
+    return this.cleanupMenus(ids);
   }
 
   createdPlanIds(): string[] {

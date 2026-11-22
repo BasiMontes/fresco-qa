@@ -15,9 +15,9 @@ export class LoginPage extends UiBase {
   }
 
   private async fillAndSubmitLoginForm(credentials: LoginCredentials): Promise<void> {
-    await this.page.locator('[data-testid="login-email-input"]').fill(credentials.email);
-    await this.page.locator('[data-testid="login-password-input"]').fill(credentials.password);
-    await this.page.locator('[data-testid="login-submit-button"]').click();
+    await this.page.locator('[data-testid="email_input"]').fill(credentials.email);
+    await this.page.locator('[data-testid="password_input"]').fill(credentials.password);
+    await this.page.locator('[data-testid="login_submit_button"]').click();
   }
 
   @step
@@ -38,7 +38,7 @@ export class LoginPage extends UiBase {
   async loginWithInvalidCredentials(credentials: LoginCredentials): Promise<void> {
     await this.fillAndSubmitLoginForm(credentials);
 
-    const errorIndicator = this.page.locator('[data-testid="login-error"]');
+    const errorIndicator = this.page.locator('[data-testid="login_error_message"]');
     await expect(errorIndicator).toBeVisible({ timeout: 5000 });
     await expect(this.page).toHaveURL(/.*\/login.*/);
   }

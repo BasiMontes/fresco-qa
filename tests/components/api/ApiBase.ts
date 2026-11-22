@@ -262,6 +262,11 @@ export class ApiBase extends TestContext {
       ...customHeaders,
     };
 
+    const anonKey = this.config.auth.supabaseAnonKey;
+    if (anonKey !== '' && headers.apikey === undefined) {
+      headers.apikey = anonKey;
+    }
+
     if (this.authToken) {
       headers.Authorization = `Bearer ${this.authToken}`;
     }
