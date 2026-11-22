@@ -52,6 +52,16 @@ export class MealPlansApi extends ApiBase {
   }
 
   @step
+  async expectNoMenusFromWeek(week: GenerateMealPlanPayload): Promise<void> {
+    const [, plans] = await this.listOwnMealPlans();
+    const blocking = plans.filter(plan => plan.fecha_inicio >= week.fecha_inicio).map(plan => plan.semana_iso);
+    expect(
+      blocking,
+      `profile writes retire the open slots of menus from ${week.semana_iso} on: delete these menus first, they are not removed here`,
+    ).toEqual([]);
+  }
+
+  @step
   async getMealPlanRecipes(planId: string): Promise<[APIResponse, MenuRecipeRow[]]> {
     const [response, body] = await this.apiGET<MenuRecipeRow[]>(
       '/rest/v1/meal_plan_recipes',

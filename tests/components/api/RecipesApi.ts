@@ -18,6 +18,9 @@ export interface FilteredByDietArgs {
 
 const FILTER_ENDPOINT = '/rest/v1/rpc/get_filtered_recipes';
 const RECIPES_ENDPOINT = '/rest/v1/recipes';
+const PAGE_SIZE = 1000;
+
+type RecipeIdentity = Pick<Recipe, 'id' | 'nombre' | 'alergenos'>;
 
 export class RecipesApi extends ApiBase {
   constructor(options: TestContextOptions) {
@@ -42,6 +45,73 @@ export class RecipesApi extends ApiBase {
     );
     expect(response.status()).toBe(200);
     return [response, body];
+  }
+
+  private async readAllPages(
+    read: (range: string) => Promise<[APIResponse, RecipeIdentity[]]>,
+    source: string,
+  ): Promise<[APIResponse, RecipeIdentity[]]> {
+    const rows: RecipeIdentity[] = [];
+    for (;;) {
+      const [response, page] = await read(`${rows.length}-${rows.length + PAGE_SIZE - 1}`);
+      expect([200, 206], `${source} status at offset ${rows.length}`).toContain(response.status());
+      rows.push(...page);
+      const total = Number((response.headers()['content-range'] ?? '').split('/')[1]);
+      if (page.length === 0 || (Number.isFinite(total) && rows.length >= total)) {
+        return [response, rows];
+      }
+    }
+  }
+
+  @step
+  async listActiveCatalog(): Promise<[APIResponse, RecipeIdentity[]]> {
+    return this.readAllPages(
+      async range => this.apiGET<RecipeIdentity[]>(RECIPES_ENDPOINT, {
+        params: { select: 'id,nombre,alergenos', activo: 'eq.true', order: 'id' },
+        headers: { 'Prefer': 'count=exact', 'Range-Unit': 'items', 'Range': range },
+      }),
+      'active catalogue',
+    );
+  }
+
+  @step
+  async listFilteredRecipes(userId: string): Promise<[APIResponse, RecipeIdentity[]]> {
+    return this.readAllPages(
+      async (range) => {
+        const [response, page] = await this.apiPOST<RecipeIdentity[]>(
+          FILTER_ENDPOINT,
+          { p_user_id: userId },
+          { params: { order: 'id' }, headers: { 'Prefer': 'count=exact', 'Range-Unit': 'items', 'Range': range } },
+        );
+        return [response, page];
+      },
+      'filter RPC',
+    );
+  }
+
+  @atc('TC-04')
+  async getFilteredRecipesExcludeEveryDeclaredAllergen(
+    { userId, allergens }: FilteredByAllergensArgs,
+  ): Promise<[APIResponse, RecipeIdentity[]]> {
+    expect(allergens.length, 'no allergen declared: the union check would be vacuous').toBeGreaterThan(0);
+    const carriesDeclared = (recipe: RecipeIdentity): boolean => allergens.some(allergen => recipe.alergenos.includes(allergen));
+
+    const [, catalog] = await this.listActiveCatalog();
+    for (const allergen of allergens) {
+      expect(
+        catalog.filter(recipe => recipe.alergenos.includes(allergen)).length,
+        `the active catalogue holds no recipe tagged ${allergen}: its exclusion would be vacuous`,
+      ).toBeGreaterThan(0);
+    }
+    const expectedSafe = catalog.filter(recipe => !carriesDeclared(recipe));
+    expect(expectedSafe.length, 'every active recipe carries a declared allergen: an empty result would pass for the wrong reason').toBeGreaterThan(0);
+
+    const [response, filtered] = await this.listFilteredRecipes(userId);
+
+    expect(filtered.filter(carriesDeclared).map(recipe => recipe.nombre), `recipes returned with a declared allergen (${allergens.join(', ')})`).toEqual([]);
+    expect(filtered.map(recipe => recipe.id).sort(), 'ids returned by the filter against the safe ids of the active catalogue').toEqual(expectedSafe.map(recipe => recipe.id).sort());
+
+    return [response, filtered];
   }
 
   @atc('TC-15')

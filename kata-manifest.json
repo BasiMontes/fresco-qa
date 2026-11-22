@@ -1,6 +1,6 @@
 {
   "version": "1.0",
-  "generatedAt": "2026-11-22T17:50:32.459Z",
+  "generatedAt": "2026-11-22T19:10:18.583Z",
   "components": {
     "api": [
       {
@@ -82,32 +82,32 @@
           {
             "id": "CHK-D1",
             "method": "generateMenuWithMissingFields",
-            "line": 210
+            "line": 220
           },
           {
             "id": "CHK-D2",
             "method": "generateMenuWithInvalidWeek",
-            "line": 222
+            "line": 232
           },
           {
             "id": "CHK-D3",
             "method": "generateMenuForExistingWeekReturnsConflict",
-            "line": 234
+            "line": 244
           },
           {
             "id": "TC-01",
             "method": "generateMenuForEggAllergicProfile",
-            "line": 165
+            "line": 175
           },
           {
             "id": "TC-02",
             "method": "generateMenuOnAnotherWeekStaysEggFree",
-            "line": 176
+            "line": 186
           },
           {
             "id": "TC-03",
             "method": "generateMenuForVeganLactoseFreeProfile",
-            "line": 191
+            "line": 201
           }
         ]
       },
@@ -119,22 +119,22 @@
           {
             "id": "CHK-A1",
             "method": "listOwnProfilesReturnsOnlyOwnRow",
-            "line": 58
+            "line": 74
           },
           {
             "id": "CHK-A5",
             "method": "updateOtherUsersProfileChangesNothing",
-            "line": 69
+            "line": 85
           },
           {
             "id": "TC-08-1",
             "method": "updateHouseholdWithinLimits",
-            "line": 86
+            "line": 102
           },
           {
             "id": "TC-08-2",
             "method": "updateHouseholdOutsideLimits",
-            "line": 104
+            "line": 120
           }
         ]
       },
@@ -146,22 +146,27 @@
           {
             "id": "CHK-B2-1",
             "method": "getFilteredRecipesExcludeDeclaredAllergens",
-            "line": 57
+            "line": 127
           },
           {
             "id": "CHK-B2-2",
             "method": "getFilteredRecipesMatchDeclaredDiet",
-            "line": 74
+            "line": 144
           },
           {
             "id": "CHK-U4",
             "method": "listCatalogWithoutSession",
-            "line": 89
+            "line": 159
+          },
+          {
+            "id": "TC-04",
+            "method": "getFilteredRecipesExcludeEveryDeclaredAllergen",
+            "line": 92
           },
           {
             "id": "TC-15",
             "method": "getFilteredRecipesForAnotherUserRejected",
-            "line": 47
+            "line": 117
           }
         ]
       }
@@ -251,7 +256,7 @@
   ],
   "summary": {
     "totalComponents": 10,
-    "totalATCs": 32,
+    "totalATCs": 33,
     "apiComponents": 6,
     "uiComponents": 4,
     "stepsModules": 1

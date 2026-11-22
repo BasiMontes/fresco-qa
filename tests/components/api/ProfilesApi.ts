@@ -4,7 +4,7 @@ import type { TestContextOptions } from '@TestContext';
 
 import { ApiBase } from '@api/ApiBase';
 import { expect } from '@playwright/test';
-import { toHousehold } from '@schemas/profiles.types';
+import { toDietaryPreferences, toHousehold } from '@schemas/profiles.types';
 import { atc, step } from '@utils/decorators';
 import { tokenSubject } from '@utils/token';
 
@@ -40,6 +40,22 @@ export class ProfilesApi extends ApiBase {
     );
     expect(response.status()).toBe(200);
     expect(body).toHaveLength(1);
+    return [response, body];
+  }
+
+  @step
+  async setDietaryPreferences(preferences: DietaryPreferences): Promise<[APIResponse, UserProfile[]]> {
+    const [response, body] = await this.apiPATCH<UserProfile[], DietaryPreferences>(
+      PROFILES_ENDPOINT,
+      preferences,
+      { params: { id: `eq.${this.callerId()}` }, headers: RETURN_REPRESENTATION },
+    );
+    expect(response.status()).toBe(200);
+    expect(body).toHaveLength(1);
+    expect(toDietaryPreferences(body[0]), 'dietary preferences stored by the write').toEqual({
+      ...preferences,
+      alergenos: [...preferences.alergenos].sort(),
+    });
     return [response, body];
   }
 

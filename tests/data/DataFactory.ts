@@ -81,6 +81,16 @@ export class DataFactory {
     };
   }
 
+  static currentIsoWeekInMadrid(now: Date = new Date()): IsoWeek {
+    const madridDate = new Intl.DateTimeFormat('en-CA', {
+      timeZone: 'Europe/Madrid',
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+    }).format(now);
+    return this.futureIsoWeek(0, new Date(`${madridDate}T00:00:00Z`));
+  }
+
   static randomFutureIsoWeek(): IsoWeek {
     return this.futureIsoWeek(faker.number.int({ min: MIN_FUTURE_WEEK_OFFSET, max: MAX_FUTURE_WEEK_OFFSET }));
   }

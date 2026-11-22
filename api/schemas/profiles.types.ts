@@ -19,6 +19,7 @@ export interface UserProfile {
   objetivo: string | null
   presupuesto_semana_euros: number | null
   planning_selection: PlanningSelection | null
+  ingredientes_odiados?: string[]
 }
 
 export interface Household {
