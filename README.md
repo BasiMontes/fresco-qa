@@ -91,7 +91,7 @@ Every entry is a candidate until the PO confirms it (`docs/bugs-found.md`).
 ## Links
 
 - CI pipeline: [tests.yml](https://github.com/BasiMontes/fresco-qa/actions/workflows/tests.yml)
-- Test report: the Playwright and Allure report is uploaded as the `test-reports` artifact of each CI run; it is not published yet (card QAFRESCO-18).
+- Test report: the [results page](https://basimontes.github.io/fresco-qa/) is published to GitHub Pages after each run of the tests workflow on `main`. It lists the result of each test and links to the CI run. The full Playwright and Allure report, with traces, stays in the `test-reports` artifact of the run and is not published because it records the values typed in forms.
 - **Jira Board:** [QAFRESCO board](https://basiliomontescastano.atlassian.net/jira/software/projects/QAFRESCO/boards/36)
 
 ## Deliverables

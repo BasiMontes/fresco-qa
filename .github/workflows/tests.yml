@@ -6,6 +6,8 @@ on:
     branches: [main]
   pull_request:
     branches: [main]
+  schedule:
+    - cron: '0 3 * * *'
   workflow_dispatch:
 
 permissions:
@@ -174,6 +176,15 @@ jobs:
           retention-days: 7
           if-no-files-found: ignore
 
+      - name: Upload test outcomes for the public results page
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: test-outcomes
+          path: reports/test-outcomes.json
+          retention-days: 7
+          if-no-files-found: ignore
+
       - name: Stack diagnostics on failure
         if: failure()
         run: |
@@ -191,3 +202,50 @@ jobs:
         if: always()
         working-directory: fresco-app
         run: supabase stop --no-backup
+
+  publish-report:
+    name: Publish results page
+    needs: tests
+    if: ${{ always() && github.ref == 'refs/heads/main' && needs.tests.result != 'cancelled' && needs.tests.result != 'skipped' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    concurrency:
+      group: pages
+      cancel-in-progress: false
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Checkout fresco-qa
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Set up Bun
+        uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
+        with:
+          bun-version: ${{ env.BUN_VERSION }}
+
+      - name: Download test outcomes
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: test-outcomes
+          path: reports
+
+      - name: Render the results page
+        run: bun scripts/ci/render-report.ts reports/test-outcomes.json public-report/index.html
+
+      - name: Configure Pages
+        uses: actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d # v6.0.0
+
+      - name: Upload the page
+        uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
+        with:
+          path: public-report
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346 # v5.0.1
