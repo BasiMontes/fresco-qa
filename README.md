@@ -1,8 +1,98 @@
 # Fresco QA: allergy-safe weekly menu
 
+![Tests](https://github.com/BasiMontes/fresco-qa/actions/workflows/tests.yml/badge.svg)
+
 Black-box QA of the Fresco weekly menu planner for the "allergy-safe menu" story: test plan, test cases, session reports, KATA automation (API and UI) on Playwright and a CI workflow.
 
-**Jira Board:** [QAFRESCO board](https://basiliomontescastano.atlassian.net/jira/software/projects/QAFRESCO/boards/36)
+## User story
+
+**ID:** none. The feature has no Story or specification; QA derived the story and its acceptance criteria (`docs/feature-test-plan.md`, sections 1 and 2).
+
+**Title:** Allergy-safe weekly menu.
+
+> As a person with food restrictions, I want my weekly menu to exclude the allergens I declare and respect my diet, so that I can cook it without checking every recipe.
+
+## Technologies used
+
+| Technology | Evidence |
+|---|---|
+| Playwright (`@playwright/test`) and TypeScript | `package.json`, `playwright.config.ts` |
+| Bun as runtime and package manager | `package.json` scripts |
+| KATA architecture (components, ATCs, fixtures) | `tests/components/`, `kata-manifest.json` |
+| Local Supabase stack (the product under test) | `.github/workflows/tests.yml`, `supabase start` step |
+| GitHub Actions | `.github/workflows/tests.yml` |
+| Allure and the Playwright HTML report | `package.json` (`allure:*`, `test:report`), `test-reports` artifact in `tests.yml` |
+
+## Structure
+
+```
+.
+├── playwright.config.ts          # at the root
+├── docs/                         # plan, test cases, session reports, bugs, automation evaluation, project log, monitoring
+├── tests/
+│   ├── e2e/menu-safety/          # UI tests (UI)
+│   ├── integration/menu-safety/  # API tests (API)
+│   └── components/               # KATA layers: api/, ui/, steps/, fixtures
+├── monitoring/                   # synthetic monitor of the hosted staging environment
+├── scripts/ci/                   # CI helpers, including the persona seeding
+└── .github/workflows/            # tests.yml runs the API and UI suites
+```
+
+The course layout folder named tests/api (API tests) corresponds to `tests/integration` in this repo: the KATA boilerplate names API tests "integration".
+
+## How to run
+
+Prerequisites: the product running locally (local Supabase stack and its web app), because the hosted environment enforces a captcha on login. Each persona (alergia, vegano, familia) logs in with the variables `LOCAL_<ROLE>_EMAIL` and `LOCAL_<ROLE>_PASSWORD` from `.env`. In CI the workflow starts the stack and `scripts/ci/seed-personas.ts` creates the personas.
+
+| Goal | Command |
+|---|---|
+| API tests | `bun run test:integration` |
+| UI tests | `bun run test:e2e` |
+| Everything | `bun run test` |
+| Playwright report | `bun run test:report` |
+| Allure report | `bun run allure:generate`, then `bun run allure:open` |
+| Synthetic monitor (staging) | `bun run monitoring:synthetic` (see [docs/monitoring.md](docs/monitoring.md)) |
+
+## Results
+
+| Metric | Value | Source |
+|---|---|---|
+| UI tests | 2 files, 4 ATCs (`UI-TC-01`, `03`, `11`, `14`) | `docs/automation-eval.md` section 1, `kata-manifest.json` |
+| API tests | 6 files, 20 ATCs (`TC-*`, `CHK-*`) | `docs/automation-eval.md` section 1, `kata-manifest.json` |
+| Tests reported by the last green CI run | 43 total, 43 passed, 0 skipped | [run 45056823055](https://github.com/BasiMontes/fresco-qa/actions/runs/45056823055), 2026-11-22 |
+| Test cases automated | 7 of 18 (4 of the 11 others are manual by design) | `docs/automation-eval.md` section 2.1 |
+
+This project measures test-case coverage, not code coverage; no code-coverage percentage is reported.
+
+### Bugs found
+
+Every entry is a candidate until the PO confirms it (`docs/bugs-found.md`).
+
+| ID | Title | Severity | Status | Jira |
+|---|---|---|---|---|
+| BUG-01 | Vegan diet silently stores allergens the user did not choose | Major | Candidate, not filed | none |
+| BUG-02 | Menu over the weekly budget shows no warning | Major | Candidate, not confirmed with the PO | QAFRESCO-2 |
+| BUG-03 | Recipe photo shows egg on a recipe without egg | Minor | Candidate, not filed | none |
+| BUG-04 | Menu generated mid-week leaves the past days empty | Minor | Candidate, not confirmed with the PO | related to QAFRESCO-5 |
+| BUG-05 | Inactive recipes are readable without a session | Question | Candidate, not filed | none |
+| BUG-06 | Active catalogue holds recipes with a repeated name | Minor | Reported in Jira as QAFRESCO-3 | QAFRESCO-3 |
+| BUG-07 | Onboarding summary does not reflect the meals chosen per day | Minor | Reported in Jira as QAFRESCO-4 | QAFRESCO-4 |
+| BUG-08 | Vegan recipes are tagged only "Vegetariano" for a vegan profile | Minor | Reported in Jira as QAFRESCO-6 | QAFRESCO-6 |
+| BUG-09 | Reconcile cron may downgrade Pro plans granted without a subscription | Medium (per the Jira impact note, unexecuted) | Reported in Jira as QAFRESCO-7 | QAFRESCO-7 |
+
+## Learnings
+
+- The first CI run on a fresh database failed 2 of 43 tests: the isolation check `CHK-A2` had passed locally only because earlier manual sessions had left menus behind. The test now creates and deletes its own data (`docs/automation-eval.md` section 5).
+- A `testIgnore` placed in the wrong Playwright project made the quota-spending files run in no project; a project-level `testIgnore` replaces the global one instead of adding to it (`docs/automation-eval.md` section 4, review round 2; `docs/bitacora.md`).
+- Reviews found credentials written into Allure files; the fix was verified with a real login and 0 sensitive files (`docs/automation-eval.md` section 4).
+
+**Personal reflection:** [to be written by the owner]
+
+## Links
+
+- CI pipeline: [tests.yml](https://github.com/BasiMontes/fresco-qa/actions/workflows/tests.yml)
+- Test report: the Playwright and Allure report is uploaded as the `test-reports` artifact of each CI run; it is not published yet (card QAFRESCO-18).
+- **Jira Board:** [QAFRESCO board](https://basiliomontescastano.atlassian.net/jira/software/projects/QAFRESCO/boards/36)
 
 ## Deliverables
 
@@ -13,14 +103,11 @@ Black-box QA of the Fresco weekly menu planner for the "allergy-safe menu" story
 | Session reports (DB, UI, API) | [docs/session-reports/](docs/session-reports/) |
 | Defects found | [docs/bugs-found.md](docs/bugs-found.md) |
 | Automation evaluation | [docs/automation-eval.md](docs/automation-eval.md) |
+| Synthetic monitoring | [docs/monitoring.md](docs/monitoring.md) |
 | Project log | [docs/bitacora.md](docs/bitacora.md) |
 | API tests | `tests/integration/menu-safety/` |
 | UI tests | `tests/e2e/menu-safety/` |
 | CI workflow | [.github/workflows/tests.yml](.github/workflows/tests.yml) |
-
-## Running the tests
-
-The authenticated suites run against a local copy of the product, because the hosted environment enforces a captcha on login. Each of the three personas (alergia, vegano, familia) logs in with `LOCAL_<ROLE>_EMAIL` and `LOCAL_<ROLE>_PASSWORD` from `.env`; in CI, `scripts/ci/seed-personas.ts` creates them with random passwords. The scripts are in `package.json`: `test:integration` for API, `test:e2e` for UI, `test` for everything.
 
 `docs/automation-eval.md` states which results were verified and which were not.
 
