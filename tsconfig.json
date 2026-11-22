@@ -17,6 +17,7 @@
     "tests/**/*.ts",
     "api/**/*.ts",
     "scripts/**/*.ts",
+    "monitoring/**/*.ts",
     "cli/**/*.ts",
     "packages/**/*.ts",
     "playwright.config.ts",
