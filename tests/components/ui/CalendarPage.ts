@@ -74,9 +74,7 @@ export class CalendarPage extends UiBase {
 
   @step
   async goto(week: GenerateMealPlanPayload): Promise<void> {
-    await this.page.addLocatorHandler(this.page.getByTestId('tour_overlay'), async () => {
-      await this.page.getByTestId('tour_skip_button').click();
-    });
+    await this.dismissTourOverlayWhenShown();
     await this.page.goto(this.buildUrl(`/calendar?semana=${week.semana_iso}`));
     await expect(this.page.getByTestId('generate_week_button'), `generate button for ${week.semana_iso}`).toBeEnabled();
   }

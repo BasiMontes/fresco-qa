@@ -22,9 +22,7 @@ export class PreferencesPage extends UiBase {
 
   @step
   async confirmFreePlan(): Promise<void> {
-    await this.page.addLocatorHandler(this.page.getByTestId('tour_overlay'), async () => {
-      await this.page.getByTestId('tour_skip_button').click();
-    });
+    await this.dismissTourOverlayWhenShown();
     await this.page.goto(this.buildUrl('/profile'));
     await expect(this.page.getByTestId('pro_upsell_card'), 'Free plan: the Pro upsell card must show on /profile').toBeVisible();
   }

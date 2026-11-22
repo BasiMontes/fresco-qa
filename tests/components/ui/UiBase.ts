@@ -51,6 +51,12 @@ export class UiBase extends TestContext {
     return `${base}${cleanPath}`;
   }
 
+  async dismissTourOverlayWhenShown(): Promise<void> {
+    await this.page.addLocatorHandler(this.page.getByTestId('tour_overlay'), async () => {
+      await this.page.getByTestId('tour_skip_button').click();
+    });
+  }
+
   async interceptResponse<TRequest = unknown, TResponse = unknown>(
     args: InterceptResponseArgs,
   ): Promise<InterceptedData<TRequest, TResponse>> {

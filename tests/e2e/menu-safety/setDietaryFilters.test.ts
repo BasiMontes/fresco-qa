@@ -1,7 +1,7 @@
 import { toDietaryPreferences } from '@schemas/profiles.types';
 import { config, expect, test } from '@TestFixture';
 
-test.describe('UI-TC-14: Free plan user edits diet and allergen filters', () => {
+test.describe('UI-TC-14: Free plan user edits diet and allergen filters', { tag: ['@critical'] }, () => {
   test('UI-TC-14: should save a diet and an allergen without a paywall when the user is on the Free plan', async ({ test: fixture }) => {
     const { ui } = fixture;
     const api = fixture.api.asRole('alergia');

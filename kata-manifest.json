@@ -1,6 +1,6 @@
 {
   "version": "1.0",
-  "generatedAt": "2026-11-22T17:17:03.797Z",
+  "generatedAt": "2026-11-22T17:50:32.459Z",
   "components": {
     "api": [
       {
@@ -175,17 +175,17 @@
           {
             "id": "UI-TC-01",
             "method": "generateMenuForEggAllergicPersona",
-            "line": 84
+            "line": 82
           },
           {
             "id": "UI-TC-03",
             "method": "generateMenuForVeganLactoseFreePersona",
-            "line": 89
+            "line": 87
           },
           {
             "id": "UI-TC-11",
             "method": "generateFullWeekWithoutRepeatedMeals",
-            "line": 94
+            "line": 92
           }
         ]
       },
@@ -231,7 +231,7 @@
           {
             "id": "UI-TC-14",
             "method": "saveDietAndAllergenFiltersOnFreePlan",
-            "line": 45
+            "line": 43
           }
         ]
       }
