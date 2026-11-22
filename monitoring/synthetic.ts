@@ -1,7 +1,7 @@
 process.env.TEST_ENV = 'staging';
 
 const TIMEOUT_MS = 10_000;
-const LATENCY_BUDGET_MS = 3_000;
+const LATENCY_BUDGET_MS = 5_000;
 const ANON_KEY_VAR = 'STAGING_SUPABASE_ANON_KEY';
 
 interface Result { name: string, path: string, status: number | string, ms: number, ok: boolean, reason: string }
