@@ -71,3 +71,9 @@ Append-only project log. Every relevant milestone adds one entry at the bottom: 
 **What**: `smoke.yml` and `regression.yml` now run only on manual dispatch, because their daily schedule failed against staging (captcha on login, empty TMS secrets). UI-TC-14 is tagged `@critical`, so `smoke-ui` runs one test that spends no generation quota, and the tour overlay handler moved into `UiBase`.
 **Why**: A schedule that can only fail trains the team to ignore red runs, and a smoke project with no tests proves nothing.
 **Next**: Build the presentation. Sources: `.github/workflows/smoke.yml`, `tests/e2e/menu-safety/setDietaryFilters.test.ts`, `docs/automation-eval.md` section 5.
+
+## 2026-11-22 - Correction: QAFRESCO already had six defects, and the course-closing epic
+
+**What**: `docs/bugs-found.md` said the QAFRESCO project had no issues. It had seven since 2026-11-19 (an epic and six errors, QAFRESCO-1 to QAFRESCO-7), created from the UI sessions; only the budget warning matches a defect of the document exactly. The statement was corrected, and the epic QAFRESCO-8 was created to organise the course closing.
+**Why**: The first note of 2026-11-19 recorded QAFRESCO as empty at that moment and was later copied forward without checking Jira again.
+**Next**: Break the four ceremony pages into cards under QAFRESCO-8 and decide how the three defects without a ticket (BUG-01, BUG-03, BUG-05) are filed. Sources: `docs/bugs-found.md`, the QAFRESCO board.

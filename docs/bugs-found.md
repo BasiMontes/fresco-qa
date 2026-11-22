@@ -2,7 +2,7 @@
 
 Defects found while testing the Fresco allergy-safe weekly menu. Sources are the session reports in `docs/session-reports/` and the cases in `docs/test-cases.md`.
 
-**Status of every entry: Candidate, not confirmed with the PO.** No Story or specification exists, so the acceptance criteria (AC) were derived by QA in `docs/feature-test-plan.md`. No ticket was filed: the QAFRESCO project has no issues, and the entries below carry no Jira key. Each defect was observed in one run on a local copy of the product (staging cannot be driven past the captcha, see `docs/session-reports/ui-session.md` section 1), so none has been reproduced a second time.
+**Status of every entry: Candidate, not confirmed with the PO.** No Story or specification exists, so the acceptance criteria (AC) were derived by QA in `docs/feature-test-plan.md`. Six defects were filed earlier in the QAFRESCO Jira project (QAFRESCO-2 to QAFRESCO-7, under the epic QAFRESCO-1) from the UI sessions. Only BUG-02 has an exact match there (QAFRESCO-2, the budget warning) and BUG-04 looks related to QAFRESCO-5 (past days shown as excluded); BUG-01, BUG-03 and BUG-05 have no ticket, and QAFRESCO-3, 4, 6 and 7 are not listed in this document. Each defect was observed in one run on a local copy of the product (staging cannot be driven past the captcha, see `docs/session-reports/ui-session.md` section 1), so none has been reproduced a second time.
 
 Severity scale: Major (wrong behaviour on health or money data), Minor (wrong but low impact), Question (behaviour that may be intended). Priority: P1 fix before release, P2 should fix, P3 nice to fix.
 
