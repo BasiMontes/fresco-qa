@@ -136,7 +136,7 @@ UI suite: 4 reviewers reported no blocker. Fixes applied afterwards: `revealDay`
 | CI workflow, first run | Failed, 41 of 43. The two failures were `CHK-A2` on `meal_plans` for vegano and familia: on a fresh database the victims own no menus, because every other test cleans up, so the isolation check failed its own vacuity guard. Locally it had passed thanks to menus left by earlier manual sessions | GitHub Actions run 45047765840, commit `d603233` |
 | CI workflow, after the fix | Passed, 43 of 43, 0 skipped, about 6 minutes. The test now creates and deletes the victim menu itself | GitHub Actions run 45048787494, commit `2fcdde1` |
 
-State of the suite: 43 of 43 passing in CI on a fresh database at commit `2fcdde1`. That run does not cover the `smoke-ui` project (it lists no tests), the scheduled workflows inherited from the boilerplate, or repeated runs inside the same UTC hour.
+State of the suite: 43 of 43 passing in CI on a fresh database at commit `2fcdde1`. That workflow runs the `integration` and `e2e` projects only. `smoke-ui` (one `@critical` test, UI-TC-14) was verified locally on 22 Nov and no workflow runs it on its own, and repeated runs inside the same UTC hour are not covered. The inherited `smoke.yml` and `regression.yml` only run on manual dispatch, because their daily schedule failed against staging.
 
 ## 6. Flakiness and quota risks
 
@@ -211,11 +211,8 @@ Cheapest next gains: the controls and safety checks that need no quota. Costlies
 
 ## 9. Next steps
 
-1. Decide what to do with the scheduled `smoke.yml` and `regression.yml` inherited from the boilerplate: they run against staging, where login is blocked by a captcha and the TMS secrets are empty, so they fail every day.
-2. Give `smoke-ui` a `@critical` test that spends no generation quota: `smoke-ui` runs only `@critical` tests, and the ones that carry that tag spend quota and are excluded from it (`playwright.config.ts`).
-3. Move the duplicated `tour_overlay` handler of `CalendarPage` and `PreferencesPage` into `UiBase`.
-4. Remove or exclude the boilerplate sample tests so module path filters are no longer needed (proposed `/framework-development` chore in `api-menu-safety/automation-plan.md` section 2.1).
-5. Get PO answers to the open questions (`docs/feature-test-plan.md` section 9), then automate TC-10, TC-16 and TC-17, and the 4/1/0 household row.
-6. Add TC-04 and TC-09, which cover AC-1 and AC-4 and have no automation yet.
+1. Remove or exclude the boilerplate sample tests so module path filters are no longer needed (proposed `/framework-development` chore in `api-menu-safety/automation-plan.md` section 2.1).
+2. Get PO answers to the open questions (`docs/feature-test-plan.md` section 9), then automate TC-10, TC-16 and TC-17, and the 4/1/0 household row.
+3. Add TC-04 and TC-09, which cover AC-1 and AC-4 and have no automation yet.
 7. Decide whether the `CHK-*` ids become test cases in `docs/test-cases.md` (question Q2 of the API plan).
 8. If Jira sync is ever enabled, rename the ids to tracker keys first.

@@ -65,3 +65,9 @@ Append-only project log. Every relevant milestone adds one entry at the bottom: 
 **What**: Added four UI ATCs (UI-TC-01, 03, 11, 14), the `tests.yml` workflow that boots the local Supabase stack and seeds the personas, a synthetic monitor of staging, `docs/bugs-found.md` and `docs/automation-eval.md`. The first CI run (d603233) failed 2 of 43 because `CHK-A2` depended on menus left by manual sessions; the test now creates its own victim menu. The second run (2fcdde1) passed 43 of 43 on a fresh database.
 **Why**: The delivery needs UI and API automation running in CI, a monitor and a defect list. A CI run on an empty database is the only proof that a test does not rely on leftover local state.
 **Next**: Decide on the scheduled `smoke.yml` and `regression.yml` inherited from the boilerplate (they fail daily against staging), give `smoke-ui` a quota-free critical test, and build the presentation. Sources: `docs/automation-eval.md` section 5, `docs/bugs-found.md`.
+
+## 2026-11-22 - Inherited schedules removed and smoke-ui covered
+
+**What**: `smoke.yml` and `regression.yml` now run only on manual dispatch, because their daily schedule failed against staging (captcha on login, empty TMS secrets). UI-TC-14 is tagged `@critical`, so `smoke-ui` runs one test that spends no generation quota, and the tour overlay handler moved into `UiBase`.
+**Why**: A schedule that can only fail trains the team to ignore red runs, and a smoke project with no tests proves nothing.
+**Next**: Build the presentation. Sources: `.github/workflows/smoke.yml`, `tests/e2e/menu-safety/setDietaryFilters.test.ts`, `docs/automation-eval.md` section 5.
