@@ -8,13 +8,13 @@ Evaluation of the test automation built for the Fresco menu feature: what was au
 |---|---|
 | Framework | KATA on Playwright and TypeScript, run with Bun (`package.json`) |
 | Target | Local copy of the product (local Supabase, edge functions, web app). Staging is excluded because its login and auth API require a captcha (`docs/bitacora.md`) |
-| API suite | 6 files in `tests/integration/menu-safety/`, 20 new ATC ids (`kata-manifest.json`) |
+| API suite | 7 files in `tests/integration/menu-safety/`, 21 new ATC ids (`kata-manifest.json`) |
 | UI suite | 2 files in `tests/e2e/menu-safety/`, 4 new ATC ids (`kata-manifest.json`) |
-| ATCs in the manifest | 32 in total: 20 API (`TC-*`, `CHK-*`), 4 UI (`UI-TC-*`), 8 from the boilerplate samples (`PROJ-*`) (`kata-manifest.json`, `summary.totalATCs` = 32) |
+| ATCs in the manifest | 33 in total: 21 API (`TC-*`, `CHK-*`), 4 UI (`UI-TC-*`), 8 from the boilerplate samples (`PROJ-*`) (`kata-manifest.json`, `summary.totalATCs` = 33) |
 | Pipeline | `.github/workflows/tests.yml`, passing on a GitHub runner on a fresh database (see section 5) |
 | Jira | Not used for tests. Owner decision, see section 7 |
 
-The "28 ATCs" figure in `docs/bitacora.md` and in the API progress log was the manifest total at that moment, which included the 8 sample ids. The API suite itself has 20 ATC ids (`.session/test-automation/api-menu-safety/progress.md`, `kata-manifest.json`).
+The "28 ATCs" figure in `docs/bitacora.md` and in the API progress log was the manifest total at that moment, which included the 8 sample ids. The API suite had 20 ATC ids at that point (`.session/test-automation/api-menu-safety/progress.md`) and has 21 after TC-04 was added (`kata-manifest.json`).
 
 ## 2. Coverage
 
@@ -27,7 +27,7 @@ The "28 ATCs" figure in `docs/bitacora.md` and in the API progress log was the m
 | TC-01 | Egg-allergic couple, no egg recipes | AC-1 | `TC-01` | `UI-TC-01` | Automated at both levels |
 | TC-02 | Repeated generations never include egg | AC-1 | `TC-02` | none | Automated for 2 weeks per run; the 10-week sweep is out because of the hourly quota (`api-menu-safety/automation-plan.md` section 4) |
 | TC-03 | Vegan and lactose-free profile | AC-2 | `TC-03` | `UI-TC-03` | Automated at both levels; shopping list content not checked |
-| TC-04 | Several allergens, union excluded | AC-1 | none | none | Not automated. It needs a throwaway profile change; no reason is recorded in the plans |
+| TC-04 | Several allergens, union excluded | AC-1 | `TC-04` | none | Automated at API level: six parameterized rows through the filter RPC, with the profile snapshotted and restored (`test-specs/menu-safety-p1-gaps/`). Passes in CI |
 | TC-05 | Lupin accepted | AC-1 | none | none | Not automated, P3 |
 | TC-06 | Very restrictive profile | AC-1, AC-3 | none | none | Manual by design (exploratory) |
 | TC-07 | Shopping list scales | AC-5 | none | none | Not automated. The exact scaling rule is not documented |
@@ -43,7 +43,7 @@ The "28 ATCs" figure in `docs/bitacora.md` and in the API progress log was the m
 | TC-17 | Over-budget warning | AC-11 | none | none | Not automated; candidate finding awaiting the PO |
 | TC-18 | Photo contradicts allergen data | AC-1 | none | none | Manual, exploratory |
 
-Totals from the table: 7 of 18 TCs have an automated ATC (TC-01, 02, 03, 08, 11, 14, 15). 11 of 18 are not automated; 4 of those are manual by design (TC-06, 10, 13, 18).
+Totals from the table: 8 of 18 TCs have an automated ATC (TC-01, 02, 03, 04, 08, 11, 14, 15). 10 of 18 are not automated; 4 of those are manual by design (TC-06, 10, 13, 18).
 
 Acceptance criteria with at least one automated check: AC-1, AC-2, AC-3, AC-6, AC-10 and the security criterion. No automated check covers AC-4, AC-5, AC-7, AC-8, AC-9 or AC-11 (`docs/feature-test-plan.md`).
 
@@ -135,8 +135,9 @@ UI suite: 4 reviewers reported no blocker. Fixes applied afterwards: `revealDay`
 | UI-TC-01, UI-TC-03, UI-TC-11 | Passed locally after the `revealDay` fix (01 and 03 at 16:59 UTC, 11 at 17:00 UTC) and in CI | archived UI `progress.md`; CI run 45048787494 |
 | CI workflow, first run | Failed, 41 of 43. The two failures were `CHK-A2` on `meal_plans` for vegano and familia: on a fresh database the victims own no menus, because every other test cleans up, so the isolation check failed its own vacuity guard. Locally it had passed thanks to menus left by earlier manual sessions | GitHub Actions run 45047765840, commit `d603233` |
 | CI workflow, after the fix | Passed, 43 of 43, 0 skipped, about 6 minutes. The test now creates and deletes the victim menu itself | GitHub Actions run 45048787494, commit `2fcdde1` |
+| CI workflow, with TC-04 | Passed, 49 of 49 entries (3 setup and teardown steps and 46 tests: 42 API and 4 UI), 0 skipped. The six TC-04 rows passed on a fresh database on their first run | GitHub Actions run 45060103577, commit `e1763be` |
 
-State of the suite: 43 of 43 passing in CI on a fresh database at commit `2fcdde1`. That workflow runs the `integration` and `e2e` projects only. `smoke-ui` (one `@critical` test, UI-TC-14) was verified locally on 22 Nov and no workflow runs it on its own, and repeated runs inside the same UTC hour are not covered. The inherited `smoke.yml` and `regression.yml` only run on manual dispatch, because their daily schedule failed against staging.
+State of the suite: 49 of 49 passing in CI on a fresh database at commit `e1763be`. That workflow runs the `integration` and `e2e` projects only. `smoke-ui` (one `@critical` test, UI-TC-14) was verified locally on 22 Nov and no workflow runs it on its own, and repeated runs inside the same UTC hour are not covered. The inherited `smoke.yml` and `regression.yml` only run on manual dispatch, because their daily schedule failed against staging.
 
 ## 6. Flakiness and quota risks
 
@@ -213,6 +214,6 @@ Cheapest next gains: the controls and safety checks that need no quota. Costlies
 
 1. Remove or exclude the boilerplate sample tests so module path filters are no longer needed (proposed `/framework-development` chore in `api-menu-safety/automation-plan.md` section 2.1).
 2. Get PO answers to the open questions (`docs/feature-test-plan.md` section 9), then automate TC-10, TC-16 and TC-17, and the 4/1/0 household row.
-3. Add TC-04 and TC-09, which cover AC-1 and AC-4 and have no automation yet.
+3. Add TC-09, which covers AC-4, once the product owner defines what AC-4 means: the product has no "regenerate one slot" feature although its FAQ promises it.
 7. Decide whether the `CHK-*` ids become test cases in `docs/test-cases.md` (question Q2 of the API plan).
 8. If Jira sync is ever enabled, rename the ids to tracker keys first.

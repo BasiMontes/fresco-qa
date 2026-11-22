@@ -11,7 +11,7 @@ Legend. Priority: P1 must run before release, P2 should run, P3 nice to have. Au
 | TC-01 | Egg-allergic couple gets a menu without egg recipes | AC-1 | Positive | P1 | UI + DB | Executed once, passed |
 | TC-02 | Repeated generations never include an egg recipe | AC-1 | Negative | P1 | API + DB | Partial: 2 menus, no egg; limited to 5 per hour |
 | TC-03 | Vegan and lactose-free profile gets only matching recipes | AC-2 | Positive | P1 | UI + DB | Partial: menu checked, shopping list not |
-| TC-04 | Several allergens exclude the union of all of them | AC-1 | Decision table | P1 | API + DB | Designed |
+| TC-04 | Several allergens exclude the union of all of them | AC-1 | Decision table | P1 | API + DB | Designed; automated as API ATC TC-04 |
 | TC-05 | Declaring lupin is accepted and the menu still generates | AC-1 | Edge | P3 | UI | Designed |
 | TC-06 | A very restrictive profile stays safe even if variety drops | AC-1, AC-3 | Edge | P2 | Manual | Designed |
 | TC-07 | Shopping list quantities scale with household size | AC-5 | Boundary | P2 | UI | Designed |
