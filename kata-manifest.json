@@ -1,6 +1,6 @@
 {
   "version": "1.0",
-  "generatedAt": "2026-11-22T16:21:42.487Z",
+  "generatedAt": "2026-11-22T17:17:03.797Z",
   "components": {
     "api": [
       {
@@ -82,32 +82,32 @@
           {
             "id": "CHK-D1",
             "method": "generateMenuWithMissingFields",
-            "line": 203
+            "line": 210
           },
           {
             "id": "CHK-D2",
             "method": "generateMenuWithInvalidWeek",
-            "line": 215
+            "line": 222
           },
           {
             "id": "CHK-D3",
             "method": "generateMenuForExistingWeekReturnsConflict",
-            "line": 227
+            "line": 234
           },
           {
             "id": "TC-01",
             "method": "generateMenuForEggAllergicProfile",
-            "line": 158
+            "line": 165
           },
           {
             "id": "TC-02",
             "method": "generateMenuOnAnotherWeekStaysEggFree",
-            "line": 169
+            "line": 176
           },
           {
             "id": "TC-03",
             "method": "generateMenuForVeganLactoseFreeProfile",
-            "line": 184
+            "line": 191
           }
         ]
       },

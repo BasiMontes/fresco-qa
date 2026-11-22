@@ -3,6 +3,7 @@ import type { AuthRole } from '@variables';
 
 import { toHousehold } from '@schemas/profiles.types';
 import { expect, test } from '@TestFixture';
+import { runUnlessRateLimited } from '@utils/quota';
 import { loadRoleState } from '@utils/roleState';
 
 const victims: AuthRole[] = ['vegano', 'familia'];
@@ -31,9 +32,21 @@ test.describe('CHK-A2: A user cannot read the rows of another user', () => {
     for (const victim of victims) {
       test(`CHK-A2: should read no ${table} rows of ${victim} when the victim own rows exist`, async ({ api }) => {
         const ownerId = victimId(victim);
+        const victimApi = api.asRole(victim);
 
-        await api.asRole(victim).access.readOwnRowsReturnsRows({ table, ownerId, persona: victim });
-        await api.access.readOtherUsersRowsReturnsEmpty({ table, ownerId });
+        try {
+          if (table === 'meal_plans') {
+            const week = await victimApi.mealPlans.findFreeWeek();
+            await runUnlessRateLimited(async () => victimApi.mealPlans.generateMenuForWeek(week));
+          }
+
+          await victimApi.access.readOwnRowsReturnsRows({ table, ownerId, persona: victim });
+          await api.access.readOtherUsersRowsReturnsEmpty({ table, ownerId });
+        }
+        finally {
+          const leftovers = await victimApi.mealPlans.cleanupMenus(victimApi.mealPlans.createdPlanIds());
+          expect(leftovers, `menus of ${victim} created by this test that could not be deleted`).toEqual([]);
+        }
       });
     }
   }

@@ -74,6 +74,13 @@ export class MealPlansApi extends ApiBase {
   }
 
   @step
+  async generateMenuForWeek(week: GenerateMealPlanPayload): Promise<string[]> {
+    const [response] = await this.requestMenu<GenerateMealPlanResponse, GenerateMealPlanPayload>(week);
+    expect(response.status(), `generate-meal-plan status for ${week.semana_iso}`).toBe(200);
+    return this.createdPlanIds();
+  }
+
+  @step
   async readMenuForWeek(week: GenerateMealPlanPayload): Promise<GeneratedMenu> {
     return this.readMenu(week);
   }
