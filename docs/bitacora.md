@@ -59,3 +59,9 @@ Append-only project log. Every relevant milestone adds one entry at the bottom: 
 **What**: At 14:08 UTC the Docker daemon stopped, taking down the local Supabase containers, the edge functions server and the web app. Code, documents, screenshots and memory are on disk; nothing is committed (about 30 paths pending). The API tests were verified passing before the stop.
 **Why**: The cause is unknown (the app was closed, or the machine idled). Persona data and menus live in Docker volumes and should return on restart, which is unverified.
 **Next**: Restart in this order and check each piece with a real request: start the Docker runtime, start the local Supabase containers, serve the edge functions, then start the web app with the public captcha site key empty (the first start exits once after a framework notice; run it again). Then write the 3 UI tests, remove the boilerplate sample tests, write the pipeline, the bugs report, the automation evaluation, the monitoring script and the README.
+
+## 2026-11-22 - UI tests, CI pipeline, monitoring and defect list closed
+
+**What**: Added four UI ATCs (UI-TC-01, 03, 11, 14), the `tests.yml` workflow that boots the local Supabase stack and seeds the personas, a synthetic monitor of staging, `docs/bugs-found.md` and `docs/automation-eval.md`. The first CI run (d603233) failed 2 of 43 because `CHK-A2` depended on menus left by manual sessions; the test now creates its own victim menu. The second run (2fcdde1) passed 43 of 43 on a fresh database.
+**Why**: The delivery needs UI and API automation running in CI, a monitor and a defect list. A CI run on an empty database is the only proof that a test does not rely on leftover local state.
+**Next**: Decide on the scheduled `smoke.yml` and `regression.yml` inherited from the boilerplate (they fail daily against staging), give `smoke-ui` a quota-free critical test, and build the presentation. Sources: `docs/automation-eval.md` section 5, `docs/bugs-found.md`.

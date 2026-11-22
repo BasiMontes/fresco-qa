@@ -11,7 +11,7 @@ Evaluation of the test automation built for the Fresco menu feature: what was au
 | API suite | 6 files in `tests/integration/menu-safety/`, 20 new ATC ids (`kata-manifest.json`) |
 | UI suite | 2 files in `tests/e2e/menu-safety/`, 4 new ATC ids (`kata-manifest.json`) |
 | ATCs in the manifest | 32 in total: 20 API (`TC-*`, `CHK-*`), 4 UI (`UI-TC-*`), 8 from the boilerplate samples (`PROJ-*`) (`kata-manifest.json`, `summary.totalATCs` = 32) |
-| Pipeline | `.github/workflows/tests.yml`, written, never run on a GitHub runner |
+| Pipeline | `.github/workflows/tests.yml`, passing on a GitHub runner on a fresh database (see section 5) |
 | Jira | Not used for tests. Owner decision, see section 7 |
 
 The "28 ATCs" figure in `docs/bitacora.md` and in the API progress log was the manifest total at that moment, which included the 8 sample ids. The API suite itself has 20 ATC ids (`.session/test-automation/api-menu-safety/progress.md`, `kata-manifest.json`).
@@ -123,19 +123,20 @@ API suite, two rounds, each with four reviewers: a spec reviewer, a standards re
 - Closed with documented waivers, not with a clean ACCEPT. No third full review was run.
 - Fixed: credentials in Allure (0 sensitive files after a real login), 429 skip hiding failures in CI, double firing, missing controls, the `Ensalada cesar` assertion, fixed baseline from the stored profile, plan-id cleanup, environment guard.
 
-UI suite: 4 reviewers reported no blocker. Fixes applied afterwards: `revealDay` now waits and is capped, the restore no longer masks a test failure, and the dashboard sample is excluded from the `e2e` project. The phase is still marked in progress, awaiting a re-run to verify the `revealDay` fix before ACCEPT (`.session/test-automation/ui-menu-safety/progress.md`).
+UI suite: 4 reviewers reported no blocker. Fixes applied afterwards: `revealDay` now waits and is capped, the restore no longer masks a test failure, and the dashboard sample is excluded from the `e2e` project. After the fixes the four UI tests were re-run and passed, the review was accepted and the session archived (`.session/.archive/2026-11-22-test-automation-ui-menu-safety/progress.md`).
 
 ## 5. Results (verified facts only)
 
 | Item | Status | Evidence |
 |---|---|---|
 | API suite, 19 Nov, local | Passed. 33 of 33 entries on the four files that spend no quota; `generateSafeMenu` (2 tests) passed once at 14:00 UTC; `rejectInvalidMenuRequests` 7 of 7 entries passed once; none skipped | API `progress.md`, Phase 3 closed |
-| API suite since the UI work | NOT re-verified. `ApiBase`, `MealPlansApi` and `ProfilesApi` were edited on 22 Nov for the UI suite (file dates, `git status`); no run of the API suite after that is recorded in the repository | `ui-menu-safety/automation-plan.md` section 10 item "API suite still compiles" is unchecked |
-| UI-TC-14 | Passed (green) | UI `progress.md`, Phase 3 |
-| UI-TC-01, UI-TC-03, UI-TC-11 | Reported as passed once before the later fix to calendar day paging (`revealDay`). NOT re-verified after the fix. The repository log records only that UI-TC-11 was skipped on 429 for the `familia` quota; the earlier pass is not recorded in a file. Re-run needs the quota window to reset at the next UTC hour | UI `progress.md`; owner and session report |
-| CI workflow | Written and statically validated with actionlint (reported in the session, not recorded in a repository file). It has NOT run on a GitHub runner. Whether the pipeline works end to end is unknown | `.github/workflows/tests.yml` |
+| API suite since the UI work | Re-verified. Local `integration` project run on 22 Nov at 17:00 UTC: the 36 module tests passed. The only failures were the 2 boilerplate `PROJ-100` samples, which are now excluded in every project | archived UI `progress.md`; `playwright.config.ts` |
+| UI-TC-14 | Passed locally and in CI | archived UI `progress.md`; CI run 45048787494 |
+| UI-TC-01, UI-TC-03, UI-TC-11 | Passed locally after the `revealDay` fix (01 and 03 at 16:59 UTC, 11 at 17:00 UTC) and in CI | archived UI `progress.md`; CI run 45048787494 |
+| CI workflow, first run | Failed, 41 of 43. The two failures were `CHK-A2` on `meal_plans` for vegano and familia: on a fresh database the victims own no menus, because every other test cleans up, so the isolation check failed its own vacuity guard. Locally it had passed thanks to menus left by earlier manual sessions | GitHub Actions run 45047765840, commit `d603233` |
+| CI workflow, after the fix | Passed, 43 of 43, 0 skipped, about 6 minutes. The test now creates and deletes the victim menu itself | GitHub Actions run 45048787494, commit `2fcdde1` |
 
-No statement in this document says the whole suite passes. The state of the suite is: API verified at 19 Nov, UI partly verified, pipeline unverified.
+State of the suite: 43 of 43 passing in CI on a fresh database at commit `2fcdde1`. That run does not cover the `smoke-ui` project (it lists no tests), the scheduled workflows inherited from the boilerplate, or repeated runs inside the same UTC hour.
 
 ## 6. Flakiness and quota risks
 
@@ -145,7 +146,7 @@ No statement in this document says the whole suite passes. The state of the suit
 | Quota and shared users | `alergia` uses 4 of 5 generations in one combined run | Validation tests run as `familia`, who generates little |
 | Rejected requests may use quota | Not isolated (API-03 in `docs/session-reports/api-session.md`) | Validation limited to 4 requests on `familia` |
 | Skipped test hides a gap | A rate-limit skip inside the `TC-01`, `CHK-D3`, `TC-02` chain skips the whole test | Documented limit; CI fails instead of skipping |
-| Calendar day columns | Not all days may render at 1920 px; `revealDay` pages through days | Fixed once after review; not re-verified (section 5) |
+| Calendar day columns | Not all days may render at 1920 px; `revealDay` pages through days | Fixed once after review; re-verified locally and in CI (section 5) |
 | Selectors from product source | Written from source, probed live only partly | Role and test-id locators; no `waitForTimeout` |
 | Personas must be onboarded | Control checks need each persona to own a menu and consent rows | `scripts/ci/seed-personas.ts` in CI; manual setup locally |
 | Local stack stops | Docker went down at 14:08 UTC on 19 Nov and stopped all services | Recovery steps in `docs/bitacora.md` |
@@ -200,7 +201,7 @@ No signed ROI verdict exists; that gate was waived. The view below is a judgment
 | Access control and isolation checks (`CHK-A*`, `CHK-U*`, `CHK-C*`, `TC-15`) | High: cheap, deterministic, no quota, they protect user health data | Low. Tied to table names and status codes |
 | Filter output checks (`CHK-B2-*`) | High for the allergen promise; assert safety properties, not counts (the catalogue counts 562 and 267 can drift, risk R6) | Low |
 | Menu generation (`TC-01/02/03`, `UI-TC-01/03/11`) | High for the core promise | Medium to high: they spend the quota, so runs are limited to one per hour and the data strategy needs cleanup |
-| Calendar paging (`CalendarPage.revealDay`) | Needed to read all 21 slots | High: depends on layout, viewport and the day navigation; already fixed once; not re-verified |
+| Calendar paging (`CalendarPage.revealDay`) | Needed to read all 21 slots | High: depends on layout, viewport and the day navigation; already fixed once; passes locally and in CI |
 | Chip labels in `PreferencesPage` | Needed to select diet and allergen | High: matched by Spanish visible text (`Sin lactosa`, `Sésamo`), so a copy change breaks the test |
 | Per-test form login | Keeps the login form under test | Low in cost per run; adds 4 logins and breaks on login selector changes |
 | `UI-TC-14` paywall check | Weak oracle: asserts persistence and no checkout dialog, not a paywall element | Medium |
@@ -210,9 +211,9 @@ Cheapest next gains: the controls and safety checks that need no quota. Costlies
 
 ## 9. Next steps
 
-1. Re-run `UI-TC-01`, `UI-TC-03` and `UI-TC-11` after the quota window resets, then re-run the API suite, and record the results in `docs/bitacora.md`.
-2. Run the `Tests` workflow once on GitHub (`workflow_dispatch`) and fix what fails. Until then the pipeline is unverified.
-3. Close the UI review (Phase 3) and archive the session directories.
+1. Decide what to do with the scheduled `smoke.yml` and `regression.yml` inherited from the boilerplate: they run against staging, where login is blocked by a captcha and the TMS secrets are empty, so they fail every day.
+2. Give `smoke-ui` a `@critical` test that spends no generation quota: `smoke-ui` runs only `@critical` tests, and the ones that carry that tag spend quota and are excluded from it (`playwright.config.ts`).
+3. Move the duplicated `tour_overlay` handler of `CalendarPage` and `PreferencesPage` into `UiBase`.
 4. Remove or exclude the boilerplate sample tests so module path filters are no longer needed (proposed `/framework-development` chore in `api-menu-safety/automation-plan.md` section 2.1).
 5. Get PO answers to the open questions (`docs/feature-test-plan.md` section 9), then automate TC-10, TC-16 and TC-17, and the 4/1/0 household row.
 6. Add TC-04 and TC-09, which cover AC-1 and AC-4 and have no automation yet.
