@@ -1,3 +1,31 @@
+# Fresco QA: allergy-safe weekly menu
+
+Black-box QA of the Fresco weekly menu planner for the "allergy-safe menu" story: test plan, test cases, session reports, KATA automation (API and UI) on Playwright and a CI workflow.
+
+**Jira Board:** [QAFRESCO board](https://basiliomontescastano.atlassian.net/jira/software/projects/QAFRESCO/boards/36)
+
+## Deliverables
+
+| Deliverable | Where |
+|---|---|
+| Feature test plan | [docs/feature-test-plan.md](docs/feature-test-plan.md) |
+| Test cases | [docs/test-cases.md](docs/test-cases.md) |
+| Session reports (DB, UI, API) | [docs/session-reports/](docs/session-reports/) |
+| Defects found | [docs/bugs-found.md](docs/bugs-found.md) |
+| Automation evaluation | [docs/automation-eval.md](docs/automation-eval.md) |
+| Project log | [docs/bitacora.md](docs/bitacora.md) |
+| API tests | `tests/integration/menu-safety/` |
+| UI tests | `tests/e2e/menu-safety/` |
+| CI workflow | [.github/workflows/tests.yml](.github/workflows/tests.yml) |
+
+## Running the tests
+
+The authenticated suites run against a local copy of the product, because the hosted environment enforces a captcha on login. Each of the three personas (alergia, vegano, familia) logs in with `LOCAL_<ROLE>_EMAIL` and `LOCAL_<ROLE>_PASSWORD` from `.env`; in CI, `scripts/ci/seed-personas.ts` creates them with random passwords. The scripts are in `package.json`: `test:integration` for API, `test:e2e` for UI, `test` for everything.
+
+`docs/automation-eval.md` states which results were verified and which were not.
+
+---
+
 <div align="center">
 
 <pre>
