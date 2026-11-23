@@ -24,11 +24,11 @@ Legend. Priority: P1 must run before release, P2 should run, P3 nice to have. Au
 | TC-02 | Repeated generations never include an egg recipe | AC-1 | Negative | P1 | API + DB | Partial: 2 menus, no egg; limited to 5 per hour |
 | TC-03 | Vegan and lactose-free profile gets only matching recipes | AC-2 | Positive | P1 | UI + DB | Partial: menu checked, shopping list not |
 | TC-04 | Several allergens exclude the union of all of them | AC-1 | Decision table | P1 | API + DB | Designed; automated as API ATC TC-04 |
-| TC-05 | Declaring lupin is accepted and the menu still generates | AC-1 | Edge | P3 | UI | Designed |
+| TC-05 | Declaring lupin is accepted and the menu still generates | AC-1 | Edge | P3 | UI | Automated as UI ATC UI-TC-05 |
 | TC-06 | A very restrictive profile stays safe even if variety drops | AC-1, AC-3 | Edge | P2 | Manual | Designed |
 | TC-07 | Shopping list quantities scale with household size | AC-5 | Boundary | P2 | UI | Designed |
 | TC-08 | Household size limits are enforced | AC-6 | Boundary | P2 | API | Designed |
-| TC-09 | Swapping one slot changes only that slot and stays safe | AC-4 | Positive | P1 | UI | Designed |
+| TC-09 | Swapping one slot changes only that slot and stays safe | AC-4 | Positive | P1 | UI | Automated as UI ATC UI-TC-09, add-to-menu flow only |
 | TC-10 | Adding an allergen after generation does not leave unsafe slots | AC-7 | State transition | P1 | Manual | Designed |
 | TC-11 | A normal profile gets 21 slots with no repeated comida or cena | AC-3 | Positive | P2 | UI + DB | Partial: no repeats, 12 of 21 filled |
 | TC-12 | Deleting the account removes the health data | AC-8 | Positive | P2 | UI + DB | Designed |
@@ -86,7 +86,7 @@ Legend. Priority: P1 must run before release, P2 should run, P3 nice to have. Au
 - Expected: for each row, zero slots carry any declared allergen.
 
 ### TC-05 Declaring lupin is accepted and the menu still generates
-- Automated check: none. Status: Designed. Defect: none.
+- Automated check: `UI-TC-05` (UI). Status: Automated. Defect: none.
 - Covers: AC-1. Edge. Priority P3. Automation: UI.
 - Steps: declare `altramuces`; generate a menu.
 - Expected: the profile is saved and the menu has 21 slots. The exclusion cannot be verified because no recipe carries the tag (F-06).
@@ -118,7 +118,7 @@ Legend. Priority: P1 must run before release, P2 should run, P3 nice to have. Au
 | 4 | 1 | 0 | open question: the database accepts it (F-05) |
 
 ### TC-09 Swapping one slot changes only that slot and stays safe
-- Automated check: none. Status: Designed. Defect: none.
+- Automated check: `UI-TC-09` (UI), add-to-menu flow only. Status: Automated. Defect: none.
 - Covers: AC-4. Persona A. Priority P1. Automation: UI.
 - Steps: generate; note the 21 recipes; swap one slot; compare.
 - Expected: exactly one slot changed, and the new recipe has no `huevo`.

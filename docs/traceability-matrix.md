@@ -8,10 +8,10 @@ Legend. Coverage: Automated means at least one ATC runs the criterion in CI; Man
 
 | AC | Criterion (short) | Test cases | API ATC | UI ATC | Defects found | Coverage |
 |---|---|---|---|---|---|---|
-| AC-1 | No declared allergen in the 21 recipes | TC-01, TC-02, TC-04, TC-05, TC-06, TC-16, TC-18 | `TC-01`, `TC-02`, `TC-04`, `CHK-B2-1` | `UI-TC-01` | BUG-01 (TC-16), BUG-03 (TC-18) | Automated; TC-05, TC-06 and TC-18 are not |
+| AC-1 | No declared allergen in the 21 recipes | TC-01, TC-02, TC-04, TC-05, TC-06, TC-16, TC-18 | `TC-01`, `TC-02`, `TC-04`, `CHK-B2-1` | `UI-TC-01`, `UI-TC-05` | BUG-01 (TC-16), BUG-03 (TC-18) | Automated; TC-06 and TC-18 are not |
 | AC-2 | Every recipe satisfies all active diets | TC-03 | `TC-03`, `CHK-B2-2` | `UI-TC-03` | none | Automated; shopping list content not checked |
 | AC-3 | One slot per day and meal, no repeated comida or cena | TC-06, TC-11 | none | `UI-TC-11` | BUG-04 (TC-11) | Automated for a future week; mid-week menus not tested |
-| AC-4 | Swapping a slot changes only that slot and stays safe | TC-09 | none | none | none | Gap: designed, never executed or automated |
+| AC-4 | Swapping a slot changes only that slot and stays safe | TC-09 | none | `UI-TC-09` | none | Automated for the add-to-menu flow only; what "swap" means is open (PO-1) |
 | AC-5 | Shopping list grouped by aisle, quantities scale with N | TC-07 | none | none | none | Gap: designed, never executed or automated |
 | AC-6 | Household limits: people 1 to 10, adults, children | TC-08 | `TC-08-1`, `TC-08-2` | none | none | Automated; row 4 people, 1 adult, 0 children excluded until the PO answers |
 | AC-7 | Allergen added after generation: pending slots replaced or user warned | TC-10 | none | none | none | Gap: manual, expected behaviour needs PO confirmation |
@@ -29,11 +29,11 @@ Legend. Coverage: Automated means at least one ATC runs the criterion in CI; Man
 | TC-02 | AC-1 | P1 | `TC-02` | none | Automated, 2 weeks per run |
 | TC-03 | AC-2 | P1 | `TC-03` | `UI-TC-03` | Automated, both levels |
 | TC-04 | AC-1 | P1 | `TC-04` | none | Automated |
-| TC-05 | AC-1 | P3 | none | none | Not automated |
+| TC-05 | AC-1 | P3 | none | `UI-TC-05` | Automated |
 | TC-06 | AC-1, AC-3 | P2 | none | none | Manual by design |
 | TC-07 | AC-5 | P2 | none | none | Not automated |
 | TC-08 | AC-6 | P2 | `TC-08-1`, `TC-08-2` | none | Automated |
-| TC-09 | AC-4 | P1 | none | none | Not automated |
+| TC-09 | AC-4 | P1 | none | `UI-TC-09` | Automated, add-to-menu flow |
 | TC-10 | AC-7 | P1 | none | none | Manual by design |
 | TC-11 | AC-3 | P2 | none | `UI-TC-11` | Automated |
 | TC-12 | AC-8 | P2 | none | none | Not automated |
@@ -52,9 +52,9 @@ Legend. Coverage: Automated means at least one ATC runs the criterion in CI; Man
 
 | Gap | Criterion | Reason |
 |---|---|---|
-| No test case executed or automated | AC-4, AC-5 | Designed only; P1 for AC-4 |
+| No test case executed or automated | AC-5 | Designed only |
 | No automated check | AC-7, AC-8, AC-9, AC-11 | AC-7 and AC-9 are manual by design; AC-8 needs a spare account; AC-11 is a candidate defect awaiting the PO |
-| Test cases designed but neither executed by hand nor automated | TC-05, TC-06, TC-07, TC-09, TC-10, TC-12, TC-13 | Status Designed in `docs/test-cases.md` with no ATC |
+| Test cases designed but neither executed by hand nor automated | TC-06, TC-07, TC-10, TC-12, TC-13 | Status Designed in `docs/test-cases.md` with no ATC |
 | Open criteria needing the PO | AC-3, AC-6, AC-7 | Marked NEEDS PO CONFIRMATION in `docs/feature-test-plan.md` |
 
 ## 5. Totals
@@ -62,9 +62,9 @@ Legend. Coverage: Automated means at least one ATC runs the criterion in CI; Man
 | Measure | Value |
 |---|---|
 | Criteria (AC-1 to AC-11 plus Security) | 12 |
-| Criteria with at least one automated check | 6 (AC-1, AC-2, AC-3, AC-6, AC-10, Security) |
-| Criteria with no automated check | 6 (AC-4, AC-5, AC-7, AC-8, AC-9, AC-11) |
+| Criteria with at least one automated check | 7 (AC-1, AC-2, AC-3, AC-4, AC-6, AC-10, Security) |
+| Criteria with no automated check | 5 (AC-5, AC-7, AC-8, AC-9, AC-11) |
 | Criteria with no test case | 0 |
 | Test cases | 18 |
-| Test cases with an automated check | 8 (TC-01, 02, 03, 04, 08, 11, 14, 15) |
+| Test cases with an automated check | 10 (TC-01, 02, 03, 04, 05, 08, 09, 11, 14, 15) |
 | Defects linked to a test case | 4 of 9 (BUG-01, 02, 03, 04) |
