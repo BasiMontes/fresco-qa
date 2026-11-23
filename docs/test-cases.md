@@ -130,13 +130,13 @@ Legend. Priority: P1 must run before release, P2 should run, P3 nice to have. Au
   1. As persona A, generate a menu while only `huevo` is declared.
   2. Add the allergen `pescado` in the profile.
   3. Open the current menu.
-- Expected: pending slots with a fish recipe are replaced or the user is warned. Otherwise report it. Needs PO confirmation (F-03).
+- Expected: pending slots with a fish recipe are replaced or the user is warned. Otherwise report it. The product already takes the conflicting open slots out and leaves them empty with a notice; this is the recommended expected behaviour, pending the PO's confirmation (F-03).
 
 ### TC-11 A normal profile gets 21 slots with no repeated comida or cena
-- Automated check: `UI-TC-11` (UI). Status: Partial; automated for a future week. Defect: BUG-04.
+- Automated check: `UI-TC-11` (UI). Status: Partial; automated for a future week. Defect: none (BUG-04 was by design).
 - Covers: AC-3. Persona C. Priority P2. Automation: UI and database.
 - Steps: generate a menu on a Monday and again on a later day of another week; count slots with a recipe; look for repeated comida or cena among real recipes.
-- Expected: no repeats. On a Monday, 21 slots with a recipe. Mid-week, the days already past are empty, which needs PO confirmation (question 6 of the plan).
+- Expected: no repeats. On a Monday, 21 slots with a recipe. Mid-week, the days already past are empty by design: the PO confirmed that weeks start on Monday.
 - Observed in a local run: a menu created on a Thursday had 12 slots with a recipe and 9 empty (Monday to Wednesday). Two menus for future weeks, made through the API, had all 21 slots filled.
 
 ### TC-12 Deleting the account removes the health data
@@ -165,21 +165,21 @@ Legend. Priority: P1 must run before release, P2 should run, P3 nice to have. Au
 - Expected: the call fails with "caller does not own profile".
 
 ### TC-16 Choosing a vegan diet does not silently add allergens
-- Automated check: none. Status: Executed once, candidate finding. Defect: BUG-01.
+- Automated check: none. Status: Executed once, defect confirmed for `sulfitos`. Defect: BUG-01 (QAFRESCO-29).
 - Covers: AC-1, AC-8. Persona B. Priority P2. Automation: UI and database.
 - Steps: sign up, choose only the diets vegano and sin lactosa and no allergen, tick the consent, finish the onboarding, read the summary and the stored profile.
-- Expected: either no allergen is stored, or the summary shows each one the user did not choose. Needs PO confirmation.
+- Expected: no allergen is stored unless it contradicts the diet (PO, 2026-11-23): `huevo` and `pescado` are accepted for a vegan diet, `sulfitos` is not.
 - Observed in a local run: the stored profile had `pescado`, `sulfitos` and `huevo` that the test did not select, and the diet step showed them as selected. Whether the user sees them in the summary was not checked.
 
 ### TC-17 A menu over the weekly budget shows a warning
-- Automated check: none. Status: Executed once, candidate finding. Defect: BUG-02.
+- Automated check: none. Status: Executed once, defect confirmed. Defect: BUG-02 (QAFRESCO-2).
 - Covers: AC-11. Persona B. Priority P2. Automation: UI and database.
 - Steps: set a weekly budget lower than the estimated cost of a menu, generate it, read the menu screens and the stored warnings.
 - Expected: a warning that the menu exceeds the budget, as the onboarding promises.
 - Observed in a local run: budget 35 EUR, estimated cost 94.95 EUR, no warning displayed and no warning stored. The two cost figures may come from different calculations.
 
 ### TC-18 Recipe photos do not contradict the allergen data
-- Automated check: none. Status: Executed once, candidate finding. Defect: BUG-03.
+- Automated check: none. Status: Executed once, defect filed. Defect: BUG-03 (QAFRESCO-30).
 - Covers: AC-1. Persona A. Priority P3. Automation: manual.
 - Steps: for each recipe in the menu of an allergic persona, compare the photo with the recipe's ingredients and allergens.
 - Expected: no photo shows a declared allergen that the recipe does not list.

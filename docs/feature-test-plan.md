@@ -38,7 +38,7 @@ Out of scope: payments and Pro plan, learning from cooked or discarded recipes, 
 |---|---|---|
 | AC-1 | Given a profile that declares one or more of the 14 EU allergens, when a weekly menu is generated, then none of the 21 recipes carries a declared allergen | FAQ "alergias"; `get_filtered_recipes` |
 | AC-2 | Given one or more active diets (vegetariano, vegano, sin gluten, sin lactosa, sin huevo, keto, halal), when a menu is generated, then every recipe satisfies all active diets | FAQ "veganos o celíacos"; `get_filtered_recipes` |
-| AC-3 | Given any valid profile, when a menu is generated, then it has one slot per day and meal type and no comida or cena repeats within the week. Observed: a menu generated on a Thursday had a recipe only from Thursday to Sunday (12 of 21 slots), while a menu for a future week had all 21. **NEEDS PO CONFIRMATION** whether the promise of 21 dishes applies on every day | Landing page; observed in data and in a local run |
+| AC-3 | Given any valid profile, when a menu is generated, then it has one slot per day and meal type and no comida or cena repeats within the week. Observed: a menu generated on a Thursday had a recipe only from Thursday to Sunday (12 of 21 slots), while a menu for a future week had all 21. Confirmed by the PO on 2026-11-23: a menu created mid-week leaves the past days empty by design, weeks start on Monday, and the no-repeat rule applies to comida and cena only (breakfast repeating is normal) | Landing page; observed in data and in a local run |
 | AC-4 | Given a generated menu, when the user swaps one recipe, then only that slot changes and the new recipe still satisfies AC-1 and AC-2 | FAQ "cambiar recetas"; Free plan |
 | AC-5 | Given a household of N people, when the shopping list is built, then it is grouped by aisle and quantities scale with N | Landing page; FAQ "familias numerosas" |
 | AC-6 | Given a household, then people is 1 to 10, adults is at least 1 and at most the number of people, children is 0 to 10. **NEEDS PO CONFIRMATION** whether adults plus children must equal the number of people | Database constraints |
@@ -99,3 +99,16 @@ Exit: every priority 1 case executed; every candidate finding reproduced or disc
 4. The Story claims 21 distinct dishes. Does the no-repeat rule apply to desayuno as well, or only to comida and cena (AC-3)?
 5. `altramuces` can be declared but no recipe is tagged with it. Is that intended?
 6. A menu generated mid-week leaves the days already past empty. Is that intended, given the promise of 21 dishes from Monday to Sunday (AC-3)?
+
+### PO answers of 2026-11-23
+
+| Question | Answer | Effect on the tests |
+|---|---|---|
+| 1. Adults plus children equal the number of people (AC-6)? | "An adult eats more than a child". This does not say whether the sum must match; still open. It is used as the rule for the shopping-list scaling (TC-07): adults weigh more than children | TC-08 row 4 people, 1 adult, 0 children stays excluded; TC-07 gets its oracle once the weights are known |
+| 2. Pending slots when an allergen is added (AC-7)? | Not clear to the PO; asked QA for a recommendation | The product already takes the conflicting open slots out and leaves them empty with a notice (`retire_conflicting_slots`, FRESCO-1151 and FRESCO-1157). Recommended expected behaviour for TC-10, pending the PO's confirmation |
+| 3. Vegan diet selects huevo, pescado and sulfitos? | An implied allergen is fine when it contradicts the diet; otherwise it must be corrected. "This must be fixed" | `huevo` and `pescado` accepted; `sulfitos` is a defect (BUG-01, QAFRESCO-29) |
+| 4. Does the no-repeat rule cover breakfast (AC-3)? | Only comida and cena; people usually eat almost the same breakfast | AC-3 and UI-TC-11 already check comida and cena only |
+| 5. `altramuces` is declarable but no recipe carries it? | "We fix this" | BUG-10, QAFRESCO-32 |
+| 6. Mid-week menu leaves past days empty (AC-3)? | Intended: weeks start on Monday and from the next Monday there are no gaps | BUG-04 is not a defect |
+
+AC-4 (what "swap one recipe" means) is still to be defined.

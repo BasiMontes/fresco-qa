@@ -66,19 +66,20 @@ This project measures test-case coverage, not code coverage; no code-coverage pe
 
 ### Bugs found
 
-Every entry is a candidate until the PO confirms it (`docs/bugs-found.md`).
+The product owner decided on the candidates on 2026-11-23 (`docs/bugs-found.md`).
 
 | ID | Title | Severity | Status | Jira |
 |---|---|---|---|---|
-| BUG-01 | Vegan diet silently stores allergens the user did not choose | Major | Candidate, not filed | none |
-| BUG-02 | Menu over the weekly budget shows no warning | Major | Candidate, not confirmed with the PO | QAFRESCO-2 |
-| BUG-03 | Recipe photo shows egg on a recipe without egg | Minor | Candidate, not filed | none |
-| BUG-04 | Menu generated mid-week leaves the past days empty | Minor | Candidate, not confirmed with the PO | related to QAFRESCO-5 |
-| BUG-05 | Inactive recipes are readable without a session | Question | Candidate, not filed | none |
+| BUG-01 | Vegan and vegetarian diets store the allergen sulfitos the user did not choose | Medium | Confirmed by the PO | QAFRESCO-29 |
+| BUG-02 | Menu over the weekly budget shows no warning | Major | Confirmed by the PO; fix pending in the product | QAFRESCO-2 |
+| BUG-03 | Recipe photo shows egg on a recipe without egg | Minor | Filed; images being redone | QAFRESCO-30 |
+| BUG-04 | Menu generated mid-week leaves the past days empty | n/a | Not a defect: by design (weeks start on Monday) | QAFRESCO-5 covers only the label |
+| BUG-05 | Inactive recipes are readable without a session | Question | Filed; the PO needs more information | QAFRESCO-31 |
 | BUG-06 | Active catalogue holds recipes with a repeated name | Minor | Reported in Jira as QAFRESCO-3 | QAFRESCO-3 |
 | BUG-07 | Onboarding summary does not reflect the meals chosen per day | Minor | Reported in Jira as QAFRESCO-4 | QAFRESCO-4 |
 | BUG-08 | Vegan recipes are tagged only "Vegetariano" for a vegan profile | Minor | Reported in Jira as QAFRESCO-6 | QAFRESCO-6 |
 | BUG-09 | Reconcile cron may downgrade Pro plans granted without a subscription | Medium (per the Jira impact note, unexecuted) | Reported in Jira as QAFRESCO-7 | QAFRESCO-7 |
+| BUG-10 | No recipe carries the altramuces tag, so declaring lupin excludes nothing | Medium | Confirmed by the PO | QAFRESCO-32 |
 
 ## Learnings
 
