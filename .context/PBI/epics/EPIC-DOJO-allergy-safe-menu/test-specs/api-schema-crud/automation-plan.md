@@ -52,4 +52,4 @@ TC source gate: not applicable. Test cases live in `docs/test-cases.md`, not in 
 
 - [x] Types, lint and `kata:manifest:check` clean; all new tests pass locally.
 - [x] Mutation check: a wrong schema type makes `CHK-S1` fail and names the field.
-- [ ] Pass in CI on a fresh database.
+- [x] Pass in CI on a fresh database: run 45158678926, 64 of 64.

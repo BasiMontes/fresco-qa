@@ -141,8 +141,10 @@ UI suite: 4 reviewers reported no blocker. Fixes applied afterwards: `revealDay`
 | CI workflow, after the fix | Passed, 43 of 43, 0 skipped, about 6 minutes. The test now creates and deletes the victim menu itself | GitHub Actions run 45048787494, commit `2fcdde1` |
 | CI workflow, with TC-04 | Passed, 49 of 49 entries (3 setup and teardown steps and 46 tests: 42 API and 4 UI), 0 skipped. The six TC-04 rows passed on a fresh database on their first run | GitHub Actions run 45060103577, commit `e1763be` |
 | CI workflow, with UI-TC-05 and UI-TC-09 | Passed, 51 of 51 entries (3 setup and teardown steps and 48 tests: 42 API and 6 UI), 0 skipped, 0 not run. Both new tests passed on a fresh database on their first run | GitHub Actions run 45152503321, commit `148c565` |
+| CI workflow, first run with the schema and CRUD ATCs | Failed, 62 of 63. `CHK-D2` received 429 because `CHK-E8` added a sixth menu request for `familia` in the same hour; in CI a spent quota is a failure, not NOT RUN | GitHub Actions run 45157377686, commit `6b87836` |
+| CI workflow, with the schema and CRUD ATCs | Passed, 64 of 64 entries (3 setup and teardown steps and 61 tests: 55 API and 6 UI), 0 skipped, 0 not run. `CHK-E8` moved to `vegano` | GitHub Actions run 45158678926, commit `1bf0700` |
 
-State of the suite: 51 of 51 passing in CI on a fresh database at commit `148c565`. That workflow runs the `integration` and `e2e` projects only. `smoke-ui` (one `@critical` test, UI-TC-14) was verified locally on 22 Nov and no workflow runs it on its own, and repeated runs inside the same UTC hour are not covered. The inherited `smoke.yml` and `regression.yml` only run on manual dispatch, because their daily schedule failed against staging.
+State of the suite: 64 of 64 passing in CI on a fresh database at commit `1bf0700`. That workflow runs the `integration` and `e2e` projects only. `smoke-ui` (one `@critical` test, UI-TC-14) was verified locally on 22 Nov and no workflow runs it on its own, and repeated runs inside the same UTC hour are not covered. The inherited `smoke.yml` and `regression.yml` only run on manual dispatch, because their daily schedule failed against staging.
 
 ## 6. Flakiness and quota risks
 
