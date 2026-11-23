@@ -114,12 +114,6 @@ export default defineConfig({
     // Auth Setup Projects - Run after global-setup
     // ============================================
     {
-      name: 'ui-setup',
-      testMatch: /ui-auth\.setup\.ts/,
-      testDir: './tests/setup',
-      dependencies: ['global-setup'],
-    },
-    {
       name: 'api-setup',
       testMatch: /api-auth\.setup\.ts/,
       testDir: './tests/setup',
