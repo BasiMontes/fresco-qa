@@ -8,9 +8,9 @@ Evaluation of the test automation built for the Fresco menu feature: what was au
 |---|---|
 | Framework | KATA on Playwright and TypeScript, run with Bun (`package.json`) |
 | Target | Local copy of the product (local Supabase, edge functions, web app). Staging is excluded because its login and auth API require a captcha (`docs/bitacora.md`) |
-| API suite | 7 files in `tests/integration/menu-safety/`, 21 new ATC ids (`kata-manifest.json`) |
+| API suite | 11 files in `tests/integration/menu-safety/`, 31 new ATC ids (`kata-manifest.json`) |
 | UI suite | 4 files in `tests/e2e/menu-safety/`, 6 new ATC ids (`kata-manifest.json`) |
-| ATCs in the manifest | 35 in total: 21 API (`TC-*`, `CHK-*`), 6 UI (`UI-TC-*`), 8 from the boilerplate samples (`PROJ-*`) (`kata-manifest.json`, `summary.totalATCs` = 35) |
+| ATCs in the manifest | 45 in total: 31 API (`TC-*`, `CHK-*`), 6 UI (`UI-TC-*`), 8 from the boilerplate samples (`PROJ-*`) (`kata-manifest.json`, `summary.totalATCs` = 45) |
 | Pipeline | `.github/workflows/tests.yml`, passing on a GitHub runner on a fresh database (see section 5) |
 | Jira | Not used for tests. Owner decision, see section 7 |
 
@@ -49,14 +49,18 @@ Acceptance criteria with at least one automated check: AC-1, AC-2, AC-3, AC-4 (a
 
 ### 2.2 Extra API checks without a TC
 
-14 ATC ids use the prefix `CHK-` because they come from the API session report, not from a TC (`api-menu-safety/automation-plan.md` section 2.1). They cover:
+24 ATC ids use the prefix `CHK-` because they come from the API session report or from the response-schema and CRUD assessment, not from a TC (`api-menu-safety/automation-plan.md` section 2.1). They cover:
 
 - Cross-user isolation of profiles, menus and consents (`CHK-A1`, `CHK-A2`, `CHK-A5`).
 - Anonymous access to four private tables, the filter RPC and two edge functions (`CHK-U1-1`, `CHK-U1-2`, `CHK-U1-3`).
 - Tampered tokens on REST and on an edge function (`CHK-C1-1`, `CHK-C1-2`).
 - Validation of the generate request and a duplicate week (`CHK-D1`, `CHK-D2`, `CHK-D3`).
 - Filter RPC output against the stored allergens and diets (`CHK-B2-1`, `CHK-B2-2`).
-- Positive controls so denials cannot pass vacuously (`CHK-A1`, `CHK-B2-1`, `CHK-B2-2`, `CHK-U4`).
+- Positive controls so denials cannot pass vacuously (`CHK-A1`, `CHK-B2-1`, `CHK-B2-2`, `CHK-U4`, `CHK-E1`, `CHK-E4`).
+- Response schema of the profile row and the catalogue row, checked at run time with zod (`CHK-S1`, `CHK-S2`). The menu steps validate every plan and slot row they read, so each menu test checks the schema too. The product ships no OpenAPI file, so the schemas are written by hand next to the types in `api/schemas/` and each one `satisfies` its type.
+- Catalogue reads at the edges: unknown id, malformed id, unknown column and a range beyond the catalogue (`CHK-E1` to `CHK-E4`).
+- Invalid profile writes and a duplicate insert, each leaving the profile unchanged (`CHK-E5` with three rows, `CHK-E6`).
+- Deleting menus: an unknown plan deletes nothing and the owner's own menu disappears with its slots (`CHK-E7`, `CHK-E8`). Plan: `test-specs/api-schema-crud/automation-plan.md`.
 
 ### 2.3 Why these cases
 

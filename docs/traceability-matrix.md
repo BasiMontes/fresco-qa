@@ -46,7 +46,7 @@ Legend. Coverage: Automated means at least one ATC runs the criterion in CI; Man
 
 ## 3. Checks without a test case
 
-14 ATCs use the prefix `CHK-` because they come from the API session report, not from a test case. They back the Security row and the AC-1 and AC-2 filter checks above. `CHK-D1`, `CHK-D2`, `CHK-D3` (menu generation input validation and duplicate week) and `CHK-U4` (catalogue read without a session) map to no acceptance criterion; they are extra checks, not coverage of a criterion.
+24 ATCs use the prefix `CHK-` because they come from the API session report or from the response-schema and CRUD assessment, not from a test case. They back the Security row and the AC-1 and AC-2 filter checks above. `CHK-D1`, `CHK-D2`, `CHK-D3` (menu generation input validation and duplicate week) `CHK-U4` (catalogue read without a session), `CHK-S1` and `CHK-S2` (response schemas) and `CHK-E1` to `CHK-E8` (catalogue edge cases, invalid profile writes and menu deletion) map to no acceptance criterion; they are extra checks, not coverage of a criterion.
 
 ## 4. Gaps
 
