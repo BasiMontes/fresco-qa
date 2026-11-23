@@ -32,7 +32,7 @@ The "28 ATCs" figure in `docs/bitacora.md` and in the API progress log was the m
 | TC-06 | Very restrictive profile | AC-1, AC-3 | none | none | Manual by design (exploratory) |
 | TC-07 | Shopping list scales | AC-5 | none | none | Not automated. The exact scaling rule is not documented |
 | TC-08 | Household limits | AC-6 | `TC-08-1`, `TC-08-2` | none | Automated; row 4/1/0 excluded until the PO answers question 1 |
-| TC-09 | Swap one slot | AC-4 | none | `UI-TC-09` | Automated for the add-to-menu flow only: one slot changes, it stays egg-free. What "swap" means for AC-4 is still open (PO-1) |
+| TC-09 | Swap one slot | AC-4 | none | `UI-TC-09` | Automated: one slot changes and stays egg-free. AC-4 is defined as the "Añadir al menú" flow (PO decision); dragging two slots and substituting an ingredient are separate flows and are not covered |
 | TC-10 | Allergen added after generation | AC-7 | none | none | Manual: the expected behaviour needs PO confirmation |
 | TC-11 | 21 slots, no repeated comida or cena | AC-3 | none | `UI-TC-11` | Automated at UI level. Mid-week partial menus are not tested; the test uses a future week |
 | TC-12 | Account deletion removes health data | AC-8 | none | none | Not automated; needs a spare account and `delete-account` is never called by the suite |
@@ -45,7 +45,7 @@ The "28 ATCs" figure in `docs/bitacora.md` and in the API progress log was the m
 
 Totals from the table: 10 of 18 TCs have an automated ATC (TC-01, 02, 03, 04, 05, 08, 09, 11, 14, 15). 8 of 18 are not automated; 4 of those are manual by design (TC-06, 10, 13, 18).
 
-Acceptance criteria with at least one automated check: AC-1, AC-2, AC-3, AC-4 (add-to-menu flow only), AC-6, AC-10 and the security criterion. No automated check covers AC-5, AC-7, AC-8, AC-9 or AC-11 (`docs/feature-test-plan.md`).
+Acceptance criteria with at least one automated check: AC-1, AC-2, AC-3, AC-4, AC-6, AC-10 and the security criterion. No automated check covers AC-5, AC-7, AC-8, AC-9 or AC-11 (`docs/feature-test-plan.md`).
 
 ### 2.2 Extra API checks without a TC
 
@@ -222,6 +222,6 @@ Cheapest next gains: the controls and safety checks that need no quota. Costlies
 
 1. Remove or exclude the boilerplate sample tests so module path filters are no longer needed (proposed `/framework-development` chore in `api-menu-safety/automation-plan.md` section 2.1).
 2. Get PO answers to the open questions (`docs/feature-test-plan.md` section 9), then automate TC-10, TC-16 and TC-17, and the 4/1/0 household row.
-3. Extend TC-09, which covers AC-4 for the add-to-menu flow only, once the product owner defines what AC-4 means: the product has no "regenerate one slot" feature although its FAQ promises it.
+3. Add the negative sibling of TC-09 (an egg recipe assigned through the RPC must be refused) and decide with the product owner whether the drag swap needs a case. The FAQ promise of regenerating one slot is BUG-11 (QAFRESCO-33).
 7. Decide whether the `CHK-*` ids become test cases in `docs/test-cases.md` (question Q2 of the API plan).
 8. If Jira sync is ever enabled, rename the ids to tracker keys first.

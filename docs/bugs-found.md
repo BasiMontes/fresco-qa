@@ -2,7 +2,7 @@
 
 Defects found while testing the Fresco allergy-safe weekly menu. Sources are the session reports in `docs/session-reports/` and the cases in `docs/test-cases.md`.
 
-**The product owner decided on 2026-11-23; each entry records the decision in its status.** BUG-04 is not a defect; BUG-01, BUG-02 and BUG-10 are confirmed; BUG-03 and BUG-05 are filed at the owner's request; BUG-06 to BUG-09 come from Jira and are not confirmed. No Story or specification exists, so the acceptance criteria (AC) were derived by QA in `docs/feature-test-plan.md`. Six defects were filed in the QAFRESCO Jira project (QAFRESCO-2 to QAFRESCO-7, type "Error", under the epic QAFRESCO-1, created on 2026-11-19, all with status "Tareas por hacer" and priority Medium). They map to this document as follows: QAFRESCO-2 is BUG-02; QAFRESCO-5 is related to BUG-04 but not identical; QAFRESCO-3, 4, 6 and 7 are BUG-06 to BUG-09. BUG-01, BUG-03 and BUG-05 were filed on 2026-11-23 as QAFRESCO-29, QAFRESCO-30 and QAFRESCO-31, and a new defect, BUG-10, as QAFRESCO-32. BUG-01 to BUG-05 were observed in one run on a local copy of the product (staging cannot be driven past the captcha, see `docs/session-reports/ui-session.md` section 1), so none has been reproduced a second time. BUG-06 to BUG-09 are transcribed from the Jira descriptions and carry the evidence listed in each entry.
+**The product owner decided on 2026-11-23; each entry records the decision in its status.** BUG-04 is not a defect; BUG-01, BUG-02 and BUG-10 are confirmed; BUG-03 and BUG-05 are filed at the owner's request; BUG-06 to BUG-09 come from Jira and are not confirmed. No Story or specification exists, so the acceptance criteria (AC) were derived by QA in `docs/feature-test-plan.md`. Six defects were filed in the QAFRESCO Jira project (QAFRESCO-2 to QAFRESCO-7, type "Error", under the epic QAFRESCO-1, created on 2026-11-19, all with status "Tareas por hacer" and priority Medium). They map to this document as follows: QAFRESCO-2 is BUG-02; QAFRESCO-5 is related to BUG-04 but not identical; QAFRESCO-3, 4, 6 and 7 are BUG-06 to BUG-09. BUG-01, BUG-03 and BUG-05 were filed on 2026-11-23 as QAFRESCO-29, QAFRESCO-30 and QAFRESCO-31, and two new defects: BUG-10 as QAFRESCO-32 and BUG-11 as QAFRESCO-33. BUG-01 to BUG-05 were observed in one run on a local copy of the product (staging cannot be driven past the captcha, see `docs/session-reports/ui-session.md` section 1), so none has been reproduced a second time. BUG-06 to BUG-09 are transcribed from the Jira descriptions and carry the evidence listed in each entry.
 
 Severity scale: Major (wrong behaviour on health or money data), Minor (wrong but low impact), Question (behaviour that may be intended). Priority: P1 fix before release, P2 should fix, P3 nice to fix.
 
@@ -231,6 +231,26 @@ Expected: the recipes that contain lupin carry the tag, so the filter excludes t
 
 Actual: the profile is saved and the menu generates, but 0 active recipes carry the tag, so the filter has nothing to exclude.
 
+## BUG-11 The FAQ promises regenerating a single slot and the product does not offer it
+
+| Field | Value |
+|---|---|
+| Severity / Priority | Minor / P3. No food-safety effect; a public promise that the product does not keep |
+| Area | UI copy, landing |
+| Linked case / AC | TC-09 / AC-4 |
+| Jira key | QAFRESCO-33 (filed 2026-11-23) |
+| Status | Filed with the PO's decision on AC-4 (option A); whether the text is corrected or the feature is built is still open |
+| Evidence | `components/landing/faq-data.ts` line 23 ("regenerar solo ese slot"); `rg` for regenera and reroll finds only copy; the real flows are analysed in `.context/PBI/epics/EPIC-DOJO-allergy-safe-menu/test-specs/menu-safety-p1-gaps/spec.md` section 2 |
+| Automated coverage | `UI-TC-09` covers the flow that exists ("Añadir al menú") |
+
+Steps:
+1. Read the FAQ answer to "¿Puedo cambiar recetas del menú?".
+2. Look in the product for a way to regenerate one slot with a new recipe chosen by the system.
+
+Expected: the product does what the FAQ says, or the FAQ says what the product does.
+
+Actual: the product replaces a slot with the recipe the user picks ("Añadir al menú"), swaps two slots by dragging and substitutes ingredients, but never regenerates a slot.
+
 ## Summary
 
 | ID | Title | Severity | Priority | Area | Case | Jira | Evidence level | Automated |
@@ -245,6 +265,7 @@ Actual: the profile is saved and the menu generates, but 0 active recipes carry 
 | BUG-08 | Vegan recipes tagged only Vegetariano | Minor | Jira Medium | UI | TC-03 | QAFRESCO-6 | UI session U-06 with screenshot, plus Jira | No |
 | BUG-09 | Cron may downgrade Pro grants without a subscription | Medium | Jira Medium | Billing, cron | none | QAFRESCO-7 | Jira issue only (code reading, not run) | No |
 | BUG-10 | No recipe carries the altramuces tag | Medium | P2 | DB | TC-05 | QAFRESCO-32 (confirmed) | Read-only query, 0 recipes | No |
+| BUG-11 | FAQ promises regenerating one slot; the product does not offer it | Minor | P3 | UI copy | TC-09 | QAFRESCO-33 | `rg` on the product code, FAQ text | Flow that exists: `UI-TC-09` |
 
 ## Dropped after verification
 

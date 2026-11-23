@@ -39,7 +39,7 @@ Out of scope: payments and Pro plan, learning from cooked or discarded recipes, 
 | AC-1 | Given a profile that declares one or more of the 14 EU allergens, when a weekly menu is generated, then none of the 21 recipes carries a declared allergen | FAQ "alergias"; `get_filtered_recipes` |
 | AC-2 | Given one or more active diets (vegetariano, vegano, sin gluten, sin lactosa, sin huevo, keto, halal), when a menu is generated, then every recipe satisfies all active diets | FAQ "veganos o celíacos"; `get_filtered_recipes` |
 | AC-3 | Given any valid profile, when a menu is generated, then it has one slot per day and meal type and no comida or cena repeats within the week. Observed: a menu generated on a Thursday had a recipe only from Thursday to Sunday (12 of 21 slots), while a menu for a future week had all 21. Confirmed by the PO on 2026-11-23: a menu created mid-week leaves the past days empty by design, weeks start on Monday, and the no-repeat rule applies to comida and cena only (breakfast repeating is normal) | Landing page; observed in data and in a local run |
-| AC-4 | Given a generated menu, when the user swaps one recipe, then only that slot changes and the new recipe still satisfies AC-1 and AC-2 | FAQ "cambiar recetas"; Free plan |
+| AC-4 | Given a generated menu for the current week, when the user replaces one recipe with "Añadir al menú" from the recipe library, then only that slot changes and the new recipe still satisfies AC-1 and AC-2 | Defined by the PO (option A); FAQ "cambiar recetas", whose promise of regenerating one slot is BUG-11; Free plan |
 | AC-5 | Given a household of N people, when the shopping list is built, then it is grouped by aisle and quantities scale with N | Landing page; FAQ "familias numerosas" |
 | AC-6 | Given a household, then people is 1 to 10, adults is at least 1 and at most the number of people, children is 0 to 10. **NEEDS PO CONFIRMATION** whether adults plus children must equal the number of people | Database constraints |
 | AC-7 | Given a menu with pending slots, when the user adds an allergen to the profile, then pending slots containing it are replaced or the user is warned. **NEEDS PO CONFIRMATION** | Inferred from database observation |
@@ -111,4 +111,4 @@ Exit: every priority 1 case executed; every candidate finding reproduced or disc
 | 5. `altramuces` is declarable but no recipe carries it? | "We fix this" | BUG-10, QAFRESCO-32 |
 | 6. Mid-week menu leaves past days empty (AC-3)? | Intended: weeks start on Monday and from the next Monday there are no gaps | BUG-04 is not a defect |
 
-AC-4 (what "swap one recipe" means) is still to be defined.
+AC-4 is decided (option A): "swap one recipe" is the "Añadir al menú" flow, where the user picks the recipe that replaces the slot. The FAQ sentence about regenerating only that slot is registered as BUG-11 (QAFRESCO-33). Dragging two slots over each other and substituting an ingredient are separate flows and are not part of AC-4.

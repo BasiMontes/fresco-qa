@@ -80,6 +80,7 @@ The product owner decided on the candidates on 2026-11-23 (`docs/bugs-found.md`)
 | BUG-08 | Vegan recipes are tagged only "Vegetariano" for a vegan profile | Minor | Reported in Jira as QAFRESCO-6 | QAFRESCO-6 |
 | BUG-09 | Reconcile cron may downgrade Pro plans granted without a subscription | Medium (per the Jira impact note, unexecuted) | Reported in Jira as QAFRESCO-7 | QAFRESCO-7 |
 | BUG-10 | No recipe carries the altramuces tag, so declaring lupin excludes nothing | Medium | Confirmed by the PO | QAFRESCO-32 |
+| BUG-11 | The FAQ promises regenerating one slot and the product does not offer it | Minor | Filed with the decision on AC-4 | QAFRESCO-33 |
 
 ## Learnings
 

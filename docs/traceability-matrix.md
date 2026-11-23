@@ -11,7 +11,7 @@ Legend. Coverage: Automated means at least one ATC runs the criterion in CI; Man
 | AC-1 | No declared allergen in the 21 recipes | TC-01, TC-02, TC-04, TC-05, TC-06, TC-16, TC-18 | `TC-01`, `TC-02`, `TC-04`, `CHK-B2-1` | `UI-TC-01`, `UI-TC-05` | BUG-01 (TC-16), BUG-03 (TC-18), BUG-10 (TC-05) | Automated; TC-06 and TC-18 are not |
 | AC-2 | Every recipe satisfies all active diets | TC-03 | `TC-03`, `CHK-B2-2` | `UI-TC-03` | none | Automated; shopping list content not checked |
 | AC-3 | One slot per day and meal, no repeated comida or cena | TC-06, TC-11 | none | `UI-TC-11` | none (BUG-04 was by design) | Automated for a future week; the PO confirmed that a mid-week menu leaves the past days empty |
-| AC-4 | Swapping a slot changes only that slot and stays safe | TC-09 | none | `UI-TC-09` | none | Automated for the add-to-menu flow only; what "swap" means is open (PO-1) |
+| AC-4 | Swapping a slot changes only that slot and stays safe | TC-09 | none | `UI-TC-09` | BUG-11 (FAQ promise) | Automated: AC-4 is the "Añadir al menú" flow (PO decision) |
 | AC-5 | Shopping list grouped by aisle, quantities scale with N | TC-07 | none | none | none | Gap: designed, never executed or automated |
 | AC-6 | Household limits: people 1 to 10, adults, children | TC-08 | `TC-08-1`, `TC-08-2` | none | none | Automated; row 4 people, 1 adult, 0 children excluded until the PO answers |
 | AC-7 | Allergen added after generation: pending slots replaced or user warned | TC-10 | none | none | none | Gap: manual, expected behaviour needs PO confirmation |
@@ -67,4 +67,4 @@ Legend. Coverage: Automated means at least one ATC runs the criterion in CI; Man
 | Criteria with no test case | 0 |
 | Test cases | 18 |
 | Test cases with an automated check | 10 (TC-01, 02, 03, 04, 05, 08, 09, 11, 14, 15) |
-| Defects linked to a test case | 4 of 9 (BUG-01, 02, 03, 10); BUG-04 is not a defect |
+| Defects linked to a test case | 5 of 10 (BUG-01, 02, 03, 10, 11); BUG-04 is not a defect |

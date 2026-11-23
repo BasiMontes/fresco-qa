@@ -35,7 +35,7 @@ Bodies live in `docs/test-cases.md`; they are not restated here.
 | Drag to reorder | Calendar handle `Arrastrar para reordenar` (`components/calendar/slot-drag-handle.tsx` line 26) | RPC `swap_meal_plan_slots` exchanges `recipe_id`, `estado`, `rating`, `sustitucion_ingrediente` of two slots of the same `tipo_plato` (`20261111150000_swap_carries_substitution.sql` lines 62 to 90) | exactly two, no new recipe enters the menu | No: "only that slot changes" is false by design and the allergen question cannot arise. Deferred |
 | Ingredient substitution | `Sustituir` in a recipe opened from a slot (`components/recipes/ingredient-list.tsx` line 115) | `confirm_ingredient_substitution` | zero recipes change | No. Out of scope |
 
-Product-owner question PO-1: which flow does AC-4 ("swap one recipe") mean, and is the FAQ sentence about regenerating one slot a promise the product does not keep? Until answered, `UI-TC-09` covers the add-to-menu flow only and a possible candidate finding is recorded, not filed.
+Product-owner question PO-1: resolved by the PO (option A). AC-4 means the "Añadir al menú" flow, which `UI-TC-09` covers in full. The FAQ sentence about regenerating one slot is a promise the product does not keep and is registered as BUG-11 (QAFRESCO-33).
 
 ## 3. Deviations from the TC text (need owner OK)
 
