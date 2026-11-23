@@ -18,6 +18,7 @@ export interface MenuRecipeRow {
   recipe_id: string | null
   dia: string | number
   tipo_plato: string
+  estado: string | null
   recipes: Pick<Recipe, 'nombre' | 'alergenos' | 'dieta'> | null
 }
 
@@ -28,6 +29,12 @@ export interface GeneratedMenu {
 
 export interface MenuRequestError {
   error?: string
+}
+
+export interface RetiredSlotsArgs {
+  week: GenerateMealPlanPayload
+  allergen: string
+  before: GeneratedMenu
 }
 
 export interface DirectInsertArgs {
@@ -75,7 +82,7 @@ export class MealPlansApi extends ApiBase {
   async getMealPlanRecipes(planId: string): Promise<[APIResponse, MenuRecipeRow[]]> {
     const [response, body] = await this.apiGET<MenuRecipeRow[]>(
       '/rest/v1/meal_plan_recipes',
-      { params: { select: 'id,recipe_id,dia,tipo_plato,recipes(nombre,alergenos,dieta)', meal_plan_id: `eq.${planId}` } },
+      { params: { select: 'id,recipe_id,dia,tipo_plato,estado,recipes(nombre,alergenos,dieta)', meal_plan_id: `eq.${planId}` } },
     );
     expect(response.status()).toBe(200);
     expectMatchesSchema(menuRecipeRowsSchema, body, `slots of plan ${planId}`);
@@ -250,6 +257,54 @@ export class MealPlansApi extends ApiBase {
     expect(String(body.error)).toMatch(/no son v/i);
 
     return [response, body, sent];
+  }
+
+  allergenToAddAfterGeneration(menu: GeneratedMenu, declared: string[]): string {
+    const slotsByAllergen = new Map<string, number>();
+    for (const row of menu.rows) {
+      for (const allergen of row.recipes?.alergenos ?? []) {
+        if (!declared.includes(allergen)) {
+          slotsByAllergen.set(allergen, (slotsByAllergen.get(allergen) ?? 0) + 1);
+        }
+      }
+    }
+    const [candidate] = [...slotsByAllergen.entries()].sort((a, b) => a[1] - b[1] || a[0].localeCompare(b[0]));
+    expect(candidate, 'an allergen carried by at least one slot of the menu and not declared yet').toBeDefined();
+    return candidate[0];
+  }
+
+  @atc('TC-10')
+  async addAllergenAfterGenerationRetiresConflictingSlots({ week, allergen, before }: RetiredSlotsArgs): Promise<GeneratedMenu> {
+    const carrying = before.rows.filter(row => row.recipes?.alergenos.includes(allergen));
+    expect(carrying.length, `positive control: slots of ${week.semana_iso} carrying ${allergen} before the change`).toBeGreaterThan(0);
+
+    const after = await this.readMenu(week);
+    expect(after.rows, `slots of ${week.semana_iso} after the change`).toHaveLength(EXPECTED_SLOTS);
+    const afterById = new Map(after.rows.map(row => [row.id, row]));
+
+    for (const row of carrying) {
+      const now = afterById.get(row.id);
+      expect(now?.recipe_id, `recipe of the slot ${row.id} that carried ${allergen}`).toBeNull();
+      expect(now?.estado, `state of the slot ${row.id} that carried ${allergen}`).toBe('pendiente');
+    }
+    const kept = before.rows.filter(row => !carrying.includes(row));
+    expect(
+      kept.map(row => afterById.get(row.id)?.recipe_id ?? null),
+      `recipes of the slots that do not carry ${allergen}`,
+    ).toEqual(kept.map(row => row.recipe_id));
+    expect(
+      after.rows.filter(row => row.recipes?.alergenos.includes(allergen)).map(row => row.recipes?.nombre),
+      `slots still carrying ${allergen}`,
+    ).toEqual([]);
+
+    const [, plans] = await this.listOwnMealPlans();
+    const notices = (plans.find(plan => plan.id === after.planId)?.advertencias ?? []).filter(notice => notice.startsWith('Hemos quitado de tu menú'));
+    const expected = carrying.length === 1
+      ? 'Hemos quitado de tu menú un plato que ya no encaja con tu perfil. Actualiza la lista de la compra y rellena el hueco con otra receta.'
+      : `Hemos quitado de tu menú ${carrying.length} platos que ya no encajan con tu perfil. Actualiza la lista de la compra y rellena los huecos con otras recetas.`;
+    expect(notices, `notice of the plan ${after.planId}`).toEqual([expected]);
+
+    return after;
   }
 
   @atc('CHK-E9')

@@ -1,7 +1,9 @@
+import { toDietaryPreferences } from '@schemas/profiles.types';
 import { expect, test } from '@TestFixture';
 import { runUnlessRateLimited } from '@utils/quota';
+import { withDietaryPreferencesRestored } from '@utils/restoreProfile';
 
-test.describe('TC-01 TC-02 TC-03 CHK-D3: Generated menus respect the stored profile', () => {
+test.describe('TC-01 TC-02 TC-03 TC-10 CHK-D3: Generated menus respect the stored profile', () => {
   test.afterEach(async ({ api }) => {
     const leftovers = await api.mealPlans.cleanupMenus(api.mealPlans.createdPlanIds());
     expect(leftovers, 'menus created by this test that could not be deleted').toEqual([]);
@@ -22,6 +24,15 @@ test.describe('TC-01 TC-02 TC-03 CHK-D3: Generated menus respect the stored prof
 
       await test.step(`CHK-D3: reject a second request for ${firstWeek.semana_iso}`, async () => {
         await runUnlessRateLimited(async () => api.mealPlans.generateMenuForExistingWeekReturnsConflict(firstWeek));
+      });
+
+      await test.step(`TC-10: add an allergen after ${firstWeek.semana_iso} was generated`, async () => {
+        const before = await api.mealPlans.readMenuForWeek(firstWeek);
+        const allergen = api.mealPlans.allergenToAddAfterGeneration(before, profile.alergenos);
+        await withDietaryPreferencesRestored(api.profiles, async () => {
+          await api.profiles.setDietaryPreferences({ ...toDietaryPreferences(profile), alergenos: [...profile.alergenos, allergen] });
+          await api.mealPlans.addAllergenAfterGenerationRetiresConflictingSlots({ week: firstWeek, allergen, before });
+        });
       });
 
       const secondWeek = await api.mealPlans.findFreeWeek();

@@ -1,6 +1,6 @@
 {
   "version": "1.0",
-  "generatedAt": "2026-11-23T10:42:01.450Z",
+  "generatedAt": "2026-11-23T12:41:48.353Z",
   "components": {
     "api": [
       {
@@ -82,47 +82,52 @@
           {
             "id": "CHK-D1",
             "method": "generateMenuWithMissingFields",
-            "line": 231
+            "line": 238
           },
           {
             "id": "CHK-D2",
             "method": "generateMenuWithInvalidWeek",
-            "line": 243
+            "line": 250
           },
           {
             "id": "CHK-D3",
             "method": "generateMenuForExistingWeekReturnsConflict",
-            "line": 312
+            "line": 367
           },
           {
             "id": "CHK-E7",
             "method": "deleteUnknownMealPlanDeletesNothing",
-            "line": 273
+            "line": 328
           },
           {
             "id": "CHK-E8",
             "method": "deleteOwnMenuRemovesIt",
-            "line": 291
+            "line": 346
           },
           {
             "id": "CHK-E9",
             "method": "insertMealPlanDirectlyIsDenied",
-            "line": 255
+            "line": 310
           },
           {
             "id": "TC-01",
             "method": "generateMenuForEggAllergicProfile",
-            "line": 186
+            "line": 193
           },
           {
             "id": "TC-02",
             "method": "generateMenuOnAnotherWeekStaysEggFree",
-            "line": 197
+            "line": 204
           },
           {
             "id": "TC-03",
             "method": "generateMenuForVeganLactoseFreeProfile",
-            "line": 212
+            "line": 219
+          },
+          {
+            "id": "TC-10",
+            "method": "addAllergenAfterGenerationRetiresConflictingSlots",
+            "line": 276
           }
         ]
       },
@@ -328,7 +333,7 @@
   ],
   "summary": {
     "totalComponents": 11,
-    "totalATCs": 46,
+    "totalATCs": 47,
     "apiComponents": 6,
     "uiComponents": 5,
     "stepsModules": 1

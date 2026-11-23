@@ -20,6 +20,7 @@ export const menuRecipeRowSchema = z.looseObject({
   recipe_id: z.uuid().nullable(),
   dia: z.union([z.string(), z.number()]),
   tipo_plato: z.string(),
+  estado: z.string().nullable(),
   recipes: z.looseObject({
     nombre: z.string(),
     alergenos: z.array(z.string()),
