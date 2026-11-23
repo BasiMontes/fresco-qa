@@ -136,8 +136,9 @@ UI suite: 4 reviewers reported no blocker. Fixes applied afterwards: `revealDay`
 | CI workflow, first run | Failed, 41 of 43. The two failures were `CHK-A2` on `meal_plans` for vegano and familia: on a fresh database the victims own no menus, because every other test cleans up, so the isolation check failed its own vacuity guard. Locally it had passed thanks to menus left by earlier manual sessions | GitHub Actions run 45047765840, commit `d603233` |
 | CI workflow, after the fix | Passed, 43 of 43, 0 skipped, about 6 minutes. The test now creates and deletes the victim menu itself | GitHub Actions run 45048787494, commit `2fcdde1` |
 | CI workflow, with TC-04 | Passed, 49 of 49 entries (3 setup and teardown steps and 46 tests: 42 API and 4 UI), 0 skipped. The six TC-04 rows passed on a fresh database on their first run | GitHub Actions run 45060103577, commit `e1763be` |
+| CI workflow, with UI-TC-05 and UI-TC-09 | Passed, 51 of 51 entries (3 setup and teardown steps and 48 tests: 42 API and 6 UI), 0 skipped, 0 not run. Both new tests passed on a fresh database on their first run | GitHub Actions run 45152503321, commit `148c565` |
 
-State of the suite: 49 of 49 passing in CI on a fresh database at commit `e1763be`. That workflow runs the `integration` and `e2e` projects only. `smoke-ui` (one `@critical` test, UI-TC-14) was verified locally on 22 Nov and no workflow runs it on its own, and repeated runs inside the same UTC hour are not covered. The inherited `smoke.yml` and `regression.yml` only run on manual dispatch, because their daily schedule failed against staging.
+State of the suite: 51 of 51 passing in CI on a fresh database at commit `148c565`. That workflow runs the `integration` and `e2e` projects only. `smoke-ui` (one `@critical` test, UI-TC-14) was verified locally on 22 Nov and no workflow runs it on its own, and repeated runs inside the same UTC hour are not covered. The inherited `smoke.yml` and `regression.yml` only run on manual dispatch, because their daily schedule failed against staging.
 
 ## 6. Flakiness and quota risks
 
