@@ -92,7 +92,7 @@ The product allows 5 menu generations per user per UTC hour (`docs/session-repor
 
 - `ApiBase` throws `RateLimitError` on 429 before any assertion. The UI intercepts the real `generate-meal-plan` response for the same reason, because the screen shows one generic message.
 - Tests wrap generation calls in `runUnlessRateLimited`: skip locally with a reason (reported as not run), fail when `CI` is set (`tests/utils/quota.ts`, `automation-plan.md` section 4).
-- Generations per run: API 3 successful for `alergia` (2) and `vegano` (1); UI 3 (one per persona). Combined, `alergia` uses 4 of 5 per hour. At most one run of both suites per hour (`ui-menu-safety/automation-plan.md` section 5).
+- Menu requests per CI run and persona: `vegano` 5 of 5 (`TC-03`, `CHK-A2`, `UI-TC-03`, `UI-TC-05`, `CHK-E8`); `familia` 5 of 5 (`CHK-A2`, `UI-TC-11`, `UI-TC-09` and the two `CHK-D2` rows); `alergia` runs `TC-01`, `TC-02`, `CHK-D3` and `UI-TC-01`. A sixth request for `familia` received 429 in CI (run 45157377686), which suggests that a rejected request also counts; that is not isolated (API-03). At most one run of both suites per hour, and no new test may add a menu request for `vegano` or `familia`.
 
 ### 3.4 Data strategy and cleanup
 
@@ -151,7 +151,7 @@ State of the suite: 64 of 64 passing in CI on a fresh database at commit `1bf070
 | Risk | Detail | Mitigation |
 |---|---|---|
 | Hourly quota | 5 generations per user per UTC hour, fixed window. A spent window gives 429 | Skip with a reason locally (not run), fail in CI. One suite run per hour. A fresh database per CI run resets the window |
-| Quota and shared users | `alergia` uses 4 of 5 generations in one combined run | Validation tests run as `familia`, who generates little |
+| Quota and shared users | `vegano` and `familia` each use 5 of 5 menu requests in one CI run, so there is no margin | A new test that requests menus needs a persona with room, or a first run on CI fails with 429 (`CHK-E8` did, run 45157377686) |
 | Rejected requests may use quota | Not isolated (API-03 in `docs/session-reports/api-session.md`) | Validation limited to 4 requests on `familia` |
 | Skipped test hides a gap | A rate-limit skip inside the `TC-01`, `CHK-D3`, `TC-02` chain skips the whole test | Documented limit; CI fails instead of skipping |
 | Calendar day columns | Not all days may render at 1920 px; `revealDay` pages through days | Fixed once after review; re-verified locally and in CI (section 5) |

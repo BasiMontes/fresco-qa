@@ -14,9 +14,9 @@ La landing `https://basimontes.github.io/` ya cubre cuatro de las cinco seccione
 
 **Menú sin alérgenos** (Fresco). Estado: terminado.
 
-Pruebas de caja negra de un planificador de menús semanales: el menú debe excluir los alérgenos declarados y respetar la dieta. Como la funcionalidad no tenía especificación, derivé 11 criterios de aceptación y uno de seguridad, escribí un plan de pruebas y 18 casos, y los trazé a sus pruebas automáticas y a los defectos encontrados. Automaticé 6 pruebas de UI y 21 de API con la arquitectura KATA en Playwright y TypeScript, con un workflow de CI que levanta el producto en limpio: 51 de 51 pruebas pasan, y se ejecuta también cada noche. Además, un monitor sintético de 4 comprobaciones cada 30 minutos. Encontré 9 defectos candidatos, 5 ya registrados en Jira.
+Pruebas de caja negra de un planificador de menús semanales: el menú debe excluir los alérgenos declarados y respetar la dieta. Como la funcionalidad no tenía especificación, derivé 11 criterios de aceptación y uno de seguridad, escribí un plan de pruebas y 18 casos, y los trazé a sus pruebas automáticas y a los defectos encontrados. Automaticé 6 pruebas de UI y 32 de API, con el esquema de las respuestas validado con zod, con la arquitectura KATA en Playwright y TypeScript, y un workflow de CI que levanta el producto en limpio: 64 de 64 pruebas pasan, y se ejecuta también cada noche. Además, un monitor sintético de 4 comprobaciones cada 30 minutos. Encontré 9 defectos candidatos, 5 ya registrados en Jira.
 
-Aprendí que una prueba que pasa en local puede depender de datos que dejaron sesiones manuales: la primera ejecución en una base de datos limpia falló 2 de 43.
+Aprendí que una prueba que pasa en local puede depender de datos que dejaron sesiones manuales: la primera ejecución en una base de datos limpia falló 2 de 40 tests.
 
 Etiquetas: Playwright, TypeScript, KATA, CI/CD.
 Enlaces: [repositorio](https://github.com/BasiMontes/fresco-qa) · [resultados](https://basimontes.github.io/fresco-qa/).

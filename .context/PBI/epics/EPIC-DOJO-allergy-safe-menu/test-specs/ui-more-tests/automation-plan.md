@@ -18,7 +18,7 @@ TC source gate: not applicable. This project keeps its test cases in `docs/test-
 | Field | Value |
 |---|---|
 | Component | `PreferencesPage` (existing), new ATC `UI-TC-05` `saveLupinAllergen` |
-| Fixture and persona | `{ test }`, persona `vegano` (keeps `familia` at 3 of 5 generations per hour; `vegano` goes from 2 to 3) |
+| Fixture and persona | `{ test }`, persona `vegano`, which had room at the time of this plan |
 | Technique | EP: a declarable allergen that no recipe carries (`altramuces`, F-06) |
 | Test file | `tests/e2e/menu-safety/declareLupinAllergen.test.ts` |
 
@@ -36,11 +36,11 @@ Fixed assertions inside the ATC: chip enabled and pressed after the click, save 
 
 | Persona | Per run today | Added | Total |
 |---|---|---|---|
-| `vegano` | `UI-TC-03` + `CHK-A2` = 2 | `UI-TC-05` = 1 | 3 of 5 |
-| `familia` | `UI-TC-11` + `CHK-A2` = 2 | `UI-TC-09` = 1 | 3 of 5 |
+| `vegano` | `TC-03` + `UI-TC-03` + `CHK-A2` = 3 | `UI-TC-05` = 1 | 4 of 5 |
+| `familia` | `UI-TC-11` + `CHK-A2` + two `CHK-D2` rows = 4 | `UI-TC-09` = 1 | 5 of 5 |
 
 ## Done when
 
-- [ ] `UI-TC-05` and `UI-TC-09` pass locally, twice in a row, leaving no menu and an unchanged profile.
-- [ ] `bun run test`, `types:check`, `lint:check`, `kata:manifest:check` clean.
-- [ ] Both pass in CI on a fresh database.
+- [x] `UI-TC-05` and `UI-TC-09` pass locally, twice in a row, leaving no menu and an unchanged profile.
+- [x] `bun run test`, `types:check`, `lint:check`, `kata:manifest:check` clean.
+- [x] Both pass in CI on a fresh database: run 45152503321, 51 of 51.

@@ -1,55 +1,56 @@
-# DOJO project: allergy-safe weekly menu (draft)
+# Proyecto DOJO: menú semanal seguro para alérgicos (borrador)
 
-Draft for the portfolio project page (QAFRESCO-20). Text in square brackets is for the owner to fill in; every number comes from the repository and names its source.
+Borrador de la página del proyecto para el portfolio (QAFRESCO-20). El texto entre corchetes lo rellenas tú; cada cifra sale del repositorio y nombra su fuente.
 
-## Context
+## Contexto
 
-| Item | Value |
+| Dato | Valor |
 |---|---|
-| Application | Fresco, a weekly menu planner for families, tested as a black box |
-| Feature | Allergy-safe weekly menu: the menu excludes the declared allergens and respects the diet |
-| Role | QA engineer: analysis, exploratory testing, automation, CI and monitoring |
-| Duration | [owner: dates or weeks] |
-| Stack | Playwright, TypeScript, Bun, KATA architecture, GitHub Actions, local Supabase stack |
+| Aplicación | Fresco, un planificador de menús semanales para familias, probado como caja negra |
+| Funcionalidad | Menú semanal seguro para alérgicos: el menú excluye los alérgenos declarados y respeta la dieta |
+| Rol | QA: análisis, pruebas exploratorias, automatización, CI y monitorización |
+| Duración | [responsable: fechas o semanas] |
+| Tecnologías | Playwright, TypeScript, Bun, arquitectura KATA, zod, GitHub Actions, pila local de Supabase |
 
-The feature had no Story or specification, so the acceptance criteria were derived from the product itself: 11 criteria plus a security criterion (`docs/feature-test-plan.md`).
+La funcionalidad no tenía historia ni especificación, así que los criterios de aceptación se derivaron del propio producto: 11 criterios más uno de seguridad (`docs/feature-test-plan.md`).
 
-## Phase 1: analysis
+## Fase 1: análisis
 
-- A feature test plan with scope, risks, personas and test design techniques (equivalence partitioning, boundary values, decision tables, state transition).
-- 18 test cases, each tied to a criterion and a priority (`docs/test-cases.md`).
-- A traceability matrix that maps every criterion to its cases, its automated checks and the defects found, and shows the gaps (`docs/traceability-matrix.md`).
+- Un plan de pruebas de la funcionalidad con alcance, riesgos, personas y técnicas de diseño (particiones de equivalencia, valores límite, tablas de decisión, transición de estados).
+- 18 casos de prueba, cada uno atado a un criterio y a una prioridad (`docs/test-cases.md`).
+- Una matriz de trazabilidad que relaciona cada criterio con sus casos, sus comprobaciones automatizadas y los defectos encontrados, y muestra los huecos (`docs/traceability-matrix.md`).
 
-## Phase 2: exploratory testing
+## Fase 2: pruebas exploratorias
 
-- Three session reports, one each for the database, the UI and the API (`docs/session-reports/`).
-- 9 candidate defects with severity and evidence level; 5 are linked to Jira issues and the rest are pending the product owner (`docs/bugs-found.md`).
-- Examples: a vegan diet that silently stores allergens the user never chose, and a menu over the weekly budget that shows no warning.
+- Tres informes de sesión, uno de base de datos, uno de interfaz y uno de API (`docs/session-reports/`).
+- 9 defectos candidatos con su gravedad y su nivel de evidencia; 5 están enlazados a incidencias de Jira y el resto espera al product owner (`docs/bugs-found.md`).
+- Ejemplos: una dieta vegana que guarda en silencio alérgenos que el usuario no eligió, y un menú que supera el presupuesto semanal sin mostrar ningún aviso.
 
-## Phase 3: automation, CI/CD and monitoring
+## Fase 3: automatización, CI/CD y monitorización
 
-| Result | Value | Source |
+| Resultado | Valor | Fuente |
 |---|---|---|
-| UI tests | 6 (UI-TC-01, 03, 05, 09, 11, 14) | `kata-manifest.json` |
-| API tests | 21 ATCs across 7 files | `docs/automation-eval.md` section 1 |
-| Test cases automated | 10 of 18 | `docs/automation-eval.md` section 2.1 |
-| CI run on a fresh database | 51 of 51 passing, 0 skipped | GitHub Actions run 45152503321 |
-| Scheduled run | The tests also run nightly | `.github/workflows/tests.yml` |
-| Synthetic monitor of staging | 4 checks every 30 minutes | `docs/monitoring.md` |
+| Tests de UI | 6 (UI-TC-01, 03, 05, 09, 11 y 14) | `kata-manifest.json` |
+| Tests de API | 32 ATC en 12 ficheros, con el esquema de las respuestas validado | `docs/automation-eval.md` sección 1 |
+| Casos de prueba automatizados | 10 de 18 | `docs/automation-eval.md` sección 2.1 |
+| Ejecución de CI sobre base de datos limpia | 64 de 64 pasando, 0 saltados | Ejecución 45158678926 de GitHub Actions |
+| Ejecución programada | Los tests también corren cada noche | `.github/workflows/tests.yml` |
+| Monitor sintético de staging | 4 comprobaciones cada 30 minutos | `docs/monitoring.md` |
 
-The tests never share state: each one creates and deletes its own menu and restores the profile it changed, and they respect the product's limit of five menu generations per user and hour.
+Los tests no comparten estado: cada uno crea y borra su propio menú y restaura el perfil que modificó, y respetan el límite del producto de cinco generaciones de menú por usuario y hora.
 
-## Learnings
+## Aprendizajes
 
-- The first CI run on an empty database failed 2 of 43 tests. An isolation check had passed locally only because earlier manual sessions had left data behind. A CI run on a fresh database is the only proof that a test does not depend on leftovers.
-- A Playwright `testIgnore` set on one project replaces the global one instead of adding to it, which made some files run in no project at all.
-- A review found credentials written into the report files. The fix was checked with a real login and zero sensitive files, and the published results page is a summary rather than the full report.
-- A test that reports "passed" after being rate limited would be worse than none, so a rate-limited test reports "not run".
-- [owner: personal reflection on the DOJO]
+- La primera ejecución de CI sobre una base de datos vacía falló 2 de 40 tests. Una comprobación de aislamiento pasaba en local solo porque sesiones manuales anteriores habían dejado datos. Una ejecución de CI sobre una base nueva es la única prueba de que un test no depende de lo que dejó tu máquina.
+- Un `testIgnore` de Playwright definido en un proyecto reemplaza al global en lugar de sumarse, y dejó algunos ficheros sin ejecutarse en ningún proyecto.
+- Una revisión encontró credenciales escritas en los ficheros del informe. La corrección se comprobó con un inicio de sesión real y cero ficheros sensibles, y la página de resultados publicada es un resumen y no el informe completo.
+- Añadir un test más que pide menús hizo fallar la CI con un 429 en otro test: el límite por usuario y hora es un recurso compartido que hay que presupuestar antes de escribir tests nuevos.
+- Un test limitado por la cuota no debe dar «pasado»: por eso en local se informa como «no ejecutado» y en CI como fallo.
+- [responsable: reflexión personal sobre el DOJO]
 
-## Links
+## Enlaces
 
-- Repository: https://github.com/BasiMontes/fresco-qa
-- Results page: https://basimontes.github.io/fresco-qa/
-- CI pipeline: https://github.com/BasiMontes/fresco-qa/actions/workflows/tests.yml
-- Jira board: https://basiliomontescastano.atlassian.net/jira/software/projects/QAFRESCO/boards/36
+- Repositorio: https://github.com/BasiMontes/fresco-qa
+- Página de resultados: https://basimontes.github.io/fresco-qa/
+- Pipeline de CI: https://github.com/BasiMontes/fresco-qa/actions/workflows/tests.yml
+- Tablero de Jira: https://basiliomontescastano.atlassian.net/jira/software/projects/QAFRESCO/boards/36
