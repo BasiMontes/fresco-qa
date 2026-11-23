@@ -14,7 +14,7 @@ Legend. Coverage: Automated means at least one ATC runs the criterion in CI; Man
 | AC-4 | Swapping a slot changes only that slot and stays safe | TC-09 | none | `UI-TC-09` | BUG-11 (FAQ promise) | Automated: AC-4 is the "Añadir al menú" flow (PO decision) |
 | AC-5 | Shopping list grouped by aisle, quantities scale with N | TC-07 | none | none | none | Gap: designed, never executed or automated |
 | AC-6 | Household limits: people 1 to 10, adults, children | TC-08 | `TC-08-1`, `TC-08-2` | none | none | Automated; row 4 people, 1 adult, 0 children excluded until the PO answers |
-| AC-7 | Allergen added after generation: pending slots replaced or user warned | TC-10 | none | none | none | Gap: manual, expected behaviour needs PO confirmation |
+| AC-7 | Allergen added after generation: pending slots emptied and the user warned | TC-10 | `TC-10` | none | none | Automated; behaviour confirmed by the PO |
 | AC-8 | Consent, export and deletion of health data | TC-12, TC-16 | none | none | BUG-01 (TC-16) | Gap for deletion: TC-12 never executed; TC-16 executed once by hand |
 | AC-9 | Free text flagged as not used for filtering | TC-13 | none | none | none | Gap: manual only |
 | AC-10 | Diet and allergy filters available on the Free plan | TC-14 | none | `UI-TC-14` | none | Automated |
@@ -34,7 +34,7 @@ Legend. Coverage: Automated means at least one ATC runs the criterion in CI; Man
 | TC-07 | AC-5 | P2 | none | none | Not automated |
 | TC-08 | AC-6 | P2 | `TC-08-1`, `TC-08-2` | none | Automated |
 | TC-09 | AC-4 | P1 | none | `UI-TC-09` | Automated, add-to-menu flow |
-| TC-10 | AC-7 | P1 | none | none | Manual by design |
+| TC-10 | AC-7 | P1 | `TC-10` | none | Automated |
 | TC-11 | AC-3 | P2 | none | `UI-TC-11` | Automated |
 | TC-12 | AC-8 | P2 | none | none | Not automated |
 | TC-13 | AC-9 | P2 | none | none | Manual by design |
@@ -53,18 +53,18 @@ Legend. Coverage: Automated means at least one ATC runs the criterion in CI; Man
 | Gap | Criterion | Reason |
 |---|---|---|
 | No test case executed or automated | AC-5 | Designed only |
-| No automated check | AC-7, AC-8, AC-9, AC-11 | AC-7 and AC-9 are manual by design; AC-8 needs a spare account; AC-11 is a candidate defect awaiting the PO |
-| Test cases designed but neither executed by hand nor automated | TC-06, TC-07, TC-10, TC-12, TC-13 | Status Designed in `docs/test-cases.md` with no ATC |
-| Open criteria needing the PO | AC-3, AC-6, AC-7 | Marked NEEDS PO CONFIRMATION in `docs/feature-test-plan.md` |
+| No automated check | AC-8, AC-9, AC-11 | AC-9 is manual by design; AC-8 needs a spare account; AC-11 is a defect confirmed by the PO and waits for its fix in the product |
+| Test cases designed but neither executed by hand nor automated | TC-06, TC-07, TC-12, TC-13 | Status Designed in `docs/test-cases.md` with no ATC |
+| Open criteria needing the PO | AC-6 | The PO has not said whether adults plus children must equal the number of people |
 
 ## 5. Totals
 
 | Measure | Value |
 |---|---|
 | Criteria (AC-1 to AC-11 plus Security) | 12 |
-| Criteria with at least one automated check | 7 (AC-1, AC-2, AC-3, AC-4, AC-6, AC-10, Security) |
-| Criteria with no automated check | 5 (AC-5, AC-7, AC-8, AC-9, AC-11) |
+| Criteria with at least one automated check | 8 (AC-1, AC-2, AC-3, AC-4, AC-6, AC-7, AC-10, Security) |
+| Criteria with no automated check | 4 (AC-5, AC-8, AC-9, AC-11) |
 | Criteria with no test case | 0 |
 | Test cases | 18 |
-| Test cases with an automated check | 10 (TC-01, 02, 03, 04, 05, 08, 09, 11, 14, 15) |
+| Test cases with an automated check | 11 (TC-01, 02, 03, 04, 05, 08, 09, 10, 11, 14, 15) |
 | Defects linked to a test case | 5 of 10 (BUG-01, 02, 03, 10, 11); BUG-04 is not a defect |

@@ -29,7 +29,7 @@ Legend. Priority: P1 must run before release, P2 should run, P3 nice to have. Au
 | TC-07 | Shopping list quantities scale with household size | AC-5 | Boundary | P2 | UI | Designed |
 | TC-08 | Household size limits are enforced | AC-6 | Boundary | P2 | API | Designed |
 | TC-09 | Swapping one slot changes only that slot and stays safe | AC-4 | Positive | P1 | UI | Automated as UI ATC UI-TC-09 |
-| TC-10 | Adding an allergen after generation does not leave unsafe slots | AC-7 | State transition | P1 | Manual | Designed |
+| TC-10 | Adding an allergen after generation does not leave unsafe slots | AC-7 | State transition | P1 | API | Automated as API ATC TC-10 |
 | TC-11 | A normal profile gets 21 slots with no repeated comida or cena | AC-3 | Positive | P2 | UI + DB | Partial: no repeats, 12 of 21 filled |
 | TC-12 | Deleting the account removes the health data | AC-8 | Positive | P2 | UI + DB | Designed |
 | TC-13 | A free-text allergy is honoured or the user is warned | AC-9 | Negative | P2 | Manual | Designed |
@@ -124,13 +124,13 @@ Legend. Priority: P1 must run before release, P2 should run, P3 nice to have. Au
 - Expected: exactly one slot changed, and the new recipe has no `huevo`.
 
 ### TC-10 Adding an allergen after generation does not leave unsafe slots
-- Automated check: none. Status: Designed. Defect: none.
-- Covers: AC-7. State transition. Priority P1. Automation: manual.
+- Automated check: `TC-10` (API), a step of the generation test for the egg-allergic persona. Status: Automated. Defect: none.
+- Covers: AC-7. State transition. Priority P1. Automation: API.
 - Steps:
   1. As persona A, generate a menu while only `huevo` is declared.
-  2. Add the allergen `pescado` in the profile.
-  3. Open the current menu.
-- Expected: pending slots with a fish recipe are replaced or the user is warned. Otherwise report it. The product already takes the conflicting open slots out and leaves them empty with a notice; this is the recommended expected behaviour, pending the PO's confirmation (F-03).
+  2. Add an allergen carried by at least one slot of the menu (the test picks the least frequent one, for example `pescado`).
+  3. Read the menu again.
+- Expected (confirmed by the PO): every slot that carried the new allergen is back to `pendiente` with no recipe, the other slots keep their recipe, no slot carries the allergen, and the plan has the notice "Hemos quitado de tu menú ... que ya no encaja(n) con tu perfil" with the number of slots taken out (F-03).
 
 ### TC-11 A normal profile gets 21 slots with no repeated comida or cena
 - Automated check: `UI-TC-11` (UI). Status: Partial; automated for a future week. Defect: none (BUG-04 was by design).

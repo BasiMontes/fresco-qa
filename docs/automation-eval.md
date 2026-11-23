@@ -8,9 +8,9 @@ Evaluation of the test automation built for the Fresco menu feature: what was au
 |---|---|
 | Framework | KATA on Playwright and TypeScript, run with Bun (`package.json`) |
 | Target | Local copy of the product (local Supabase, edge functions, web app). Staging is excluded because its login and auth API require a captcha (`docs/bitacora.md`) |
-| API suite | 12 files in `tests/integration/menu-safety/`, 32 new ATC ids (`kata-manifest.json`) |
+| API suite | 12 files in `tests/integration/menu-safety/`, 33 new ATC ids (`kata-manifest.json`) |
 | UI suite | 4 files in `tests/e2e/menu-safety/`, 6 new ATC ids (`kata-manifest.json`) |
-| ATCs in the manifest | 46 in total: 32 API (`TC-*`, `CHK-*`), 6 UI (`UI-TC-*`), 8 from the boilerplate samples (`PROJ-*`) (`kata-manifest.json`, `summary.totalATCs` = 46) |
+| ATCs in the manifest | 47 in total: 33 API (`TC-*`, `CHK-*`), 6 UI (`UI-TC-*`), 8 from the boilerplate samples (`PROJ-*`) (`kata-manifest.json`, `summary.totalATCs` = 47) |
 | Pipeline | `.github/workflows/tests.yml`, passing on a GitHub runner on a fresh database (see section 5) |
 | Jira | Not used for tests. Owner decision, see section 7 |
 
@@ -33,7 +33,7 @@ The "28 ATCs" figure in `docs/bitacora.md` and in the API progress log was the m
 | TC-07 | Shopping list scales | AC-5 | none | none | Not automated. The exact scaling rule is not documented |
 | TC-08 | Household limits | AC-6 | `TC-08-1`, `TC-08-2` | none | Automated; row 4/1/0 excluded until the PO answers question 1 |
 | TC-09 | Swap one slot | AC-4 | none | `UI-TC-09` | Automated: one slot changes and stays egg-free. AC-4 is defined as the "Añadir al menú" flow (PO decision); dragging two slots and substituting an ingredient are separate flows and are not covered |
-| TC-10 | Allergen added after generation | AC-7 | none | none | Manual: the expected behaviour needs PO confirmation |
+| TC-10 | Allergen added after generation | AC-7 | `TC-10` | none | Automated as a step of the generation test, with no extra menu request: the conflicting slots go back to `pendiente` with no recipe and the plan gets a notice, as the PO confirmed |
 | TC-11 | 21 slots, no repeated comida or cena | AC-3 | none | `UI-TC-11` | Automated at UI level. Mid-week partial menus are not tested; the test uses a future week |
 | TC-12 | Account deletion removes health data | AC-8 | none | none | Not automated; needs a spare account and `delete-account` is never called by the suite |
 | TC-13 | Free text flagged as unused | AC-9 | none | none | Manual |
@@ -43,9 +43,9 @@ The "28 ATCs" figure in `docs/bitacora.md` and in the API progress log was the m
 | TC-17 | Over-budget warning | AC-11 | none | none | Not automated; candidate finding awaiting the PO |
 | TC-18 | Photo contradicts allergen data | AC-1 | none | none | Manual, exploratory |
 
-Totals from the table: 10 of 18 TCs have an automated ATC (TC-01, 02, 03, 04, 05, 08, 09, 11, 14, 15). 8 of 18 are not automated; 4 of those are manual by design (TC-06, 10, 13, 18).
+Totals from the table: 11 of 18 TCs have an automated ATC (TC-01, 02, 03, 04, 05, 08, 09, 10, 11, 14, 15). 7 of 18 are not automated; 3 of those are manual by design (TC-06, 13, 18).
 
-Acceptance criteria with at least one automated check: AC-1, AC-2, AC-3, AC-4, AC-6, AC-10 and the security criterion. No automated check covers AC-5, AC-7, AC-8, AC-9 or AC-11 (`docs/feature-test-plan.md`).
+Acceptance criteria with at least one automated check: AC-1, AC-2, AC-3, AC-4, AC-6, AC-7, AC-10 and the security criterion. No automated check covers AC-5, AC-8, AC-9 or AC-11 (`docs/feature-test-plan.md`).
 
 ### 2.2 Extra API checks without a TC
 
@@ -221,7 +221,7 @@ Cheapest next gains: the controls and safety checks that need no quota. Costlies
 ## 9. Next steps
 
 1. Remove or exclude the boilerplate sample tests so module path filters are no longer needed (proposed `/framework-development` chore in `api-menu-safety/automation-plan.md` section 2.1).
-2. Get PO answers to the open questions (`docs/feature-test-plan.md` section 9), then automate TC-10, TC-16 and TC-17, and the 4/1/0 household row.
+2. Automate TC-16 once BUG-01 is fixed and TC-17 once BUG-02 is fixed, and decide with the PO whether the 4/1/0 household row is accepted or rejected.
 3. Add the negative sibling of TC-09 (an egg recipe assigned through the RPC must be refused) and decide with the product owner whether the drag swap needs a case. The FAQ promise of regenerating one slot is BUG-11 (QAFRESCO-33).
 7. Decide whether the `CHK-*` ids become test cases in `docs/test-cases.md` (question Q2 of the API plan).
 8. If Jira sync is ever enabled, rename the ids to tracker keys first.
