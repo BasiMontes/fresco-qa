@@ -77,3 +77,9 @@ Append-only project log. Every relevant milestone adds one entry at the bottom: 
 **What**: `docs/bugs-found.md` said the QAFRESCO project had no issues. It had seven since 2026-11-19 (an epic and six errors, QAFRESCO-1 to QAFRESCO-7), created from the UI sessions; only the budget warning matches a defect of the document exactly. The statement was corrected, and the epic QAFRESCO-8 was created to organise the course closing.
 **Why**: The first note of 2026-11-19 recorded QAFRESCO as empty at that moment and was later copied forward without checking Jira again.
 **Next**: Break the four ceremony pages into cards under QAFRESCO-8 and decide how the three defects without a ticket (BUG-01, BUG-03, BUG-05) are filed. Sources: `docs/bugs-found.md`, the QAFRESCO board.
+
+## 2026-11-23 - Six UI tests, schema validation, traceability matrix and presentation numbers
+
+**What**: Added the traceability matrix and a case template, UI-TC-05 and UI-TC-09 (six UI tests), zod schema validation and 11 API ATCs for schemas and CRUD edge cases, and the portfolio drafts; brought the Spanish and English decks and the speaking script to the same 10-minute format and numbers. CI passes 64 of 64 on a fresh database (run 45158678926). QAFRESCO-15, 24, 25 and 26 are closed.
+**Why**: Rubric items for traceability, UI tests, API validation and the presentation. The first CI run of the schema tests failed because one more menu request pushed a persona past the limit of five per hour; the menu deletion test moved to a persona with room.
+**Next**: Check the nightly run of the tests workflow (QAFRESCO-27), publish the portfolio drafts, render and rehearse the decks, and decide the open defects and AC-4 with the product owner. Sources: `docs/traceability-matrix.md`, `docs/automation-eval.md`, `docs/portfolio/`.
