@@ -100,6 +100,7 @@ Every entry is a candidate until the PO confirms it (`docs/bugs-found.md`).
 |---|---|
 | Feature test plan | [docs/feature-test-plan.md](docs/feature-test-plan.md) |
 | Test cases | [docs/test-cases.md](docs/test-cases.md) |
+| Traceability matrix | [docs/traceability-matrix.md](docs/traceability-matrix.md) |
 | Session reports (DB, UI, API) | [docs/session-reports/](docs/session-reports/) |
 | Defects found | [docs/bugs-found.md](docs/bugs-found.md) |
 | Automation evaluation | [docs/automation-eval.md](docs/automation-eval.md) |
