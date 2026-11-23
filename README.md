@@ -58,7 +58,7 @@ Prerequisites: the product running locally (local Supabase stack and its web app
 | Metric | Value | Source |
 |---|---|---|
 | UI tests | 4 files, 6 ATCs (`UI-TC-01`, `03`, `05`, `09`, `11`, `14`) | `docs/automation-eval.md` section 1, `kata-manifest.json` |
-| API tests | 11 files, 31 ATCs (`TC-*`, `CHK-*`), with schema validation (zod) | `docs/automation-eval.md` section 1, `kata-manifest.json` |
+| API tests | 12 files, 32 ATCs (`TC-*`, `CHK-*`), with schema validation (zod) | `docs/automation-eval.md` section 1, `kata-manifest.json` |
 | Tests reported by the last green CI run | 51 total, 51 passed, 0 skipped | [run 45152503321](https://github.com/BasiMontes/fresco-qa/actions/runs/45152503321), 2026-11-23 |
 | Test cases automated | 10 of 18 (4 of the 8 others are manual by design) | `docs/automation-eval.md` section 2.1 |
 
