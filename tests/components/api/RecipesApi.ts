@@ -16,6 +16,11 @@ export interface FilteredByDietArgs {
   diet: string[]
 }
 
+export interface SafeRecipesOfTypeArgs {
+  userId: string
+  type: 'desayuno' | 'comida' | 'cena'
+}
+
 const FILTER_ENDPOINT = '/rest/v1/rpc/get_filtered_recipes';
 const RECIPES_ENDPOINT = '/rest/v1/recipes';
 const PAGE_SIZE = 1000;
@@ -87,6 +92,17 @@ export class RecipesApi extends ApiBase {
       },
       'filter RPC',
     );
+  }
+
+  @step
+  async listSafeRecipesOfType({ userId, type }: SafeRecipesOfTypeArgs): Promise<[APIResponse, RecipeIdentity[]]> {
+    const [response, body] = await this.apiPOST<RecipeIdentity[]>(
+      FILTER_ENDPOINT,
+      { p_user_id: userId },
+      { params: { 'select': 'id,nombre,alergenos', 'clasificacion->>tipo_plato': `eq.${type}`, 'order': 'nombre', 'limit': '200' } },
+    );
+    expect(response.status(), `filter RPC status for ${type} recipes`).toBe(200);
+    return [response, body];
   }
 
   @atc('TC-04')

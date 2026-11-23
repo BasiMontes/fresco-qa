@@ -1,6 +1,6 @@
 {
   "version": "1.0",
-  "generatedAt": "2026-11-22T19:10:18.583Z",
+  "generatedAt": "2026-11-23T09:28:57.233Z",
   "components": {
     "api": [
       {
@@ -146,27 +146,27 @@
           {
             "id": "CHK-B2-1",
             "method": "getFilteredRecipesExcludeDeclaredAllergens",
-            "line": 127
+            "line": 143
           },
           {
             "id": "CHK-B2-2",
             "method": "getFilteredRecipesMatchDeclaredDiet",
-            "line": 144
+            "line": 160
           },
           {
             "id": "CHK-U4",
             "method": "listCatalogWithoutSession",
-            "line": 159
+            "line": 175
           },
           {
             "id": "TC-04",
             "method": "getFilteredRecipesExcludeEveryDeclaredAllergen",
-            "line": 92
+            "line": 108
           },
           {
             "id": "TC-15",
             "method": "getFilteredRecipesForAnotherUserRejected",
-            "line": 117
+            "line": 133
           }
         ]
       }
@@ -234,9 +234,26 @@
         "relativePath": "tests/components/ui/PreferencesPage.ts",
         "atcs": [
           {
+            "id": "UI-TC-05",
+            "method": "saveLupinAllergen",
+            "line": 49
+          },
+          {
             "id": "UI-TC-14",
             "method": "saveDietAndAllergenFiltersOnFreePlan",
-            "line": 43
+            "line": 64
+          }
+        ]
+      },
+      {
+        "name": "RecipesPage",
+        "file": "RecipesPage.ts",
+        "relativePath": "tests/components/ui/RecipesPage.ts",
+        "atcs": [
+          {
+            "id": "UI-TC-09",
+            "method": "replaceOpenMealSlotFromLibrary",
+            "line": 22
           }
         ]
       }
@@ -255,10 +272,10 @@
     }
   ],
   "summary": {
-    "totalComponents": 10,
-    "totalATCs": 33,
+    "totalComponents": 11,
+    "totalATCs": 35,
     "apiComponents": 6,
-    "uiComponents": 4,
+    "uiComponents": 5,
     "stepsModules": 1
   }
 }

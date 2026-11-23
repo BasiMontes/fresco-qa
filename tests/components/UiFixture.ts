@@ -4,6 +4,7 @@ import { CalendarPage } from '@ui/CalendarPage';
 import { ExamplePage } from '@ui/ExamplePage';
 import { LoginPage } from '@ui/LoginPage';
 import { PreferencesPage } from '@ui/PreferencesPage';
+import { RecipesPage } from '@ui/RecipesPage';
 import { UiBase } from '@ui/UiBase';
 
 export class UiFixture extends UiBase {
@@ -15,6 +16,8 @@ export class UiFixture extends UiBase {
 
   readonly preferences: PreferencesPage;
 
+  readonly recipes: RecipesPage;
+
   constructor(options: TestContextOptions) {
     super(options);
 
@@ -22,5 +25,6 @@ export class UiFixture extends UiBase {
     this.example = new ExamplePage(options);
     this.calendar = new CalendarPage(options);
     this.preferences = new PreferencesPage(options);
+    this.recipes = new RecipesPage(options);
   }
 }

@@ -40,6 +40,27 @@ export class PreferencesPage extends UiBase {
     await expect(this.allergenChip(selection.allergen), `allergen chip ${selection.allergen} after reload`).toHaveAttribute('aria-pressed', 'true');
   }
 
+  @step
+  async expectAllergenPersisted(label: string): Promise<void> {
+    await this.page.reload();
+    await expect(this.allergenChip(label), `allergen chip ${label} after reload`).toHaveAttribute('aria-pressed', 'true');
+  }
+
+  @atc('UI-TC-05')
+  async saveLupinAllergen(): Promise<void> {
+    const lupin = this.allergenChip('Altramuces');
+    await expect(lupin, 'allergen chip Altramuces').toBeEnabled();
+    await lupin.click();
+    await expect(lupin).toHaveAttribute('aria-pressed', 'true');
+
+    const save = this.page.getByTestId('actualizar_preferencias_button');
+    await expect(save, 'save button (a visible health consent block keeps it disabled)').toBeEnabled();
+    await save.click();
+
+    await expect(this.page.getByTestId('preferencias_saved_message')).toBeVisible();
+    await expect(this.page.getByTestId('pro_checkout_dialog')).toBeHidden();
+  }
+
   @atc('UI-TC-14')
   async saveDietAndAllergenFiltersOnFreePlan(selection: FilterSelection): Promise<void> {
     const diet = this.dietChip(selection.diet);
