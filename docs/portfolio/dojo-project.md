@@ -31,9 +31,9 @@ La funcionalidad no tenía historia ni especificación, así que los criterios d
 | Resultado | Valor | Fuente |
 |---|---|---|
 | Tests de UI | 6 (UI-TC-01, 03, 05, 09, 11 y 14) | `kata-manifest.json` |
-| Tests de API | 32 ATC en 12 ficheros, con el esquema de las respuestas validado | `docs/automation-eval.md` sección 1 |
-| Casos de prueba automatizados | 10 de 18 | `docs/automation-eval.md` sección 2.1 |
-| Ejecución de CI sobre base de datos limpia | 64 de 64 pasando, 0 saltados | Ejecución 45158678926 de GitHub Actions |
+| Tests de API | 33 ATC en 12 ficheros, con el esquema de las respuestas validado | `docs/automation-eval.md` sección 1 |
+| Casos de prueba automatizados | 11 de 18 | `docs/automation-eval.md` sección 2.1 |
+| Ejecución de CI sobre base de datos limpia | 64 de 64 pasando, 0 saltados | Ejecución 45176908396 de GitHub Actions |
 | Ejecución programada | Los tests también corren cada noche | `.github/workflows/tests.yml` |
 | Monitor sintético de staging | 4 comprobaciones cada 30 minutos | `docs/monitoring.md` |
 

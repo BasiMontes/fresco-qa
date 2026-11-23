@@ -112,7 +112,7 @@ A crash can leave at most one menu in a far-future week, which later runs never 
 |---|---|---|
 | Type check (`tsc --noEmit`) | Exit 0 at the end of each phase on the API side; UI phase recorded as green | API `progress.md`; UI `progress.md` |
 | Lint (`eslint`) | Exit 0 on the API side; UI recorded as green | same |
-| KATA manifest check | Clean, no duplicate ids; manifest now lists 32 ATCs | `progress.md`, `kata-manifest.json` |
+| KATA manifest check | Clean, no duplicate ids; manifest lists 33 ATCs | `progress.md`, `kata-manifest.json` |
 | `bun run docs:check` | Passed at API close | API `progress.md` |
 | Plan checklist | Test-Design Checklist applied (EP, BVA, state, decision table, controls) | `api-menu-safety/automation-plan.md` section 7 |
 
