@@ -1,5 +1,6 @@
 import type { APIResponse } from '@playwright/test';
 import type { GenerateMealPlanPayload, GenerateMealPlanResponse, MealPlan } from '@schemas/menu.types';
+import type { PostgrestError } from '@schemas/profiles.types';
 import type { Recipe } from '@schemas/recipes.types';
 import type { TestContextOptions } from '@TestContext';
 
@@ -7,6 +8,7 @@ import { ApiBase } from '@api/ApiBase';
 import { DataFactory } from '@data/DataFactory';
 import { expect } from '@playwright/test';
 import { mealPlansSchema, menuRecipeRowsSchema } from '@schemas/menu.schema';
+import { postgrestErrorSchema } from '@schemas/profiles.schema';
 import { atc, step } from '@utils/decorators';
 import { RateLimitError } from '@utils/quota';
 import { expectMatchesSchema } from '@utils/schema';
@@ -26,6 +28,11 @@ export interface GeneratedMenu {
 
 export interface MenuRequestError {
   error?: string
+}
+
+export interface DirectInsertArgs {
+  userId: string
+  week: GenerateMealPlanPayload
 }
 
 export interface VeganMenuArgs {
@@ -243,6 +250,24 @@ export class MealPlansApi extends ApiBase {
     expect(String(body.error)).toMatch(/no son v/i);
 
     return [response, body, sent];
+  }
+
+  @atc('CHK-E9')
+  async insertMealPlanDirectlyIsDenied({ userId, week }: DirectInsertArgs): Promise<[APIResponse, PostgrestError]> {
+    const [response, body] = await this.apiPOST<PostgrestError, { user_id: string, semana_iso: string, fecha_inicio: string }>(
+      MEAL_PLANS_ENDPOINT,
+      { user_id: userId, semana_iso: week.semana_iso, fecha_inicio: week.fecha_inicio },
+      { headers: { Prefer: 'return=representation' } },
+    );
+
+    expect(response.status()).toBe(403);
+    const error = expectMatchesSchema(postgrestErrorSchema, body, 'rejected direct insert');
+    expect(error.code).toBe('42501');
+
+    const [, plans] = await this.listOwnMealPlans();
+    expect(plans.filter(plan => plan.semana_iso === week.semana_iso), `plans for ${week.semana_iso} after the denied insert`).toEqual([]);
+
+    return [response, error];
   }
 
   @atc('CHK-E7')

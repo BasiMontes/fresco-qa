@@ -20,7 +20,7 @@ TC source gate: not applicable. Test cases live in `docs/test-cases.md`, not in 
 | Assertion helper with a readable path to the failing field | `tests/utils/schema.ts` (`expectMatchesSchema`) |
 | Schema check inside the existing steps `listOwnMealPlans` and `getMealPlanRecipes`, so every menu test validates rows at no extra cost | `MealPlansApi` |
 
-## New ATCs (10, none spends generation quota except CHK-E8)
+## New ATCs (11, none spends generation quota except CHK-E8)
 
 | ATC | Operation | Technique | Expected (probed live before writing) |
 |---|---|---|---|
@@ -34,18 +34,19 @@ TC source gate: not applicable. Test cases live in `docs/test-cases.md`, not in 
 | `CHK-E6` | Insert a profile that already exists | State | 409, code `23505`; profile unchanged |
 | `CHK-E7` | Delete an unknown meal plan | EP | 200 and `[]`; own plans unchanged |
 | `CHK-E8` | Delete own menu | Positive | 200, the plan is returned, plan and slots are gone |
+| `CHK-E9` | Insert a meal plan directly through REST | Authorization | 403, code `42501`; no plan created (menus are created only by the edge function) |
 
 ## Coverage of CRUD after the change
 
 | Resource | Create | Read | Update | Delete |
 |---|---|---|---|---|
 | Profile | `CHK-E6` (duplicate) | `CHK-S1`, `CHK-A1` | `TC-08-1`, `TC-08-2`, `CHK-E5` | not exercised: a delete probe on the persona would break it, and account deletion (TC-12) is not automated |
-| Menu | `TC-01`, `TC-02`, `TC-03`, `CHK-D1`, `CHK-D2`, `CHK-D3` | the menu steps, schema-checked | through the UI only (`UI-TC-09`) | `CHK-E7`, `CHK-E8` |
+| Menu | `TC-01`, `TC-02`, `TC-03`, `CHK-D1`, `CHK-D2`, `CHK-D3`; direct insert denied by `CHK-E9` | the menu steps, schema-checked | through the UI only (`UI-TC-09`) | `CHK-E7`, `CHK-E8` |
 | Recipes | read-only for users | `CHK-S2`, `CHK-E1` to `CHK-E4` | not applicable | not applicable |
 
 ## Quota
 
-`CHK-E8` spends 1 generation for `familia` (now `CHK-A2`, `UI-TC-11`, `UI-TC-09`, `CHK-E8`: 4 of 5 per hour).
+`CHK-E8` spends 1 generation for `vegano` (`TC-03`, `CHK-A2`, `UI-TC-03`, `UI-TC-05`, `CHK-E8`: 5 of 5 per hour). The first CI run failed because it was placed on `familia`: the second `CHK-D2` row received 429 after `CHK-E8`, `CHK-A2`, `UI-TC-11`, `UI-TC-09` and the first `CHK-D2` row.
 
 ## Done when
 

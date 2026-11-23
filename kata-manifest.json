@@ -1,6 +1,6 @@
 {
   "version": "1.0",
-  "generatedAt": "2026-11-23T10:32:56.031Z",
+  "generatedAt": "2026-11-23T10:42:01.450Z",
   "components": {
     "api": [
       {
@@ -82,42 +82,47 @@
           {
             "id": "CHK-D1",
             "method": "generateMenuWithMissingFields",
-            "line": 224
+            "line": 231
           },
           {
             "id": "CHK-D2",
             "method": "generateMenuWithInvalidWeek",
-            "line": 236
+            "line": 243
           },
           {
             "id": "CHK-D3",
             "method": "generateMenuForExistingWeekReturnsConflict",
-            "line": 287
+            "line": 312
           },
           {
             "id": "CHK-E7",
             "method": "deleteUnknownMealPlanDeletesNothing",
-            "line": 248
+            "line": 273
           },
           {
             "id": "CHK-E8",
             "method": "deleteOwnMenuRemovesIt",
-            "line": 266
+            "line": 291
+          },
+          {
+            "id": "CHK-E9",
+            "method": "insertMealPlanDirectlyIsDenied",
+            "line": 255
           },
           {
             "id": "TC-01",
             "method": "generateMenuForEggAllergicProfile",
-            "line": 179
+            "line": 186
           },
           {
             "id": "TC-02",
             "method": "generateMenuOnAnotherWeekStaysEggFree",
-            "line": 190
+            "line": 197
           },
           {
             "id": "TC-03",
             "method": "generateMenuForVeganLactoseFreeProfile",
-            "line": 205
+            "line": 212
           }
         ]
       },
@@ -323,7 +328,7 @@
   ],
   "summary": {
     "totalComponents": 11,
-    "totalATCs": 45,
+    "totalATCs": 46,
     "apiComponents": 6,
     "uiComponents": 5,
     "stepsModules": 1

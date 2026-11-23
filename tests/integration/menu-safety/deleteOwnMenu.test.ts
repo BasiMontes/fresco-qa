@@ -4,7 +4,7 @@ import { runUnlessRateLimited } from '@utils/quota';
 const UNKNOWN_ID = '00000000-0000-0000-0000-000000000000';
 
 test.describe('CHK-E7 CHK-E8: Deleting menus', () => {
-  test.use({ role: 'familia' });
+  test.use({ role: 'vegano' });
 
   test('CHK-E7: should delete nothing when the meal plan id does not exist', async ({ api }) => {
     await api.mealPlans.deleteUnknownMealPlanDeletesNothing(UNKNOWN_ID);
