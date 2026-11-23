@@ -6,8 +6,10 @@ import type { TestContextOptions } from '@TestContext';
 import { ApiBase } from '@api/ApiBase';
 import { DataFactory } from '@data/DataFactory';
 import { expect } from '@playwright/test';
+import { mealPlansSchema, menuRecipeRowsSchema } from '@schemas/menu.schema';
 import { atc, step } from '@utils/decorators';
 import { RateLimitError } from '@utils/quota';
+import { expectMatchesSchema } from '@utils/schema';
 
 export interface MenuRecipeRow {
   id: string
@@ -48,6 +50,7 @@ export class MealPlansApi extends ApiBase {
   async listOwnMealPlans(): Promise<[APIResponse, MealPlan[]]> {
     const [response, body] = await this.apiGET<MealPlan[]>(MEAL_PLANS_ENDPOINT, { params: { select: '*' } });
     expect(response.status()).toBe(200);
+    expectMatchesSchema(mealPlansSchema, body, 'own meal plans');
     return [response, body];
   }
 
@@ -68,6 +71,7 @@ export class MealPlansApi extends ApiBase {
       { params: { select: 'id,recipe_id,dia,tipo_plato,recipes(nombre,alergenos,dieta)', meal_plan_id: `eq.${planId}` } },
     );
     expect(response.status()).toBe(200);
+    expectMatchesSchema(menuRecipeRowsSchema, body, `slots of plan ${planId}`);
     return [response, body];
   }
 
@@ -239,6 +243,45 @@ export class MealPlansApi extends ApiBase {
     expect(String(body.error)).toMatch(/no son v/i);
 
     return [response, body, sent];
+  }
+
+  @atc('CHK-E7')
+  async deleteUnknownMealPlanDeletesNothing(unknownId: string): Promise<[APIResponse, MealPlan[]]> {
+    const [, before] = await this.listOwnMealPlans();
+
+    const [response, body] = await this.apiDELETE<MealPlan[]>(
+      MEAL_PLANS_ENDPOINT,
+      { params: { id: `eq.${unknownId}` }, headers: { Prefer: 'return=representation' } },
+    );
+
+    expect(response.status()).toBe(200);
+    expect(body).toEqual([]);
+
+    const [, after] = await this.listOwnMealPlans();
+    expect(after.map(plan => plan.id), 'own plans after deleting an unknown id').toEqual(before.map(plan => plan.id));
+
+    return [response, body];
+  }
+
+  @atc('CHK-E8')
+  async deleteOwnMenuRemovesIt(week: GenerateMealPlanPayload): Promise<[APIResponse, MealPlan[]]> {
+    const before = await this.readMenu(week);
+    expect(before.rows, `slots of ${week.semana_iso} before the deletion`).toHaveLength(EXPECTED_SLOTS);
+
+    const [response, body] = await this.apiDELETE<MealPlan[]>(
+      MEAL_PLANS_ENDPOINT,
+      { params: { id: `eq.${before.planId}` }, headers: { Prefer: 'return=representation' } },
+    );
+
+    expect(response.status()).toBe(200);
+    expect(body.map(plan => plan.id), 'deleted plans').toEqual([before.planId]);
+
+    const [, plans] = await this.listOwnMealPlans();
+    expect(plans.filter(plan => plan.semana_iso === week.semana_iso), `plans for ${week.semana_iso} after the deletion`).toEqual([]);
+    const [, rows] = await this.getMealPlanRecipes(before.planId);
+    expect(rows, `slots of the deleted plan ${before.planId}`).toEqual([]);
+
+    return [response, body];
   }
 
   @atc('CHK-D3')

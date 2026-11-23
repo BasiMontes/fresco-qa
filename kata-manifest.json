@@ -1,6 +1,6 @@
 {
   "version": "1.0",
-  "generatedAt": "2026-11-23T09:28:57.233Z",
+  "generatedAt": "2026-11-23T10:32:56.031Z",
   "components": {
     "api": [
       {
@@ -82,32 +82,42 @@
           {
             "id": "CHK-D1",
             "method": "generateMenuWithMissingFields",
-            "line": 220
+            "line": 224
           },
           {
             "id": "CHK-D2",
             "method": "generateMenuWithInvalidWeek",
-            "line": 232
+            "line": 236
           },
           {
             "id": "CHK-D3",
             "method": "generateMenuForExistingWeekReturnsConflict",
-            "line": 244
+            "line": 287
+          },
+          {
+            "id": "CHK-E7",
+            "method": "deleteUnknownMealPlanDeletesNothing",
+            "line": 248
+          },
+          {
+            "id": "CHK-E8",
+            "method": "deleteOwnMenuRemovesIt",
+            "line": 266
           },
           {
             "id": "TC-01",
             "method": "generateMenuForEggAllergicProfile",
-            "line": 175
+            "line": 179
           },
           {
             "id": "TC-02",
             "method": "generateMenuOnAnotherWeekStaysEggFree",
-            "line": 186
+            "line": 190
           },
           {
             "id": "TC-03",
             "method": "generateMenuForVeganLactoseFreeProfile",
-            "line": 201
+            "line": 205
           }
         ]
       },
@@ -119,22 +129,37 @@
           {
             "id": "CHK-A1",
             "method": "listOwnProfilesReturnsOnlyOwnRow",
-            "line": 74
+            "line": 135
           },
           {
             "id": "CHK-A5",
             "method": "updateOtherUsersProfileChangesNothing",
-            "line": 85
+            "line": 146
+          },
+          {
+            "id": "CHK-E5",
+            "method": "updateProfileWithInvalidValueIsRejected",
+            "line": 93
+          },
+          {
+            "id": "CHK-E6",
+            "method": "insertDuplicateProfileIsRejected",
+            "line": 115
+          },
+          {
+            "id": "CHK-S1",
+            "method": "readOwnProfileMatchesSchema",
+            "line": 81
           },
           {
             "id": "TC-08-1",
             "method": "updateHouseholdWithinLimits",
-            "line": 102
+            "line": 163
           },
           {
             "id": "TC-08-2",
             "method": "updateHouseholdOutsideLimits",
-            "line": 120
+            "line": 181
           }
         ]
       },
@@ -146,27 +171,52 @@
           {
             "id": "CHK-B2-1",
             "method": "getFilteredRecipesExcludeDeclaredAllergens",
-            "line": 143
+            "line": 146
           },
           {
             "id": "CHK-B2-2",
             "method": "getFilteredRecipesMatchDeclaredDiet",
-            "line": 160
+            "line": 163
+          },
+          {
+            "id": "CHK-E1",
+            "method": "readRecipeWithUnknownIdReturnsEmpty",
+            "line": 194
+          },
+          {
+            "id": "CHK-E2",
+            "method": "readRecipeWithMalformedIdIsRejected",
+            "line": 209
+          },
+          {
+            "id": "CHK-E3",
+            "method": "readUnknownColumnIsRejected",
+            "line": 220
+          },
+          {
+            "id": "CHK-E4",
+            "method": "readRecipesBeyondRangeIsNotSatisfiable",
+            "line": 231
+          },
+          {
+            "id": "CHK-S2",
+            "method": "readCatalogRecipesMatchSchema",
+            "line": 178
           },
           {
             "id": "CHK-U4",
             "method": "listCatalogWithoutSession",
-            "line": 175
+            "line": 249
           },
           {
             "id": "TC-04",
             "method": "getFilteredRecipesExcludeEveryDeclaredAllergen",
-            "line": 108
+            "line": 111
           },
           {
             "id": "TC-15",
             "method": "getFilteredRecipesForAnotherUserRejected",
-            "line": 133
+            "line": 136
           }
         ]
       }
@@ -273,7 +323,7 @@
   ],
   "summary": {
     "totalComponents": 11,
-    "totalATCs": 35,
+    "totalATCs": 45,
     "apiComponents": 6,
     "uiComponents": 5,
     "stepsModules": 1

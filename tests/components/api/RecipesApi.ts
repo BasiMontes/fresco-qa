@@ -4,7 +4,10 @@ import type { TestContextOptions } from '@TestContext';
 
 import { ApiBase } from '@api/ApiBase';
 import { expect } from '@playwright/test';
+import { postgrestErrorSchema } from '@schemas/profiles.schema';
+import { recipeSchema } from '@schemas/recipes.schema';
 import { atc, step } from '@utils/decorators';
+import { expectMatchesSchema } from '@utils/schema';
 
 export interface FilteredByAllergensArgs {
   userId: string
@@ -170,6 +173,77 @@ export class RecipesApi extends ApiBase {
     expect(offenders.map(recipe => recipe.nombre)).toEqual([]);
 
     return [response, body];
+  }
+
+  @atc('CHK-S2')
+  async readCatalogRecipesMatchSchema(): Promise<[APIResponse, Recipe[]]> {
+    const [response, body] = await this.apiGET<Recipe[]>(
+      RECIPES_ENDPOINT,
+      { params: { select: 'id,nombre,activo,alergenos,dieta', activo: 'eq.true', order: 'id', limit: '25' } },
+    );
+
+    expect(response.status()).toBe(200);
+    expect(body.length, 'catalogue rows read: an empty list would make the schema check vacuous').toBeGreaterThan(0);
+    for (const [index, row] of body.entries()) {
+      expectMatchesSchema(recipeSchema, row, `catalogue row ${index}`);
+    }
+
+    return [response, body];
+  }
+
+  @atc('CHK-E1')
+  async readRecipeWithUnknownIdReturnsEmpty(unknownId: string): Promise<[APIResponse, Pick<Recipe, 'id'>[]]> {
+    const [, first] = await this.apiGET<Pick<Recipe, 'id'>[]>(RECIPES_ENDPOINT, { params: { select: 'id', order: 'id', limit: '1' } });
+    expect(first, 'positive control: the catalogue holds at least one recipe').toHaveLength(1);
+    const [, control] = await this.apiGET<Pick<Recipe, 'id'>[]>(RECIPES_ENDPOINT, { params: { select: 'id', id: `eq.${first[0].id}` } });
+    expect(control, 'positive control: a known id returns its recipe').toHaveLength(1);
+
+    const [response, body] = await this.apiGET<Pick<Recipe, 'id'>[]>(RECIPES_ENDPOINT, { params: { select: 'id', id: `eq.${unknownId}` } });
+
+    expect(response.status()).toBe(200);
+    expect(body).toEqual([]);
+
+    return [response, body];
+  }
+
+  @atc('CHK-E2')
+  async readRecipeWithMalformedIdIsRejected(malformedId: string): Promise<[APIResponse, RpcError]> {
+    const [response, body] = await this.apiGET<RpcError>(RECIPES_ENDPOINT, { params: { select: 'id', id: `eq.${malformedId}` } });
+
+    expect(response.status()).toBe(400);
+    const error = expectMatchesSchema(postgrestErrorSchema, body, 'rejected recipe read');
+    expect(error.code).toBe('22P02');
+
+    return [response, error];
+  }
+
+  @atc('CHK-E3')
+  async readUnknownColumnIsRejected(column: string): Promise<[APIResponse, RpcError]> {
+    const [response, body] = await this.apiGET<RpcError>(RECIPES_ENDPOINT, { params: { select: column } });
+
+    expect(response.status()).toBe(400);
+    const error = expectMatchesSchema(postgrestErrorSchema, body, 'rejected column read');
+    expect(error.code).toBe('42703');
+
+    return [response, error];
+  }
+
+  @atc('CHK-E4')
+  async readRecipesBeyondRangeIsNotSatisfiable(): Promise<[APIResponse, RpcError]> {
+    const paged = (range: string) => ({ 'Prefer': 'count=exact', 'Range-Unit': 'items', 'Range': range });
+    const [firstPage] = await this.apiGET<Pick<Recipe, 'id'>[]>(RECIPES_ENDPOINT, { params: { select: 'id' }, headers: paged('0-0') });
+    expect(firstPage.status(), 'positive control: the first page is served').toBe(206);
+    const total = Number((firstPage.headers()['content-range'] ?? '').split('/')[1]);
+    expect(total, 'catalogue size reported by the first page').toBeGreaterThan(0);
+
+    const [response, body] = await this.apiGET<RpcError>(RECIPES_ENDPOINT, { params: { select: 'id' }, headers: paged(`${total + 1000}-${total + 1001}`) });
+
+    expect(response.status()).toBe(416);
+    const error = expectMatchesSchema(postgrestErrorSchema, body, 'rejected range read');
+    expect(error.code).toBe('PGRST103');
+    expect(response.headers()['content-range']).toBe(`*/${total}`);
+
+    return [response, error];
   }
 
   @atc('CHK-U4')

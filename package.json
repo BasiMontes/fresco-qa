@@ -149,7 +149,8 @@
     "oxlint": "1.94.0",
     "prettier": "^3.9.10",
     "typescript": "^5.8.3",
-    "varlock": "1.20.0"
+    "varlock": "1.20.0",
+    "zod": "^4.6.7"
   },
   "lint-staged": {
     "*.{ts,tsx,js,jsx}": [
