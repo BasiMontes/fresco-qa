@@ -101,10 +101,10 @@ Legend. Priority: P1 must run before release, P2 should run, P3 nice to have. Au
 - Automated check: none. Status: Designed. Defect: none.
 - Covers: AC-5. Boundary. Priority P2. Automation: UI.
 - Steps: compare the list for persona C (4 people) with a 1-person profile on the same recipes.
-- Expected: quantities grow with the number of people. Record the ratio; the exact rule is not documented.
+- Expected: quantities grow in proportion to the number of people. The product scales by the number of people only, so a child counts as an adult (improvement QAFRESCO-35).
 
 ### TC-08 Household size limits are enforced
-- Automated check: `TC-08-1`, `TC-08-2` (API). Status: Automated; row 4/1/0 excluded. Defect: none.
+- Automated check: `TC-08-1`, `TC-08-2` (API). Status: Automated; row 4/1/0 not tested (the database accepts it, the app cannot produce it). Defect: BUG-12 for the total above 10 in the onboarding.
 - Covers: AC-6. Boundary. Priority P2. Automation: API.
 - Data table:
 
@@ -115,7 +115,8 @@ Legend. Priority: P1 must run before release, P2 should run, P3 nice to have. Au
 | 11 | 10 | 1 | rejected |
 | 0 | 0 | 0 | rejected |
 | 2 | 3 | 0 | rejected |
-| 4 | 1 | 0 | open question: the database accepts it (F-05) |
+| 4 | 1 | 0 | accepted by the database; the app derives the total, so it cannot be produced from the app (F-05). Not tested |
+| 8 | 8 | 5 | UI: the onboarding accepts 13 people and the save fails with a misleading message (BUG-12). Not automated until fixed |
 
 ### TC-09 Swapping one slot changes only that slot and stays safe
 - Automated check: `UI-TC-09` (UI). Status: Automated. Defect: none (the FAQ promise of regenerating one slot is BUG-11).

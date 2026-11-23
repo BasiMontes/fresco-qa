@@ -23,7 +23,7 @@ La funcionalidad no tenía historia ni especificación, así que los criterios d
 ## Fase 2: pruebas exploratorias
 
 - Tres informes de sesión, uno de base de datos, uno de interfaz y uno de API (`docs/session-reports/`).
-- 9 defectos candidatos con su gravedad y su nivel de evidencia; 5 están enlazados a incidencias de Jira y el resto espera al product owner (`docs/bugs-found.md`).
+- 11 defectos con su gravedad y su nivel de evidencia, todos registrados en Jira, más un hallazgo que el product owner descartó por ser comportamiento previsto (`docs/bugs-found.md`).
 - Ejemplos: una dieta vegana que guarda en silencio alérgenos que el usuario no eligió, y un menú que supera el presupuesto semanal sin mostrar ningún aviso.
 
 ## Fase 3: automatización, CI/CD y monitorización

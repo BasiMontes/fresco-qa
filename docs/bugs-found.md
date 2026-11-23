@@ -2,7 +2,7 @@
 
 Defects found while testing the Fresco allergy-safe weekly menu. Sources are the session reports in `docs/session-reports/` and the cases in `docs/test-cases.md`.
 
-**The product owner decided on 2026-11-23; each entry records the decision in its status.** BUG-04 is not a defect; BUG-01, BUG-02 and BUG-10 are confirmed; BUG-03 and BUG-05 are filed at the owner's request; BUG-06 to BUG-09 come from Jira and are not confirmed. No Story or specification exists, so the acceptance criteria (AC) were derived by QA in `docs/feature-test-plan.md`. Six defects were filed in the QAFRESCO Jira project (QAFRESCO-2 to QAFRESCO-7, type "Error", under the epic QAFRESCO-1, created on 2026-11-19, all with status "Tareas por hacer" and priority Medium). They map to this document as follows: QAFRESCO-2 is BUG-02; QAFRESCO-5 is related to BUG-04 but not identical; QAFRESCO-3, 4, 6 and 7 are BUG-06 to BUG-09. BUG-01, BUG-03 and BUG-05 were filed on 2026-11-23 as QAFRESCO-29, QAFRESCO-30 and QAFRESCO-31, and two new defects: BUG-10 as QAFRESCO-32 and BUG-11 as QAFRESCO-33. BUG-01 to BUG-05 were observed in one run on a local copy of the product (staging cannot be driven past the captcha, see `docs/session-reports/ui-session.md` section 1), so none has been reproduced a second time. BUG-06 to BUG-09 are transcribed from the Jira descriptions and carry the evidence listed in each entry.
+**The product owner decided on 2026-11-23; each entry records the decision in its status.** BUG-04 is not a defect; BUG-01, BUG-02 and BUG-10 are confirmed; BUG-03 and BUG-05 are filed at the owner's request; BUG-06 to BUG-09 come from Jira and are not confirmed. No Story or specification exists, so the acceptance criteria (AC) were derived by QA in `docs/feature-test-plan.md`. Six defects were filed in the QAFRESCO Jira project (QAFRESCO-2 to QAFRESCO-7, type "Error", under the epic QAFRESCO-1, created on 2026-11-19, all with status "Tareas por hacer" and priority Medium). They map to this document as follows: QAFRESCO-2 is BUG-02; QAFRESCO-5 is related to BUG-04 but not identical; QAFRESCO-3, 4, 6 and 7 are BUG-06 to BUG-09. BUG-01, BUG-03 and BUG-05 were filed on 2026-11-23 as QAFRESCO-29, QAFRESCO-30 and QAFRESCO-31, and three new defects: BUG-10 as QAFRESCO-32, BUG-11 as QAFRESCO-33 and BUG-12 as QAFRESCO-34. BUG-01 to BUG-05 were observed in one run on a local copy of the product (staging cannot be driven past the captcha, see `docs/session-reports/ui-session.md` section 1), so none has been reproduced a second time. BUG-06 to BUG-09 are transcribed from the Jira descriptions and carry the evidence listed in each entry.
 
 Severity scale: Major (wrong behaviour on health or money data), Minor (wrong but low impact), Question (behaviour that may be intended). Priority: P1 fix before release, P2 should fix, P3 nice to fix.
 
@@ -15,7 +15,7 @@ Severity scale: Major (wrong behaviour on health or money data), Minor (wrong bu
 | Linked case / AC | TC-16 / AC-1, AC-8 |
 | Jira key | QAFRESCO-29 (filed 2026-11-23) |
 | Status | Confirmed by the PO for `sulfitos` on 2026-11-23. `huevo` and `pescado` contradict a vegan diet and are accepted; `sulfitos` does not |
-| Evidence | `docs/session-reports/ui-session.md` section 5 (U-02) and section 4 (stored profile of persona B). No screenshot of this step exists |
+| Evidence | `docs/session-reports/ui-session.md` section 5 (U-02) and section 4 (stored profile of persona B); screenshot of the diet step with the locked allergens: `session-reports/screenshots/ui/06-onboarding-vegano-bloquea-alergenos.png`; the summary screen lists them too (`08-onboarding-resumen-13-personas.png`) |
 | Automated coverage | None |
 
 Preconditions: local stack running, no existing account for persona B.
@@ -28,7 +28,7 @@ Steps:
 
 Expected: no allergen is stored, or the summary shows every allergen the user did not choose.
 
-Actual: the stored profile held `pescado`, `sulfitos` and `huevo`, and the diet step showed them as selected. Whether the summary screen shows them was not checked.
+Actual: the stored profile held `pescado`, `sulfitos` and `huevo`, and the diet step showed them as selected. The summary screen lists them as "Alérgenos a evitar" (checked live).
 
 Note: the effect is over-restriction (fewer recipes), not an unsafe menu.
 
@@ -251,6 +251,27 @@ Expected: the product does what the FAQ says, or the FAQ says what the product d
 
 Actual: the product replaces a slot with the recipe the user picks ("Añadir al menú"), swaps two slots by dragging and substitutes ingredients, but never regenerates a slot.
 
+## BUG-12 The onboarding accepts more than 10 people in total and shows an unrelated error when saving
+
+| Field | Value |
+|---|---|
+| Severity / Priority | Minor / P3. Rare case (11 people or more), but the person cannot finish the signup and the message does not say why |
+| Area | UI, validation |
+| Linked case / AC | TC-08 / AC-6 |
+| Jira key | QAFRESCO-34 (filed) |
+| Status | Reproduced live, filed |
+| Evidence | `session-reports/screenshots/ui/07-onboarding-hogar-13-personas.png` and `08-onboarding-resumen-13-personas.png`; product code `lib/validation/onboarding.ts` and the constraint `check_num_personas_max` |
+| Automated coverage | None; to automate once it is fixed |
+
+Steps:
+1. Sign up and complete the first two onboarding steps (personal data, diet with its consent).
+2. In "¿Quiénes cocináis en casa?" enter 8 adults and 5 children.
+3. Press "Ver resumen" and then "Empezar".
+
+Expected: the screen stops at 10 people in total with a message that explains it, or the save works.
+
+Actual: the step says "se calculan para 13 personas" and lets the person continue. "Empezar" does not advance: `POST /rest/v1/user_profiles` sends `num_personas: 13` and gets 400 (23514, `check_num_personas_max`). The screen shows "Algún dato del perfil es demasiado largo: hasta 30 elementos por lista, 80 caracteres en el nombre y 500 en los textos libres".
+
 ## Summary
 
 | ID | Title | Severity | Priority | Area | Case | Jira | Evidence level | Automated |
@@ -266,6 +287,7 @@ Actual: the product replaces a slot with the recipe the user picks ("Añadir al 
 | BUG-09 | Cron may downgrade Pro grants without a subscription | Medium | Jira Medium | Billing, cron | none | QAFRESCO-7 | Jira issue only (code reading, not run) | No |
 | BUG-10 | No recipe carries the altramuces tag | Medium | P2 | DB | TC-05 | QAFRESCO-32 (confirmed) | Read-only query, 0 recipes | No |
 | BUG-11 | FAQ promises regenerating one slot; the product does not offer it | Minor | P3 | UI copy | TC-09 | QAFRESCO-33 | `rg` on the product code, FAQ text | Flow that exists: `UI-TC-09` |
+| BUG-12 | The onboarding accepts more than 10 people in total and shows an unrelated error | Minor | P3 | UI, validation | TC-08 | QAFRESCO-34 | Reproduced live, two screenshots and the failing request | No |
 
 ## Dropped after verification
 
@@ -279,7 +301,7 @@ Actual: the product replaces a slot with the recipe the user picks ("Añadir al 
 - BUG-04 and QAFRESCO-5: whether both come from the same mid-week generation rule was not checked.
 - BUG-06, BUG-07 and BUG-09: evidence only in the Jira issues; no session report, screenshot or case in this repository covers them. BUG-09 is a reading of product code that is not in this repository and was not run.
 - BUG-07: whether the stored per-day selection was chosen on purpose.
-- BUG-01: whether the summary screen lists the stored allergens was not checked; the control that adds them is `DIETA_IMPLIED_ALERGENOS` in the product code.
+- BUG-01: the control that adds the allergens is `DIETA_IMPLIED_ALERGENOS` in the product code; the summary screen lists them, as checked live.
 - BUG-02: whether the estimate and the budget rule use different calculations.
 - Older menus in the shared database that contain a declared allergen (F-02, F-03 in `docs/session-reports/db-session.md`) are unresolved and are not listed as defects.
 - Shopping list, slot swap, profile edits after generation, account deletion and export were not exercised.
