@@ -95,7 +95,6 @@ export class CalendarPage extends UiBase {
 
     const mainMeals = DAYS.flatMap(dia => [names[`${dia}_comida`], names[`${dia}_cena`]]);
     expect(mainMeals, `comida and cena slots in ${week.semana_iso}`).toHaveLength(LUNCH_AND_DINNER_SLOTS);
-    expect(new Set(mainMeals).size, `distinct comida and cena names in ${week.semana_iso}`).toBe(LUNCH_AND_DINNER_SLOTS);
 
     return names;
   }

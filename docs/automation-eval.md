@@ -153,6 +153,7 @@ State of the suite: 64 of 64 passing in CI on a fresh database at commit `1bf070
 | Hourly quota | 5 generations per user per UTC hour, fixed window. A spent window gives 429 | Skip with a reason locally (not run), fail in CI. One suite run per hour. A fresh database per CI run resets the window |
 | Quota and shared users | `vegano` and `familia` each use 5 of 5 menu requests in one CI run, so there is no margin | A new test that requests menus needs a persona with room, or a first run on CI fails with 429 (`CHK-E8` did, run 45157377686) |
 | Rejected requests may use quota | Not isolated (API-03 in `docs/session-reports/api-session.md`) | Validation limited to 4 requests on `familia` |
+| Names on screen are not unique | The catalogue holds different recipes with the same name (BUG-06), so comparing the 14 comida and cena names of a week failed once in CI (13 distinct, week 2027-W03, run 45164414719). The cause is probable, not confirmed for that run | `UI-TC-11` compares recipe ids read from the database and no longer compares names |
 | Skipped test hides a gap | A rate-limit skip inside the `TC-01`, `CHK-D3`, `TC-02` chain skips the whole test | Documented limit; CI fails instead of skipping |
 | Calendar day columns | Not all days may render at 1920 px; `revealDay` pages through days | Fixed once after review; re-verified locally and in CI (section 5) |
 | Selectors from product source | Written from source, probed live only partly | Role and test-id locators; no `waitForTimeout` |
