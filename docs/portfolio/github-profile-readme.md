@@ -37,7 +37,6 @@ Playwright, TypeScript, Cypress, Selenium, Postman, Swagger y OpenAPI, Jenkins, 
 
 ---
 
-## Pendiente de ti
+## Estado
 
-- Crear el repositorio `BasiMontes/BasiMontes` y pegar el texto de arriba.
-- Fijar (pin) en tu perfil los seis repositorios de la tabla; GitHub permite seis y solo se hace desde la web.
+Publicado el 2026-11-25 en [BasiMontes/BasiMontes](https://github.com/BasiMontes/BasiMontes), con los seis repositorios de la tabla fijados en el perfil. QAFRESCO-19 está finalizada.

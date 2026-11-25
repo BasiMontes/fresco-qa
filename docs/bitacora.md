@@ -83,3 +83,9 @@ Append-only project log. Every relevant milestone adds one entry at the bottom: 
 **What**: Added the traceability matrix and a case template, UI-TC-05 and UI-TC-09 (six UI tests), zod schema validation and 11 API ATCs for schemas and CRUD edge cases, and the portfolio drafts; brought the Spanish and English decks and the speaking script to the same 10-minute format and numbers. CI passes 64 of 64 on a fresh database (run 45158678926). QAFRESCO-15, 24, 25 and 26 are closed.
 **Why**: Rubric items for traceability, UI tests, API validation and the presentation. The first CI run of the schema tests failed because one more menu request pushed a persona past the limit of five per hour; the menu deletion test moved to a persona with room.
 **Next**: Check the nightly run of the tests workflow (QAFRESCO-27), publish the portfolio drafts, render and rehearse the decks, and decide the open defects and AC-4 with the product owner. Sources: `docs/traceability-matrix.md`, `docs/automation-eval.md`, `docs/portfolio/`.
+
+## 2026-11-25 - GitHub profile README published, QAFRESCO-19 closed
+
+**What**: Created the public repository BasiMontes/BasiMontes with the profile README from `docs/portfolio/github-profile-readme.md` and verified six pinned repositories, fresco-qa among them. Checked the public exposure of this repository before pinning (pattern scan of code and history, CI credentials, personal data); secret scanning stays disabled. In the product repository the LICENSE now names its owner below the template author (pull request 1090, promoted to production).
+**Why**: Course closing deliverable (portfolio). The owner asked whether pinning public repositories exposed anything and how protected the product code is.
+**Next**: Portfolio cards QAFRESCO-20, 21 and 22, then the 30-day plan (QAFRESCO-28).
