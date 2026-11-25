@@ -9,7 +9,7 @@ Borrador de la página del proyecto para el portfolio (QAFRESCO-20). El texto en
 | Aplicación | Fresco, un planificador de menús semanales para familias, probado como caja negra |
 | Funcionalidad | Menú semanal seguro para alérgicos: el menú excluye los alérgenos declarados y respeta la dieta |
 | Rol | QA: análisis, pruebas exploratorias, automatización, CI y monitorización |
-| Duración | [responsable: fechas o semanas] |
+| Duración | Del 18 al 25 de noviembre de 2026, 8 días según el historial de git [responsable: confirma si cuentas desde otra fecha] |
 | Tecnologías | Playwright, TypeScript, Bun, arquitectura KATA, zod, GitHub Actions, pila local de Supabase |
 
 La funcionalidad no tenía historia ni especificación, así que los criterios de aceptación se derivaron del propio producto: 11 criterios más uno de seguridad (`docs/feature-test-plan.md`).
@@ -34,19 +34,22 @@ La funcionalidad no tenía historia ni especificación, así que los criterios d
 | Tests de API | 33 ATC en 12 ficheros, con el esquema de las respuestas validado | `docs/automation-eval.md` sección 1 |
 | Casos de prueba automatizados | 11 de 18 | `docs/automation-eval.md` sección 2.1 |
 | Ejecución de CI sobre base de datos limpia | 64 de 64 pasando, 0 saltados | Ejecución 45176908396 de GitHub Actions |
-| Ejecución programada | Los tests también corren cada noche | `.github/workflows/tests.yml` |
+| Ejecución programada | Los tests también corren cada noche a las 03:00 UTC; se disparó sola el 24-nov-2026 y el job de API y UI pasó | `.github/workflows/tests.yml`, ejecución 45401081360 |
 | Monitor sintético de staging | 4 comprobaciones cada 30 minutos | `docs/monitoring.md` |
 
 Los tests no comparten estado: cada uno crea y borra su propio menú y restaura el perfil que modificó, y respetan el límite del producto de cinco generaciones de menú por usuario y hora.
 
 ## Aprendizajes
 
-- La primera ejecución de CI sobre una base de datos vacía falló 2 de 40 tests. Una comprobación de aislamiento pasaba en local solo porque sesiones manuales anteriores habían dejado datos. Una ejecución de CI sobre una base nueva es la única prueba de que un test no depende de lo que dejó tu máquina.
+- La primera ejecución de CI sobre una base de datos vacía falló 2 de 43 tests. Una comprobación de aislamiento pasaba en local solo porque sesiones manuales anteriores habían dejado datos. Una ejecución de CI sobre una base nueva es la única prueba de que un test no depende de lo que dejó tu máquina.
 - Un `testIgnore` de Playwright definido en un proyecto reemplaza al global en lugar de sumarse, y dejó algunos ficheros sin ejecutarse en ningún proyecto.
 - Una revisión encontró credenciales escritas en los ficheros del informe. La corrección se comprobó con un inicio de sesión real y cero ficheros sensibles, y la página de resultados publicada es un resumen y no el informe completo.
 - Añadir un test más que pide menús hizo fallar la CI con un 429 en otro test: el límite por usuario y hora es un recurso compartido que hay que presupuestar antes de escribir tests nuevos.
 - Un test limitado por la cuota no debe dar «pasado»: por eso en local se informa como «no ejecutado» y en CI como fallo.
-- [responsable: reflexión personal sobre el DOJO]
+
+## Reflexión personal
+
+Probar mi propio producto como caja negra, solo por su interfaz y su API, me enseñó que un test es tan bueno como el estado en el que corre: la primera ejecución de CI sobre una base limpia falló porque un test había pasado en local gracias a datos de sesiones manuales anteriores. Lo más valioso no fueron los 12 hallazgos registrados, sino decidir cuáles eran de verdad defectos: separar lo que hace el producto de lo que dice el requisito (BUG-01, BUG-04) me obligó a dejar por escrito los criterios de aceptación. AC-4, AC-6 y AC-7 se cerraron tarde y cada uno acabó en un test nuevo o en un defecto nuevo, así que la próxima vez haría esas preguntas antes de automatizar. Cuando el inicio de sesión de staging quedó bloqueado por un captcha, montar una pila local mantuvo los tests honestos y repetibles, en lugar de saltarme la protección.
 
 ## Enlaces
 
