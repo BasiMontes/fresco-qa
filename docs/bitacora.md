@@ -95,3 +95,9 @@ Append-only project log. Every relevant milestone adds one entry at the bottom: 
 **What**: Published the project page from `docs/portfolio/dojo-project.md` at https://basimontes.github.io/fresco-qa.html with a card linking to it from the home page (repository BasiMontes/BasiMontes.github.io, commit ae073b0). The website pipeline had been failing since 2026-11-06 because a test required exactly one project in progress, so three earlier changes had never been deployed; the rule now allows at most one.
 **Why**: Course closing deliverable (portfolio).
 **Next**: Portfolio cards QAFRESCO-21 and 22 (the project entry of 22 is already on the home page), then the 30-day plan (QAFRESCO-28).
+
+## 2026-11-25 - QAFRESCO-22 closed without a Certifications section
+
+**What**: The landing page card was closed with four of the five requested sections (About, Skills, Projects, Contact). Certifications stays unmet: the block had been removed on purpose from the website (commit 04020c7 in BasiMontes/BasiMontes.github.io) and the owner chose to keep the site as it is. The Dojo project entry is on the home page.
+**Why**: Owner decision; the deviation is recorded in the Jira comment.
+**Next**: QAFRESCO-21 (LinkedIn), then QAFRESCO-28 and the course epic QAFRESCO-8.
