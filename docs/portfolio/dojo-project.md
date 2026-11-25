@@ -1,6 +1,6 @@
-# Proyecto DOJO: menú semanal seguro para alérgicos (borrador)
+# Proyecto DOJO: menú semanal seguro para alérgicos
 
-Borrador de la página del proyecto para el portfolio (QAFRESCO-20). El texto entre corchetes lo rellenas tú; cada cifra sale del repositorio y nombra su fuente.
+Texto de la página del proyecto para el portfolio (QAFRESCO-20), publicada el 2026-11-25 en [basimontes.github.io/fresco-qa.html](https://basimontes.github.io/fresco-qa.html). La página publicada omite el enlace al tablero de Jira, que sin sesión no muestra las tarjetas. Cada cifra sale del repositorio y nombra su fuente.
 
 ## Contexto
 
@@ -9,7 +9,7 @@ Borrador de la página del proyecto para el portfolio (QAFRESCO-20). El texto en
 | Aplicación | Fresco, un planificador de menús semanales para familias, probado como caja negra |
 | Funcionalidad | Menú semanal seguro para alérgicos: el menú excluye los alérgenos declarados y respeta la dieta |
 | Rol | QA: análisis, pruebas exploratorias, automatización, CI y monitorización |
-| Duración | Del 18 al 25 de noviembre de 2026, 8 días según el historial de git [responsable: confirma si cuentas desde otra fecha] |
+| Duración | Del 18 al 25 de noviembre de 2026, 8 días según el historial de git |
 | Tecnologías | Playwright, TypeScript, Bun, arquitectura KATA, zod, GitHub Actions, pila local de Supabase |
 
 La funcionalidad no tenía historia ni especificación, así que los criterios de aceptación se derivaron del propio producto: 11 criterios más uno de seguridad (`docs/feature-test-plan.md`).

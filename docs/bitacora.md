@@ -89,3 +89,9 @@ Append-only project log. Every relevant milestone adds one entry at the bottom: 
 **What**: Created the public repository BasiMontes/BasiMontes with the profile README from `docs/portfolio/github-profile-readme.md` and verified six pinned repositories, fresco-qa among them. Checked the public exposure of this repository before pinning (pattern scan of code and history, CI credentials, personal data); secret scanning stays disabled. In the product repository the LICENSE now names its owner below the template author (pull request 1090, promoted to production).
 **Why**: Course closing deliverable (portfolio). The owner asked whether pinning public repositories exposed anything and how protected the product code is.
 **Next**: Portfolio cards QAFRESCO-20, 21 and 22, then the 30-day plan (QAFRESCO-28).
+
+## 2026-11-25 - DOJO project page published, QAFRESCO-20 closed
+
+**What**: Published the project page from `docs/portfolio/dojo-project.md` at https://basimontes.github.io/fresco-qa.html with a card linking to it from the home page (repository BasiMontes/BasiMontes.github.io, commit ae073b0). The website pipeline had been failing since 2026-11-06 because a test required exactly one project in progress, so three earlier changes had never been deployed; the rule now allows at most one.
+**Why**: Course closing deliverable (portfolio).
+**Next**: Portfolio cards QAFRESCO-21 and 22 (the project entry of 22 is already on the home page), then the 30-day plan (QAFRESCO-28).
