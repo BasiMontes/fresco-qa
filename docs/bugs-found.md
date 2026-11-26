@@ -6,6 +6,8 @@ Defects found while testing the Fresco allergy-safe weekly menu. Sources are the
 
 **Retest on 2026-11-26.** BUG-01, BUG-02, BUG-07, BUG-08 and BUG-12 (QAFRESCO-29, 2, 4, 6 and 34), and the label issue QAFRESCO-5, passed on a local stack of the product at `fresco-app` commit `04ee5c6d` and were closed. The same run produced two new defects: BUG-13 (QAFRESCO-36) and BUG-14 (QAFRESCO-37). The "Actual" field of each entry describes the behaviour before the fix.
 
+**Second retest on 2026-11-26.** BUG-05, BUG-09, BUG-10 and BUG-11 (QAFRESCO-31, 7, 32 and 33) passed and were closed. BUG-06 (QAFRESCO-3) failed and stays open. BUG-03 (QAFRESCO-30) was not retested. The app was built from `fresco-app` commit `096f47b2` and ran on a separate local stack, whose database was created at `04ee5c6d` and then upgraded with the two new migrations. The integration and e2e suites passed 64 of 64 there. Read-only queries checked the hosted database.
+
 Severity scale: Major (wrong behaviour on health or money data), Minor (wrong but low impact), Question (behaviour that may be intended). Priority: P1 fix before release, P2 should fix, P3 nice to fix.
 
 ## BUG-01 Vegan diet silently stores allergens the user did not choose
@@ -69,7 +71,7 @@ Note: the two cost figures may come from different calculations, which would mak
 | Area | UI |
 | Linked case / AC | TC-18 / AC-1 |
 | Jira key | QAFRESCO-30 (filed 2026-11-23) |
-| Status | Filed at the PO's request on 2026-11-23; the product's images are being redone |
+| Status | Open, not retested. Filed at the PO's request on 2026-11-23. On 2026-11-26 the photo in the hosted database had been replaced and the stored file showed no egg. `supabase/seed.sql` in the product still pointed to the photo with boiled eggs, so a database built from the seed still gets it |
 | Evidence | [Menu, persona A](session-reports/screenshots/ui/04-local-alergia-menu.png); `docs/session-reports/ui-session.md` section 5 (U-05) |
 | Automated coverage | None |
 
@@ -115,7 +117,7 @@ Actual: 12 of 21 slots filled; Monday to Wednesday are empty. A menu for a futur
 | Area | API |
 | Linked case / AC | none (PO question, `docs/session-reports/api-session.md` finding API-01) |
 | Jira key | QAFRESCO-31 (filed 2026-11-23) |
-| Status | Filed at the PO's request on 2026-11-23; the PO needs more information to decide |
+| Status | **Fixed; retest passed on 2026-11-26** (FRESCO-1315). The owner decided that without a session only active recipes can be read. Before the migration an anonymous request read 629 inactive recipes, after it none; a signed-in user still reads them, and the hosted database has the new policy |
 | Evidence | `docs/session-reports/api-session.md` sections 2, 3 and 5 |
 | Automated coverage | None, by decision: it is a PO question and not a rule (`.context/PBI/epics/EPIC-DOJO-allergy-safe-menu/test-specs/api-menu-safety/spec.md`) |
 
@@ -137,7 +139,7 @@ Actual: both calls return 200 and the second returns an inactive recipe.
 | Severity / Priority | Minor (Jira severity "Baja") / Jira priority Medium |
 | Area | UI, DB |
 | Linked case / AC | none in `docs/test-cases.md` |
-| Status | Reported in Jira as QAFRESCO-3 |
+| Status | **Open; retest failed on 2026-11-26** (FRESCO-1317). The 14 repeated names are gone, but "Crema de calabacin" and "Crema de calabacín" are still two active recipes, with different allergens, in the local and hosted databases. Searching for the second name shows both cards |
 | Evidence | Evidence only in the Jira issue (read-only query counts and example names). No session report or screenshot in this repository covers it |
 | Automated coverage | None |
 
@@ -203,7 +205,7 @@ Open point (from Jira): whether the interface picks the more general tag on purp
 | Severity / Priority | Medium per the Jira impact note (free Pro pilots would lose the plan nightly), unexecuted / Jira priority Medium |
 | Area | Billing, scheduled job (backend) |
 | Linked case / AC | none in `docs/test-cases.md` |
-| Status | Reported in Jira as QAFRESCO-7 |
+| Status | **Fixed; retest passed on 2026-11-26** (FRESCO-1313). On the local job a grant in force stayed Pro; expired, undated, longer than 60 days and `family` rows without a subscription went to Free, and the profile owner could not change the end date. The part of the job that calls Stripe was not observed |
 | Evidence | Evidence only in the Jira issue: a reading of the product code (`grant-pro` script, `lib/billing/reconcile.ts`, `app/api/cron/stripe-reconcile/route.ts`, migration `20260828174500`). That code is not in this repository and was not run |
 | Automated coverage | None |
 
@@ -221,7 +223,7 @@ Actual (probable, not executed): the orphan sweep selects profiles with plan `pr
 | Area | DB, catalogue |
 | Linked case / AC | TC-05 / AC-1 |
 | Jira key | QAFRESCO-32 (filed 2026-11-23) |
-| Status | Confirmed by the PO on 2026-11-23 ("we fix this") |
+| Status | **Closed; retest passed on 2026-11-26** (FRESCO-1316). Confirmed by the PO on 2026-11-23. The owner decided to tag no recipe because none names lupin. The database rejects an active recipe that names it without the tag, and a tagged recipe is excluded for a profile that declares it. A processed ingredient that contains lupin without naming it is not covered |
 | Evidence | Read-only query on the local database: 0 active recipes with `altramuces` (34 with `sulfitos`); finding F-06 in `docs/session-reports/db-session.md` |
 | Automated coverage | `UI-TC-05` checks that the allergen is saved and that the menu generates; it cannot prove the exclusion |
 
@@ -241,7 +243,7 @@ Actual: the profile is saved and the menu generates, but 0 active recipes carry 
 | Area | UI copy, landing |
 | Linked case / AC | TC-09 / AC-4 |
 | Jira key | QAFRESCO-33 (filed 2026-11-23) |
-| Status | Filed with the PO's decision on AC-4 (option A); whether the text is corrected or the feature is built is still open |
+| Status | **Text corrected; retest passed on 2026-11-26** (FRESCO-1314). The FAQ and the Free plan now describe the flows that exist, and adding to the menu, swapping by dragging and replacing an ingredient worked. Regenerating a single slot was not built |
 | Evidence | `components/landing/faq-data.ts` line 23 ("regenerar solo ese slot"); `rg` for regenera and reroll finds only copy; the real flows are analysed in `.context/PBI/epics/EPIC-DOJO-allergy-safe-menu/test-specs/menu-safety-p1-gaps/spec.md` section 2 |
 | Automated coverage | `UI-TC-09` covers the flow that exists ("Añadir al menú") |
 
@@ -327,18 +329,25 @@ Actual: `pescado` stays selected and unlocked, and the profile is saved without 
 |---|---|---|---|---|---|---|---|---|
 | BUG-01 | Vegan and vegetarian diets store sulfitos unchosen | Medium | P2 | UI, DB | TC-16 | QAFRESCO-29 (closed 2026-11-26) | One UI run, stored profile read in the DB; retest passed | No |
 | BUG-02 | No warning when the menu exceeds the budget | Major | P2 | UI, DB | TC-17 | QAFRESCO-2 (closed 2026-11-26) | One UI run, screenshot, stored warnings read in the DB; retest passed for the current week | No |
-| BUG-03 | Photo shows egg on a recipe without egg | Minor | P3 | UI | TC-18 | QAFRESCO-30 (filed) | One UI run, screenshot | No |
+| BUG-03 | Photo shows egg on a recipe without egg | Minor | P3 | UI | TC-18 | QAFRESCO-30 (open) | One UI run, screenshot | No |
 | BUG-04 | Mid-week menu is partial (12 of 21): not a defect, by design | n/a | n/a | UI, API | TC-11 | Not a defect; QAFRESCO-5, about the label, closed 2026-11-26 | One UI run on all three personas, contrasted with the API | Partial (`UI-TC-11`, future week only) |
-| BUG-05 | Inactive recipes readable anonymously | Question | P3 | API | none | QAFRESCO-31 (filed) | One API run (script, not a test) | No |
-| BUG-06 | Repeated recipe names in the active catalogue | Minor | Jira Medium | UI, DB | none | QAFRESCO-3 | Jira issue only (read-only query) | No |
+| BUG-05 | Inactive recipes readable anonymously | Question | P3 | API | none | QAFRESCO-31 (closed 2026-11-26) | One API run (script, not a test); retest passed | No |
+| BUG-06 | Repeated recipe names in the active catalogue | Minor | Jira Medium | UI, DB | none | QAFRESCO-3 (open) | Jira issue (read-only query); retest failed, screenshot and database query | No |
 | BUG-07 | Onboarding summary ignores the per-day meal selection | Minor | Jira Medium | UI, DB | none | QAFRESCO-4 (closed 2026-11-26) | Jira issue; retest passed | No |
 | BUG-08 | Vegan recipes tagged only Vegetariano | Minor | Jira Medium | UI | TC-03 | QAFRESCO-6 (closed 2026-11-26) | UI session U-06 with screenshot, plus Jira; retest passed | No |
-| BUG-09 | Cron may downgrade Pro grants without a subscription | Medium | Jira Medium | Billing, cron | none | QAFRESCO-7 | Jira issue only (code reading, not run) | No |
-| BUG-10 | No recipe carries the altramuces tag | Medium | P2 | DB | TC-05 | QAFRESCO-32 (confirmed) | Read-only query, 0 recipes | No |
-| BUG-11 | FAQ promises regenerating one slot; the product does not offer it | Minor | P3 | UI copy | TC-09 | QAFRESCO-33 | `rg` on the product code, FAQ text | Flow that exists: `UI-TC-09` |
+| BUG-09 | Cron may downgrade Pro grants without a subscription | Medium | Jira Medium | Billing, cron | none | QAFRESCO-7 (closed 2026-11-26) | Jira issue (code reading); retest passed on the local job | No |
+| BUG-10 | No recipe carries the altramuces tag | Medium | P2 | DB | TC-05 | QAFRESCO-32 (closed 2026-11-26) | Read-only query, 0 recipes; retest passed | No |
+| BUG-11 | FAQ promises regenerating one slot; the product does not offer it | Minor | P3 | UI copy | TC-09 | QAFRESCO-33 (closed 2026-11-26) | `rg` on the product code, FAQ text; retest passed | Flow that exists: `UI-TC-09` |
 | BUG-12 | The onboarding accepts more than 10 people in total and shows an unrelated error | Minor | P3 | UI, validation | TC-08 | QAFRESCO-34 (closed 2026-11-26) | Reproduced live, two screenshots and the failing request; retest passed | No |
 | BUG-13 | The next week's menu gets no budget warning | Medium | P2 | UI, DB | TC-17 | QAFRESCO-36 | One UI run, stored menu read in the DB | No |
 | BUG-14 | Turning a diet off keeps its allergen selected and saved | Minor | P3 | UI, DB | TC-16 | QAFRESCO-37 | One UI run, stored profile read in the DB | No |
+
+## Observed in the retests, not filed
+
+- A cooked slot whose recipe is retired stays in the calendar, but opening it says the recipe was not found. The recipe page did not change with these fixes.
+- After replacing `gambas` with `tofu firme`, the recipe steps still say to sauté the prawns.
+- The "how it works" section of the landing page still says "Cambia lo que no te convenza con un toque".
+- In the seed data, the photo of the vegan "Crema de calabacín" shows prawns. The photo stored in the hosted database does not.
 
 ## Dropped after verification
 
@@ -346,14 +355,14 @@ Actual: `pescado` stays selected and unlocked, and the profile is saved without 
 
 ## What was not verified
 
-- The PO decided on 2026-11-23 on BUG-01 to BUG-05 and BUG-10. BUG-06 to BUG-09 come from Jira and are not confirmed with the PO. None was reproduced a second time.
+- The PO decided on 2026-11-23 on BUG-01 to BUG-05 and BUG-10. BUG-06 to BUG-09 come from Jira and are not confirmed with the PO. None was reproduced a second time before the retests of 2026-11-26.
 - Staging: the captcha blocked every authenticated flow in the UI session, so its evidence comes from the local stack. The Jira issues QAFRESCO-2, 4, 5 and 6 cite staging accounts (`qa-alergia`, `qa-vegano`); how those sessions got past the captcha is not recorded in this repository.
 - BUG-02 and QAFRESCO-2 report different figures (94.95 EUR against 35 EUR, and 97.32 EUR against 90 EUR); the match is on the behaviour, not on the run.
 - BUG-04 and QAFRESCO-5: whether both come from the same mid-week generation rule was not checked.
-- BUG-06, BUG-07 and BUG-09: evidence only in the Jira issues; no session report, screenshot or case in this repository covers them. BUG-09 is a reading of product code that is not in this repository and was not run.
+- BUG-06, BUG-07 and BUG-09: their original evidence is only in the Jira issues; no session report or case in this repository covers them. BUG-09 started as a reading of product code and was first run in the second retest.
 - BUG-07: whether the stored per-day selection was chosen on purpose.
 - BUG-01: the control that adds the allergens is `DIETA_IMPLIED_ALERGENOS` in the product code; the summary screen lists them, as checked live.
 - BUG-02: whether the estimate and the budget rule use different calculations.
 - Older menus in the shared database that contain a declared allergen (F-02, F-03 in `docs/session-reports/db-session.md`) are unresolved and are not listed as defects.
-- Shopping list, slot swap, profile edits after generation, account deletion and export were not exercised.
-- The retest of 2026-11-26 ran only on a local stack, not on production or staging. Legacy allergens, a past week, budget values and old warnings were prepared by writing to the local database.
+- Shopping list, profile edits after generation, account deletion and export were not exercised. Slot swap was tried only in the second retest of 2026-11-26.
+- The retests of 2026-11-26 tried the interface only on local stacks, not on production or staging. Legacy allergens, a past week, budget values, old warnings, Pro grants and a retired recipe were prepared by writing to a local database. The reconcile job used a dummy Stripe key.

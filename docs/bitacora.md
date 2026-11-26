@@ -125,3 +125,9 @@ Append-only project log. Every relevant milestone adds one entry at the bottom: 
 **What**: Retested QAFRESCO-2, 4, 5, 6, 29 and 34 on a local stack of the product at fresco-app commit 04ee5c6d; all six were commented and closed with the owner approval, and the integration and e2e suites passed 64 of 64. Filed QAFRESCO-36 (no budget warning for the next week) and QAFRESCO-37 (a diet turned off keeps its allergen). Not tested on production or staging. Updated docs/bugs-found.md and docs/test-cases.md.
 **Why**: Cards close only after an observed retest; a new scenario gets its own card instead of keeping a fixed one open.
 **Next**: Retest the second batch (QAFRESCO-3, 7, 30, 31, 32, 33) when its fixes are deployed, and hand QAFRESCO-36 and 37 to the product session.
+
+## 2026-11-26 - Second retest: four defects closed, one failed
+
+**What**: Retested QAFRESCO-3, 7, 31, 32 and 33 with the app built from fresco-app commit 096f47b2 on a separate local stack; 7, 31, 32 and 33 were commented and closed with the owner approval, and 3 was commented and stays open because two names differ only by an accent. The integration and e2e suites passed 64 of 64. Read-only queries checked the hosted database, where the photo of QAFRESCO-30 had already been replaced. The interface was not tried on production or staging. The CI rerun of commit 9f1edb1 passed, but its deploy step failed without failing the job, so the public results page was not updated. Updated README.md, docs/bugs-found.md, docs/test-cases.md, docs/traceability-matrix.md and docs/automation-eval.md.
+**Why**: Cards close only after an observed retest, and a fix that leaves the reported steps failing keeps its card open.
+**Next**: Retest QAFRESCO-3, 30, 36 and 37 when the product session reports them, and check the results page after the next scheduled run.

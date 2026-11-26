@@ -8,10 +8,10 @@ Legend. Coverage: Automated means at least one ATC runs the criterion in CI; Man
 
 | AC | Criterion (short) | Test cases | API ATC | UI ATC | Defects found | Coverage |
 |---|---|---|---|---|---|---|
-| AC-1 | No declared allergen in the 21 recipes | TC-01, TC-02, TC-04, TC-05, TC-06, TC-16, TC-18 | `TC-01`, `TC-02`, `TC-04`, `CHK-B2-1` | `UI-TC-01`, `UI-TC-05` | BUG-01 (TC-16, fixed), BUG-03 (TC-18), BUG-10 (TC-05), BUG-14 (TC-16) | Automated; TC-06 and TC-18 are not |
+| AC-1 | No declared allergen in the 21 recipes | TC-01, TC-02, TC-04, TC-05, TC-06, TC-16, TC-18 | `TC-01`, `TC-02`, `TC-04`, `CHK-B2-1` | `UI-TC-01`, `UI-TC-05` | BUG-01 (TC-16, fixed), BUG-03 (TC-18), BUG-10 (TC-05, closed), BUG-14 (TC-16) | Automated; TC-06 and TC-18 are not |
 | AC-2 | Every recipe satisfies all active diets | TC-03 | `TC-03`, `CHK-B2-2` | `UI-TC-03` | none | Automated; shopping list content not checked |
 | AC-3 | One slot per day and meal, no repeated comida or cena | TC-06, TC-11 | none | `UI-TC-11` | none (BUG-04 was by design) | Automated for a future week; the PO confirmed that a mid-week menu leaves the past days empty |
-| AC-4 | Swapping a slot changes only that slot and stays safe | TC-09 | none | `UI-TC-09` | BUG-11 (FAQ promise) | Automated: AC-4 is the "Añadir al menú" flow (PO decision) |
+| AC-4 | Swapping a slot changes only that slot and stays safe | TC-09 | none | `UI-TC-09` | BUG-11 (FAQ promise, closed) | Automated: AC-4 is the "Añadir al menú" flow (PO decision) |
 | AC-5 | Shopping list grouped by aisle, quantities scale with N | TC-07 | none | none | none | Gap: designed, never executed or automated |
 | AC-6 | Household limits: people 1 to 10, adults, children | TC-08 | `TC-08-1`, `TC-08-2` | none | BUG-12 (total above 10 in the onboarding, fixed) | Automated; row 4 people, 1 adult, 0 children not tested: the database accepts it and the app cannot produce it |
 | AC-7 | Allergen added after generation: pending slots emptied and the user warned | TC-10 | `TC-10` | none | none | Automated; behaviour confirmed by the PO |

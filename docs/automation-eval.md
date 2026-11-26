@@ -28,7 +28,7 @@ The "28 ATCs" figure in `docs/bitacora.md` and in the API progress log was the m
 | TC-02 | Repeated generations never include egg | AC-1 | `TC-02` | none | Automated for 2 weeks per run; the 10-week sweep is out because of the hourly quota (`api-menu-safety/automation-plan.md` section 4) |
 | TC-03 | Vegan and lactose-free profile | AC-2 | `TC-03` | `UI-TC-03` | Automated at both levels; shopping list content not checked |
 | TC-04 | Several allergens, union excluded | AC-1 | `TC-04` | none | Automated at API level: six parameterized rows through the filter RPC, with the profile snapshotted and restored (`test-specs/menu-safety-p1-gaps/`). Passes in CI |
-| TC-05 | Lupin accepted | AC-1 | none | `UI-TC-05` | Automated at UI level: saves `altramuces` from the preferences screen, then generates a menu for the vegan persona. No recipe carries the tag, so the exclusion itself cannot be proven (F-06) |
+| TC-05 | Lupin accepted | AC-1 | none | `UI-TC-05` | Automated at UI level: saves `altramuces` from the preferences screen, then generates a menu for the vegan persona. No recipe carries the tag, so the test cannot prove the exclusion (F-06). The retest of BUG-10 on 2026-11-26 saw it by hand with a recipe tagged inside a rolled back transaction |
 | TC-06 | Very restrictive profile | AC-1, AC-3 | none | none | Manual by design (exploratory) |
 | TC-07 | Shopping list scales | AC-5 | none | none | Not automated. The exact scaling rule is not documented |
 | TC-08 | Household limits | AC-6 | `TC-08-1`, `TC-08-2` | none | Automated; row 4/1/0 excluded until the PO answers question 1 |
@@ -223,6 +223,6 @@ Cheapest next gains: the controls and safety checks that need no quota. Costlies
 
 1. Remove or exclude the boilerplate sample tests so module path filters are no longer needed (proposed `/framework-development` chore in `api-menu-safety/automation-plan.md` section 2.1).
 2. Automate TC-16 and the current-week half of TC-17, both fixed; the next-week half waits for BUG-13. Decide with the PO whether the 4/1/0 household row is accepted or rejected.
-3. Add the negative sibling of TC-09 (an egg recipe assigned through the RPC must be refused) and decide with the product owner whether the drag swap needs a case. The FAQ promise of regenerating one slot is BUG-11 (QAFRESCO-33).
+3. Add the negative sibling of TC-09 (an egg recipe assigned through the RPC must be refused) and decide with the product owner whether the drag swap needs a case. The FAQ promise of regenerating one slot was BUG-11 (QAFRESCO-33), closed on 2026-11-26 after the text changed.
 7. Decide whether the `CHK-*` ids become test cases in `docs/test-cases.md` (question Q2 of the API plan).
 8. If Jira sync is ever enabled, rename the ids to tracker keys first.

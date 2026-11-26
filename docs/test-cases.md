@@ -86,10 +86,11 @@ Legend. Priority: P1 must run before release, P2 should run, P3 nice to have. Au
 - Expected: for each row, zero slots carry any declared allergen.
 
 ### TC-05 Declaring lupin is accepted and the menu still generates
-- Automated check: `UI-TC-05` (UI). Status: Automated. Defect: none.
+- Automated check: `UI-TC-05` (UI). Status: Automated. Defect: BUG-10 (QAFRESCO-32, closed).
 - Covers: AC-1. Edge. Priority P3. Automation: UI.
 - Steps: declare `altramuces`; generate a menu.
 - Expected: the profile is saved and the menu has 21 slots. The exclusion cannot be verified because no recipe carries the tag (F-06).
+- Retest 2026-11-26, local run at `fresco-app` `096f47b2`: no active recipe named lupin. With a recipe tagged inside a rolled back transaction, a profile declaring `altramuces` no longer got it.
 
 ### TC-06 A very restrictive profile stays safe even if variety drops
 - Automated check: none. Status: Designed. Defect: none.
@@ -119,7 +120,7 @@ Legend. Priority: P1 must run before release, P2 should run, P3 nice to have. Au
 | 8 | 8 | 5 | UI: rejected on the household step with the limit message since the fix of BUG-12 (retest 2026-11-26). Not automated yet |
 
 ### TC-09 Swapping one slot changes only that slot and stays safe
-- Automated check: `UI-TC-09` (UI). Status: Automated. Defect: none (the FAQ promise of regenerating one slot is BUG-11).
+- Automated check: `UI-TC-09` (UI). Status: Automated. Defect: none (the FAQ promise of regenerating one slot was BUG-11, closed on 2026-11-26 after the text changed).
 - Covers: AC-4. Persona A. Priority P1. Automation: UI.
 - Steps: generate; note the 21 recipes; swap one slot; compare.
 - Expected: exactly one slot changed, and the new recipe has no `huevo`.
@@ -187,6 +188,7 @@ Legend. Priority: P1 must run before release, P2 should run, P3 nice to have. Au
 - Steps: for each recipe in the menu of an allergic persona, compare the photo with the recipe's ingredients and allergens.
 - Expected: no photo shows a declared allergen that the recipe does not list.
 - Observed in a local run: "Ensalada de kale con manzana" shows halved boiled eggs in an external stock photo, while its ingredients are kale, apple and walnuts.
+- On 2026-11-26 the photo in the hosted database showed no egg; the seed data still pointed to the old photo. The case was not executed again.
 
 ## Notes on execution
 
