@@ -101,3 +101,9 @@ Append-only project log. Every relevant milestone adds one entry at the bottom: 
 **What**: The landing page card was closed with four of the five requested sections (About, Skills, Projects, Contact). Certifications stays unmet: the block had been removed on purpose from the website (commit 04020c7 in BasiMontes/BasiMontes.github.io) and the owner chose to keep the site as it is. The Dojo project entry is on the home page.
 **Why**: Owner decision; the deviation is recorded in the Jira comment.
 **Next**: QAFRESCO-21 (LinkedIn), then QAFRESCO-28 and the course epic QAFRESCO-8.
+
+## 2026-11-26 - QAFRESCO-28 plan approved, QAFRESCO-2 retest paused
+
+**What**: The 30-day plan (1 to 30 December 2026) was approved and a first post drafted, unpublished, in `docs/portfolio/post-dojo-plan.md`; comment added to QAFRESCO-28, which stays open. `docs/portfolio/landing-page.md` now states the live landing page, and stale wording on the product owner decisions and findings coverage was fixed in `docs/automation-eval.md` and `docs/test-cases.md`. The retest of QAFRESCO-2 was started and paused: the fix (product commit 47850727, pull request 1060) was read, eight outlines were drafted, none was executed, no migration was applied and nothing was written on the bug.
+**Why**: The owner chose development first and QA afterwards; another local Supabase project held the database port.
+**Next**: Retest QAFRESCO-2 when the owner resumes QA. The owner still has to publish the post, download the certificate, update LinkedIn (QAFRESCO-21) and join the alumni channel.
