@@ -131,3 +131,9 @@ Append-only project log. Every relevant milestone adds one entry at the bottom: 
 **What**: Retested QAFRESCO-3, 7, 31, 32 and 33 with the app built from fresco-app commit 096f47b2 on a separate local stack; 7, 31, 32 and 33 were commented and closed with the owner approval, and 3 was commented and stays open because two names differ only by an accent. The integration and e2e suites passed 64 of 64. Read-only queries checked the hosted database, where the photo of QAFRESCO-30 had already been replaced. The interface was not tried on production or staging. The CI rerun of commit 9f1edb1 passed, but its deploy step failed without failing the job, so the public results page was not updated. Updated README.md, docs/bugs-found.md, docs/test-cases.md, docs/traceability-matrix.md and docs/automation-eval.md.
 **Why**: Cards close only after an observed retest, and a fix that leaves the reported steps failing keeps its card open.
 **Next**: Retest QAFRESCO-3, 30, 36 and 37 when the product session reports them, and check the results page after the next scheduled run.
+
+## 2026-11-26 - Results page publishes again
+
+**What**: Runs 45888973401 (second attempt) and 45902431272 passed their tests but did not publish the results page: the deploy step listed the artifacts in the same second the page was uploaded, did not find it, and `continue-on-error` kept the job green. `tests.yml` now builds and uploads the page in one job and deploys it in the next, and a failed deploy adds a warning to the run. Run 45905759562 passed 64 of 64 and the live page showed commit 7c5d255. The fix has been seen working in that one run.
+**Why**: A green run was hiding an outdated public page.
+**Next**: Retest QAFRESCO-3, 30, 36 and 37 when the product session reports them.
