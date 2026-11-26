@@ -39,8 +39,8 @@ The "28 ATCs" figure in `docs/bitacora.md` and in the API progress log was the m
 | TC-13 | Free text flagged as unused | AC-9 | none | none | Manual |
 | TC-14 | Free user can use filters | AC-10 | none | `UI-TC-14` | Automated. No paywall element is known, so the test asserts the save persists after reload and that the checkout dialog never opens (`ui-menu-safety/automation-plan.md` risk R6) |
 | TC-15 | Cannot request another user's recipes | Security | `TC-15` | none | Automated |
-| TC-16 | Vegan diet adds no silent allergens | AC-1, AC-8 | none | none | Not automated; candidate finding awaiting the PO |
-| TC-17 | Over-budget warning | AC-11 | none | none | Not automated; candidate finding awaiting the PO |
+| TC-16 | Vegan diet adds no silent allergens | AC-1, AC-8 | none | none | Not automated. The PO confirmed the defect for `sulfitos` on 2026-11-23 (BUG-01, QAFRESCO-29) |
+| TC-17 | Over-budget warning | AC-11 | none | none | Not automated. The PO confirmed the defect on 2026-11-23 (BUG-02, QAFRESCO-2); automation follows a passing retest |
 | TC-18 | Photo contradicts allergen data | AC-1 | none | none | Manual, exploratory |
 
 Totals from the table: 11 of 18 TCs have an automated ATC (TC-01, 02, 03, 04, 05, 08, 09, 10, 11, 14, 15). 7 of 18 are not automated; 3 of those are manual by design (TC-06, 13, 18).

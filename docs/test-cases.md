@@ -35,9 +35,9 @@ Legend. Priority: P1 must run before release, P2 should run, P3 nice to have. Au
 | TC-13 | A free-text allergy is honoured or the user is warned | AC-9 | Negative | P2 | Manual | Designed |
 | TC-14 | A Free user can use diet and allergy filters | AC-10 | Positive | P2 | UI | Designed |
 | TC-15 | A user cannot request another user's filtered recipes | Security | Negative | P1 | API | Executed once, passed |
-| TC-16 | Choosing a vegan diet does not silently add allergens | AC-1, AC-8 | Negative | P2 | UI + DB | Executed once, candidate finding |
-| TC-17 | A menu over the weekly budget shows a warning | AC-11 | Negative | P2 | UI + DB | Executed once, candidate finding |
-| TC-18 | Recipe photos do not contradict the allergen data | AC-1 | Exploratory | P3 | Manual | Executed once, candidate finding |
+| TC-16 | Choosing a vegan diet does not silently add allergens | AC-1, AC-8 | Negative | P2 | UI + DB | Executed once, defect confirmed for `sulfitos` (QAFRESCO-29) |
+| TC-17 | A menu over the weekly budget shows a warning | AC-11 | Negative | P2 | UI + DB | Executed once, defect confirmed (QAFRESCO-2) |
+| TC-18 | Recipe photos do not contradict the allergen data | AC-1 | Exploratory | P3 | Manual | Executed once, defect filed (QAFRESCO-30) |
 
 ## Case details
 
