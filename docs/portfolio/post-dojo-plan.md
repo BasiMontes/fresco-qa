@@ -1,6 +1,6 @@
-# Borrador: plan de 30 días y primer post (QAFRESCO-28)
+# Plan de 30 días y primer post (QAFRESCO-28)
 
-Propuesta para revisar. Las fechas y las tareas se pueden mover; el certificado no consta como obtenido.
+El plan quedó aprobado el 2026-11-26. El post sigue en borrador y el certificado no consta como obtenido.
 
 ## Checklist de cierre
 
@@ -10,7 +10,7 @@ Propuesta para revisar. Las fechas y las tareas se pueden mover; el certificado 
 | LinkedIn actualizado con la certificación | Pendiente. El texto está en [linkedin.md](linkedin.md) | Tú |
 | Entrada en el canal de alumni | Pendiente | Tú |
 | Primer post sobre la experiencia | Borrador abajo, sin publicar | Tú |
-| Plan de 30 días | Propuesto abajo | Tú lo apruebas |
+| Plan de 30 días | Aprobado el 2026-11-26 | Hecho |
 
 ## Plan del 1 al 30 de diciembre de 2026
 
