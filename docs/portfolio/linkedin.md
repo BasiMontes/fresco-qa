@@ -31,5 +31,5 @@ Si buscas a alguien que automatice con criterio y piense en los fallos antes de 
 
 ## Pendiente de ti
 
-- Pegar el titular y el texto en LinkedIn; son datos de tu cuenta y no los toco.
+- LinkedIn marcado como hecho por ti el 2026-11-26 (QAFRESCO-21).
 - Añadir la certificación en "Licencias y certificaciones" cuando descargues el certificado.

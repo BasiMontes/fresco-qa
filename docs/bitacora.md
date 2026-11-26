@@ -107,3 +107,15 @@ Append-only project log. Every relevant milestone adds one entry at the bottom: 
 **What**: The 30-day plan (1 to 30 December 2026) was approved and a first post drafted, unpublished, in `docs/portfolio/post-dojo-plan.md`; comment added to QAFRESCO-28, which stays open. `docs/portfolio/landing-page.md` now states the live landing page, and stale wording on the product owner decisions and findings coverage was fixed in `docs/automation-eval.md` and `docs/test-cases.md`. The retest of QAFRESCO-2 was started and paused: the fix (product commit 47850727, pull request 1060) was read, eight outlines were drafted, none was executed, no migration was applied and nothing was written on the bug.
 **Why**: The owner chose development first and QA afterwards; another local Supabase project held the database port.
 **Next**: Retest QAFRESCO-2 when the owner resumes QA. The owner still has to publish the post, download the certificate, update LinkedIn (QAFRESCO-21) and join the alumni channel.
+
+## 2026-11-26 - LinkedIn card closed (QAFRESCO-21)
+
+**What**: The owner reported LinkedIn as done; QAFRESCO-21 moved to Finalizada and read back. The published profile was not checked from this repo. The featured link for the course project in `docs/portfolio/linkedin.md` now points to the project page (commit 22972d4).
+**Why**: Course closing deliverable (portfolio).
+**Next**: The certificate, its entry on LinkedIn, the alumni channel and the first post stay in QAFRESCO-28.
+
+## 2026-11-26 - Project page shows the three personas
+
+**What**: Added a persona section (family, egg allergy, vegan and lactose-free) to https://basimontes.github.io/fresco-qa.html and removed the duplicated examples from the exploratory section (website commit 3d5f5cb). The shopping list scaling is stated there as not verified. Website tests: 38 passed, 2 skipped. The push run failed in the deploy step while fetching artifact metadata, and its rerun failed on duplicate artifacts; a manual run (45873791615) published it and the live page was read back.
+**Why**: Owner request for the course portfolio.
+**Next**: Nothing pending on the page.
