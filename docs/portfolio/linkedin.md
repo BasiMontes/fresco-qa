@@ -25,7 +25,7 @@ Si buscas a alguien que automatice con criterio y piense en los fallos antes de 
 | Orden | Enlace | Título sugerido |
 |---|---|---|
 | 1 | https://basimontes.github.io/ | Portfolio |
-| 2 | https://github.com/BasiMontes/fresco-qa | Proyecto DOJO: pruebas de un menú semanal sin alérgenos |
+| 2 | https://basimontes.github.io/fresco-qa.html | Proyecto DOJO: pruebas de un menú semanal sin alérgenos |
 | 3 | https://github.com/BasiMontes/flaky-test-lab | Laboratorio de pruebas inestables |
 | 4 | Certificado del Dojo | Se añade cuando lo tengas |
 
