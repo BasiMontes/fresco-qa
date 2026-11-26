@@ -199,7 +199,8 @@ Additional limits from the plans:
 
 - `TC-15` and `CHK-*` do not match a Jira key under project `QAFRESCO`. Harmless while `tms.autoSync` is `false`; revisit before enabling sync.
 - The three-ATC split of TC-01, TC-03 and TC-11 in the UI suite, and TC-01 and TC-02 in the API suite, follows the owner's rule that the TC key is the id. Equivalence partitioning would use one parameterized ATC per behaviour (`ui-menu-safety/automation-plan.md` section 4).
-- Candidate findings F-01 to F-06 and U-02 to U-05 are not asserted by any test, because none is confirmed with the PO (`docs/session-reports/ui-session.md` section 5).
+- UI findings U-02, U-04 and U-05 (BUG-01, BUG-02, BUG-03) have no test. U-03 (BUG-04) is not a defect. `docs/bugs-found.md` records each PO decision.
+- Of the database findings, `TC-02` checks F-02 by recipe name, and `UI-TC-11` checks for repeated comida or cena (the F-04 behaviour) on a future week. `UI-TC-05` covers F-06 (BUG-10) only in part. F-03 is unresolved, the F-05 row is left out of TC-08, and F-01 was dropped as a defect (`docs/session-reports/db-session.md`, `docs/bugs-found.md`).
 
 ## 8. ROI and maintenance
 
