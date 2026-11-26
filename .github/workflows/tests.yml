@@ -203,22 +203,15 @@ jobs:
         working-directory: fresco-app
         run: supabase stop --no-backup
 
-  publish-report:
-    name: Publish results page
+  build-report:
+    name: Build results page
     needs: tests
     if: ${{ always() && github.ref == 'refs/heads/main' && needs.tests.result != 'cancelled' && needs.tests.result != 'skipped' }}
     runs-on: ubuntu-latest
     timeout-minutes: 10
     permissions:
       contents: read
-      pages: write
-      id-token: write
-    concurrency:
-      group: pages
-      cancel-in-progress: false
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+      pages: read
 
     steps:
       - name: Checkout fresco-qa
@@ -246,7 +239,31 @@ jobs:
         with:
           path: public-report
 
+  publish-report:
+    name: Publish results page
+    needs: build-report
+    if: ${{ always() && needs.build-report.result == 'success' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      pages: write
+      id-token: write
+    concurrency:
+      group: pages
+      cancel-in-progress: false
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
       - name: Deploy to GitHub Pages
         id: deployment
         continue-on-error: true
         uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346 # v5.0.1
+
+      - name: Flag a deploy that did not publish
+        if: ${{ steps.deployment.outcome == 'failure' }}
+        run: |
+          message='The GitHub Pages deploy failed, so the public results page still shows an earlier run.'
+          echo "::warning title=Results page not published::$message"
+          echo "**Results page not published.** $message" >> "$GITHUB_STEP_SUMMARY"
