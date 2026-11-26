@@ -119,3 +119,9 @@ Append-only project log. Every relevant milestone adds one entry at the bottom: 
 **What**: Added a persona section (family, egg allergy, vegan and lactose-free) to https://basimontes.github.io/fresco-qa.html and removed the duplicated examples from the exploratory section (website commit 3d5f5cb). The shopping list scaling is stated there as not verified. Website tests: 38 passed, 2 skipped. The push run failed in the deploy step while fetching artifact metadata, and its rerun failed on duplicate artifacts; a manual run (45873791615) published it and the live page was read back.
 **Why**: Owner request for the course portfolio.
 **Next**: Nothing pending on the page.
+
+## 2026-11-26 - Six defect cards retested and closed, two new defects filed
+
+**What**: Retested QAFRESCO-2, 4, 5, 6, 29 and 34 on a local stack of the product at fresco-app commit 04ee5c6d; all six were commented and closed with the owner approval, and the integration and e2e suites passed 64 of 64. Filed QAFRESCO-36 (no budget warning for the next week) and QAFRESCO-37 (a diet turned off keeps its allergen). Not tested on production or staging. Updated docs/bugs-found.md and docs/test-cases.md.
+**Why**: Cards close only after an observed retest; a new scenario gets its own card instead of keeping a fixed one open.
+**Next**: Retest the second batch (QAFRESCO-3, 7, 30, 31, 32, 33) when its fixes are deployed, and hand QAFRESCO-36 and 37 to the product session.

@@ -4,6 +4,8 @@ Defects found while testing the Fresco allergy-safe weekly menu. Sources are the
 
 **The product owner decided on 2026-11-23; each entry records the decision in its status.** BUG-04 is not a defect; BUG-01, BUG-02 and BUG-10 are confirmed; BUG-03 and BUG-05 are filed at the owner's request; BUG-06 to BUG-09 come from Jira and are not confirmed. No Story or specification exists, so the acceptance criteria (AC) were derived by QA in `docs/feature-test-plan.md`. Six defects were filed in the QAFRESCO Jira project (QAFRESCO-2 to QAFRESCO-7, type "Error", under the epic QAFRESCO-1, created on 2026-11-19, all with status "Tareas por hacer" and priority Medium). They map to this document as follows: QAFRESCO-2 is BUG-02; QAFRESCO-5 is related to BUG-04 but not identical; QAFRESCO-3, 4, 6 and 7 are BUG-06 to BUG-09. BUG-01, BUG-03 and BUG-05 were filed on 2026-11-23 as QAFRESCO-29, QAFRESCO-30 and QAFRESCO-31, and three new defects: BUG-10 as QAFRESCO-32, BUG-11 as QAFRESCO-33 and BUG-12 as QAFRESCO-34. BUG-01 to BUG-05 were observed in one run on a local copy of the product (staging cannot be driven past the captcha, see `docs/session-reports/ui-session.md` section 1), so none has been reproduced a second time. BUG-06 to BUG-09 are transcribed from the Jira descriptions and carry the evidence listed in each entry.
 
+**Retest on 2026-11-26.** BUG-01, BUG-02, BUG-07, BUG-08 and BUG-12 (QAFRESCO-29, 2, 4, 6 and 34), and the label issue QAFRESCO-5, passed on a local stack of the product at `fresco-app` commit `04ee5c6d` and were closed. The same run produced two new defects: BUG-13 (QAFRESCO-36) and BUG-14 (QAFRESCO-37). The "Actual" field of each entry describes the behaviour before the fix.
+
 Severity scale: Major (wrong behaviour on health or money data), Minor (wrong but low impact), Question (behaviour that may be intended). Priority: P1 fix before release, P2 should fix, P3 nice to fix.
 
 ## BUG-01 Vegan diet silently stores allergens the user did not choose
@@ -14,7 +16,7 @@ Severity scale: Major (wrong behaviour on health or money data), Minor (wrong bu
 | Area | UI, DB |
 | Linked case / AC | TC-16 / AC-1, AC-8 |
 | Jira key | QAFRESCO-29 (filed 2026-11-23) |
-| Status | Confirmed by the PO for `sulfitos` on 2026-11-23. `huevo` and `pescado` contradict a vegan diet and are accepted; `sulfitos` does not |
+| Status | **Fixed; retest passed on 2026-11-26** (FRESCO-1308). Confirmed by the PO for `sulfitos` on 2026-11-23: `huevo` and `pescado` contradict a vegan diet and are accepted; `sulfitos` does not. Turning a diet off is a separate defect, BUG-14 |
 | Evidence | `docs/session-reports/ui-session.md` section 5 (U-02) and section 4 (stored profile of persona B); screenshot of the diet step with the locked allergens: `session-reports/screenshots/ui/06-onboarding-vegano-bloquea-alergenos.png`; the summary screen lists them too (`08-onboarding-resumen-13-personas.png`) |
 | Automated coverage | None |
 
@@ -42,7 +44,7 @@ PO decision (2026-11-23): an implied allergen is fine when it contradicts the di
 | Area | UI, DB |
 | Linked case / AC | TC-17 / AC-11 |
 | Jira key | QAFRESCO-2 (priority Medium). Same defect, different run: the Jira run shows 97.32 EUR against a 90 EUR budget and empty warnings, in the account `qa-alergia` of `fresco-pre`; this entry shows 94.95 EUR against 35 EUR on the local stack |
-| Status | Confirmed by the PO on 2026-11-23: the warning must be added in the product (fix in `fresco-app`) |
+| Status | **Fixed for the current week; retest passed on 2026-11-26** (FRESCO-1269). Confirmed by the PO on 2026-11-23. A menu for the next week still gets no warning: BUG-13 |
 | Evidence | [Menu, persona B](session-reports/screenshots/ui/05-local-vegano-menu.png) (estimated 94.95 EUR); `docs/session-reports/ui-session.md` section 5 (U-04) |
 | Automated coverage | None |
 
@@ -90,7 +92,7 @@ Actual: the photo shows halved boiled eggs. The recipe lists kale, apple and wal
 | Area | UI, API |
 | Linked case / AC | TC-11 / AC-3 (PO question 6 in the plan) |
 | Jira key | None for the empty slots. Related to QAFRESCO-5 (priority Medium): the same mid-week generation, seen as past days labelled "Excluida por ti". The two may share a cause but are not claimed to be identical |
-| Status | **Not a defect** (PO, 2026-11-23): a menu created mid-week leaves the past days empty by design, because weeks start on Monday. QAFRESCO-5 stays open for the label only |
+| Status | **Not a defect** (PO, 2026-11-23): a menu created mid-week leaves the past days empty by design, because weeks start on Monday. QAFRESCO-5 covered the label only: it now reads "Sin planificar", passed retest on 2026-11-26 (FRESCO-1312) and is closed |
 | Evidence | `docs/session-reports/ui-session.md` section 4 (12 of 21 slots, all three personas) and section 5 (U-03); `docs/session-reports/api-session.md` section 4 (E3: 21 of 21 for future weeks) |
 | Automated coverage | Partial. `UI-TC-11` covers only the future-week half (21 slots, 14 distinct comida and cena names). The mid-week half was dropped on purpose because it depends on the run date and on the PO answer |
 
@@ -157,7 +159,7 @@ Open point (from Jira): whether the pairs are intended variants or a load duplic
 | Severity / Priority | Minor (Jira severity "Baja") / Jira priority Medium |
 | Area | UI, DB |
 | Linked case / AC | none in `docs/test-cases.md` |
-| Status | Reported in Jira as QAFRESCO-4 |
+| Status | **Fixed; retest passed on 2026-11-26** (FRESCO-1311). Reported in Jira as QAFRESCO-4 |
 | Evidence | Evidence only in the Jira issue (summary text and `user_profiles.planning_selection`). No session report or screenshot in this repository covers it |
 | Automated coverage | None |
 
@@ -177,7 +179,7 @@ Open point (from Jira): whether the person chose that split on purpose. If so, t
 | Severity / Priority | Minor (Jira severity "Baja"; a clarity observation, not a filter failure) / Jira priority Medium |
 | Area | UI |
 | Linked case / AC | TC-03 |
-| Status | Reported in Jira as QAFRESCO-6 |
+| Status | **Fixed; retest passed on 2026-11-26** (FRESCO-1310). Reported in Jira as QAFRESCO-6 |
 | Evidence | `docs/session-reports/ui-session.md` section 5 (U-06) and [Menu, persona B](session-reports/screenshots/ui/05-local-vegano-menu.png); the Jira issue adds the stored diet flags |
 | Automated coverage | None |
 
@@ -259,9 +261,9 @@ Actual: the product replaces a slot with the recipe the user picks ("Añadir al 
 | Area | UI, validation |
 | Linked case / AC | TC-08 / AC-6 |
 | Jira key | QAFRESCO-34 (filed) |
-| Status | Reproduced live, filed |
+| Status | **Fixed; retest passed on 2026-11-26** (FRESCO-1309). Reproduced live before the fix |
 | Evidence | `session-reports/screenshots/ui/07-onboarding-hogar-13-personas.png` and `08-onboarding-resumen-13-personas.png`; product code `lib/validation/onboarding.ts` and the constraint `check_num_personas_max` |
-| Automated coverage | None; to automate once it is fixed |
+| Automated coverage | None; fixed, still to automate |
 
 Steps:
 1. Sign up and complete the first two onboarding steps (personal data, diet with its consent).
@@ -272,22 +274,71 @@ Expected: the screen stops at 10 people in total with a message that explains it
 
 Actual: the step says "se calculan para 13 personas" and lets the person continue. "Empezar" does not advance: `POST /rest/v1/user_profiles` sends `num_personas: 13` and gets 400 (23514, `check_num_personas_max`). The screen shows "Algún dato del perfil es demasiado largo: hasta 30 elementos por lista, 80 caracteres en el nombre y 500 en los textos libres".
 
+## BUG-13 The next week's menu gets no budget warning
+
+| Field | Value |
+|---|---|
+| Severity / Priority | Medium / P2. The person sets a budget, plans the next week and gets no warning |
+| Area | UI, DB |
+| Linked case / AC | TC-17 / AC-11 |
+| Jira key | QAFRESCO-36 (filed 2026-11-26) |
+| Status | Open. Found in the retest of QAFRESCO-2 |
+| Evidence | Evidence in the Jira issue; its screenshot is kept outside this repository |
+| Automated coverage | None |
+
+Preconditions: local stack running, an account of 10 people with a weekly budget of 35 EUR and a menu for the current week that shows the warning (4 meals, 127.82 EUR).
+
+Steps:
+1. In the calendar move to the next week and generate its menu.
+2. Read the warnings in the calendar, open the menu screen and return to the next week.
+
+Expected: a menu over the weekly budget shows a warning.
+
+Actual: the next week's menu (10 meals) shows no warning in the calendar before or after opening the menu screen, which only shows the current week's warnings; the menu is stored without an estimated cost and without warnings. The app shows no cost for that week, so the excess was not measured. With the budget changed in the local database, the calendar also kept the stored warning until the menu screen was opened.
+
+Note: from a reading of the code, not confirmed, the warning is computed only when the menu screen renders the current week.
+
+## BUG-14 Turning a diet off keeps its allergen selected and saved
+
+| Field | Value |
+|---|---|
+| Severity / Priority | Minor / P3. The allergen is visible and can be removed; if it stays, health data the person did not declare is stored |
+| Area | UI, DB |
+| Linked case / AC | TC-16 / AC-1, AC-8 |
+| Jira key | QAFRESCO-37 (filed 2026-11-26, Jira priority Low) |
+| Status | Open. The code adds the allergen without removing it on purpose; the PO still has to confirm the expected result |
+| Evidence | Evidence in the Jira issue; its screenshot is kept outside this repository |
+| Automated coverage | None |
+
+Preconditions: local stack running, an account with the diet vegetarian, so `pescado` is selected and locked.
+
+Steps:
+1. Open the preferences and turn off "Vegetariano".
+2. Save without touching the allergens.
+3. Read the stored profile.
+
+Expected (proposed by QA): an allergen selected only because of the diet is removed with it, and one chosen by hand stays.
+
+Actual: `pescado` stays selected and unlocked, and the profile is saved without the diet and with `pescado`. The onboarding shows the same on screen; that state was not saved there. The gluten-free diet was not tried.
+
 ## Summary
 
 | ID | Title | Severity | Priority | Area | Case | Jira | Evidence level | Automated |
 |---|---|---|---|---|---|---|---|---|
-| BUG-01 | Vegan and vegetarian diets store sulfitos unchosen | Medium | P2 | UI, DB | TC-16 | QAFRESCO-29 (confirmed) | One UI run, stored profile read in the DB | No |
-| BUG-02 | No warning when the menu exceeds the budget | Major | P2 | UI, DB | TC-17 | QAFRESCO-2 (confirmed) | One UI run, screenshot, stored warnings read in the DB | No |
+| BUG-01 | Vegan and vegetarian diets store sulfitos unchosen | Medium | P2 | UI, DB | TC-16 | QAFRESCO-29 (closed 2026-11-26) | One UI run, stored profile read in the DB; retest passed | No |
+| BUG-02 | No warning when the menu exceeds the budget | Major | P2 | UI, DB | TC-17 | QAFRESCO-2 (closed 2026-11-26) | One UI run, screenshot, stored warnings read in the DB; retest passed for the current week | No |
 | BUG-03 | Photo shows egg on a recipe without egg | Minor | P3 | UI | TC-18 | QAFRESCO-30 (filed) | One UI run, screenshot | No |
-| BUG-04 | Mid-week menu is partial (12 of 21): not a defect, by design | n/a | n/a | UI, API | TC-11 | Not a defect; QAFRESCO-5 is about the label | One UI run on all three personas, contrasted with the API | Partial (`UI-TC-11`, future week only) |
+| BUG-04 | Mid-week menu is partial (12 of 21): not a defect, by design | n/a | n/a | UI, API | TC-11 | Not a defect; QAFRESCO-5, about the label, closed 2026-11-26 | One UI run on all three personas, contrasted with the API | Partial (`UI-TC-11`, future week only) |
 | BUG-05 | Inactive recipes readable anonymously | Question | P3 | API | none | QAFRESCO-31 (filed) | One API run (script, not a test) | No |
 | BUG-06 | Repeated recipe names in the active catalogue | Minor | Jira Medium | UI, DB | none | QAFRESCO-3 | Jira issue only (read-only query) | No |
-| BUG-07 | Onboarding summary ignores the per-day meal selection | Minor | Jira Medium | UI, DB | none | QAFRESCO-4 | Jira issue only | No |
-| BUG-08 | Vegan recipes tagged only Vegetariano | Minor | Jira Medium | UI | TC-03 | QAFRESCO-6 | UI session U-06 with screenshot, plus Jira | No |
+| BUG-07 | Onboarding summary ignores the per-day meal selection | Minor | Jira Medium | UI, DB | none | QAFRESCO-4 (closed 2026-11-26) | Jira issue; retest passed | No |
+| BUG-08 | Vegan recipes tagged only Vegetariano | Minor | Jira Medium | UI | TC-03 | QAFRESCO-6 (closed 2026-11-26) | UI session U-06 with screenshot, plus Jira; retest passed | No |
 | BUG-09 | Cron may downgrade Pro grants without a subscription | Medium | Jira Medium | Billing, cron | none | QAFRESCO-7 | Jira issue only (code reading, not run) | No |
 | BUG-10 | No recipe carries the altramuces tag | Medium | P2 | DB | TC-05 | QAFRESCO-32 (confirmed) | Read-only query, 0 recipes | No |
 | BUG-11 | FAQ promises regenerating one slot; the product does not offer it | Minor | P3 | UI copy | TC-09 | QAFRESCO-33 | `rg` on the product code, FAQ text | Flow that exists: `UI-TC-09` |
-| BUG-12 | The onboarding accepts more than 10 people in total and shows an unrelated error | Minor | P3 | UI, validation | TC-08 | QAFRESCO-34 | Reproduced live, two screenshots and the failing request | No |
+| BUG-12 | The onboarding accepts more than 10 people in total and shows an unrelated error | Minor | P3 | UI, validation | TC-08 | QAFRESCO-34 (closed 2026-11-26) | Reproduced live, two screenshots and the failing request; retest passed | No |
+| BUG-13 | The next week's menu gets no budget warning | Medium | P2 | UI, DB | TC-17 | QAFRESCO-36 | One UI run, stored menu read in the DB | No |
+| BUG-14 | Turning a diet off keeps its allergen selected and saved | Minor | P3 | UI, DB | TC-16 | QAFRESCO-37 | One UI run, stored profile read in the DB | No |
 
 ## Dropped after verification
 
@@ -305,3 +356,4 @@ Actual: the step says "se calculan para 13 personas" and lets the person continu
 - BUG-02: whether the estimate and the budget rule use different calculations.
 - Older menus in the shared database that contain a declared allergen (F-02, F-03 in `docs/session-reports/db-session.md`) are unresolved and are not listed as defects.
 - Shopping list, slot swap, profile edits after generation, account deletion and export were not exercised.
+- The retest of 2026-11-26 ran only on a local stack, not on production or staging. Legacy allergens, a past week, budget values and old warnings were prepared by writing to the local database.

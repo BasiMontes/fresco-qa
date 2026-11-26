@@ -19,7 +19,7 @@ Las semanas 1 y 2 consolidan lo hecho. Las semanas 3 y 4 lo aplican.
 | Semana | Foco | Tareas | Se da por hecha cuando |
 |---|---|---|---|
 | 1 (del 1 al 7) | Consolidar: contar el proyecto | Ensayar los decks en español e inglés con cronómetro. Publicar titular y "Acerca de" en LinkedIn (QAFRESCO-21). Descargar el certificado, entrar en el canal de alumni y publicar el post | Los dos decks tienen tiempo medido, LinkedIn está actualizado y el post está publicado |
-| 2 (del 8 al 14) | Consolidar: cerrar defectos | Repetir la prueba de QAFRESCO-2 (aviso de presupuesto). Si pasa, automatizar TC-17. Revisar los defectos abiertos y ordenarlos por prioridad | QAFRESCO-2 tiene resultado con evidencia y los defectos abiertos tienen orden |
+| 2 (del 8 al 14) | Consolidar: cerrar defectos | Automatizar TC-17 para la semana actual (la prueba de QAFRESCO-2 se repitió y pasó el 2026-11-26; la semana siguiente sigue fallando, QAFRESCO-36). Revisar los defectos abiertos y ordenarlos por prioridad | TC-17 tiene prueba en verde en CI para la semana actual y los defectos abiertos tienen orden |
 | 3 (del 15 al 21) | Aplicar: ampliar cobertura | Automatizar TC-07, TC-12 y TC-16, que no son manuales por diseño. Antes, fijar la regla de escalado de TC-07 y una cuenta desechable para TC-12 | Cada caso tiene su prueba en verde en CI, o una nota con el motivo por el que sigue sin automatizar |
 | 4 (del 22 al 30) | Aplicar: llevarlo a otro contexto | Elegir una práctica del proyecto (CI sobre base de datos limpia o matriz de trazabilidad) y probarla en otro proyecto o en el trabajo. Escribir una retrospectiva corta | Hay un ejemplo aplicado y la retrospectiva está escrita |
 

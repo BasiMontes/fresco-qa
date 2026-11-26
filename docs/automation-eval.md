@@ -39,8 +39,8 @@ The "28 ATCs" figure in `docs/bitacora.md` and in the API progress log was the m
 | TC-13 | Free text flagged as unused | AC-9 | none | none | Manual |
 | TC-14 | Free user can use filters | AC-10 | none | `UI-TC-14` | Automated. No paywall element is known, so the test asserts the save persists after reload and that the checkout dialog never opens (`ui-menu-safety/automation-plan.md` risk R6) |
 | TC-15 | Cannot request another user's recipes | Security | `TC-15` | none | Automated |
-| TC-16 | Vegan diet adds no silent allergens | AC-1, AC-8 | none | none | Not automated. The PO confirmed the defect for `sulfitos` on 2026-11-23 (BUG-01, QAFRESCO-29) |
-| TC-17 | Over-budget warning | AC-11 | none | none | Not automated. The PO confirmed the defect on 2026-11-23 (BUG-02, QAFRESCO-2); automation follows a passing retest |
+| TC-16 | Vegan diet adds no silent allergens | AC-1, AC-8 | none | none | Not automated. The defect for `sulfitos` (BUG-01, QAFRESCO-29) passed its retest on 2026-11-26; BUG-14 (QAFRESCO-37) is open |
+| TC-17 | Over-budget warning | AC-11 | none | none | Not automated. BUG-02 (QAFRESCO-2) passed its retest for the current week on 2026-11-26; the next week fails (BUG-13, QAFRESCO-36) |
 | TC-18 | Photo contradicts allergen data | AC-1 | none | none | Manual, exploratory |
 
 Totals from the table: 11 of 18 TCs have an automated ATC (TC-01, 02, 03, 04, 05, 08, 09, 10, 11, 14, 15). 7 of 18 are not automated; 3 of those are manual by design (TC-06, 13, 18).
@@ -222,7 +222,7 @@ Cheapest next gains: the controls and safety checks that need no quota. Costlies
 ## 9. Next steps
 
 1. Remove or exclude the boilerplate sample tests so module path filters are no longer needed (proposed `/framework-development` chore in `api-menu-safety/automation-plan.md` section 2.1).
-2. Automate TC-16 once BUG-01 is fixed and TC-17 once BUG-02 is fixed, and decide with the PO whether the 4/1/0 household row is accepted or rejected.
+2. Automate TC-16 and the current-week half of TC-17, both fixed; the next-week half waits for BUG-13. Decide with the PO whether the 4/1/0 household row is accepted or rejected.
 3. Add the negative sibling of TC-09 (an egg recipe assigned through the RPC must be refused) and decide with the product owner whether the drag swap needs a case. The FAQ promise of regenerating one slot is BUG-11 (QAFRESCO-33).
 7. Decide whether the `CHK-*` ids become test cases in `docs/test-cases.md` (question Q2 of the API plan).
 8. If Jira sync is ever enabled, rename the ids to tracker keys first.

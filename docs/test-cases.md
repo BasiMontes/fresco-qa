@@ -35,8 +35,8 @@ Legend. Priority: P1 must run before release, P2 should run, P3 nice to have. Au
 | TC-13 | A free-text allergy is honoured or the user is warned | AC-9 | Negative | P2 | Manual | Designed |
 | TC-14 | A Free user can use diet and allergy filters | AC-10 | Positive | P2 | UI | Designed |
 | TC-15 | A user cannot request another user's filtered recipes | Security | Negative | P1 | API | Executed once, passed |
-| TC-16 | Choosing a vegan diet does not silently add allergens | AC-1, AC-8 | Negative | P2 | UI + DB | Executed once, defect confirmed for `sulfitos` (QAFRESCO-29) |
-| TC-17 | A menu over the weekly budget shows a warning | AC-11 | Negative | P2 | UI + DB | Executed once, defect confirmed (QAFRESCO-2) |
+| TC-16 | Choosing a vegan diet does not silently add allergens | AC-1, AC-8 | Negative | P2 | UI + DB | Executed twice, retest passed (QAFRESCO-29); related open defect QAFRESCO-37 |
+| TC-17 | A menu over the weekly budget shows a warning | AC-11 | Negative | P2 | UI + DB | Executed twice: current week passed (QAFRESCO-2), next week fails (QAFRESCO-36) |
 | TC-18 | Recipe photos do not contradict the allergen data | AC-1 | Exploratory | P3 | Manual | Executed once, defect filed (QAFRESCO-30) |
 
 ## Case details
@@ -104,7 +104,7 @@ Legend. Priority: P1 must run before release, P2 should run, P3 nice to have. Au
 - Expected: quantities grow in proportion to the number of people. The product scales by the number of people only, so a child counts as an adult (improvement QAFRESCO-35).
 
 ### TC-08 Household size limits are enforced
-- Automated check: `TC-08-1`, `TC-08-2` (API). Status: Automated; row 4/1/0 not tested (the database accepts it, the app cannot produce it). Defect: BUG-12 for the total above 10 in the onboarding.
+- Automated check: `TC-08-1`, `TC-08-2` (API). Status: Automated; row 4/1/0 not tested (the database accepts it, the app cannot produce it). Defect: BUG-12 for the total above 10 in the onboarding (fixed, retest passed 2026-11-26).
 - Covers: AC-6. Boundary. Priority P2. Automation: API.
 - Data table:
 
@@ -116,7 +116,7 @@ Legend. Priority: P1 must run before release, P2 should run, P3 nice to have. Au
 | 0 | 0 | 0 | rejected |
 | 2 | 3 | 0 | rejected |
 | 4 | 1 | 0 | accepted by the database; the app derives the total, so it cannot be produced from the app (F-05). Not tested |
-| 8 | 8 | 5 | UI: the onboarding accepts 13 people and the save fails with a misleading message (BUG-12). Not automated until fixed |
+| 8 | 8 | 5 | UI: rejected on the household step with the limit message since the fix of BUG-12 (retest 2026-11-26). Not automated yet |
 
 ### TC-09 Swapping one slot changes only that slot and stays safe
 - Automated check: `UI-TC-09` (UI). Status: Automated. Defect: none (the FAQ promise of regenerating one slot is BUG-11).
@@ -166,18 +166,20 @@ Legend. Priority: P1 must run before release, P2 should run, P3 nice to have. Au
 - Expected: the call fails with "caller does not own profile".
 
 ### TC-16 Choosing a vegan diet does not silently add allergens
-- Automated check: none. Status: Executed once, defect confirmed for `sulfitos`. Defect: BUG-01 (QAFRESCO-29).
+- Automated check: none. Status: Executed twice, retest passed. Defect: BUG-01 (QAFRESCO-29, closed); related BUG-14 (QAFRESCO-37, open).
 - Covers: AC-1, AC-8. Persona B. Priority P2. Automation: UI and database.
 - Steps: sign up, choose only the diets vegano and sin lactosa and no allergen, tick the consent, finish the onboarding, read the summary and the stored profile.
 - Expected: no allergen is stored unless it contradicts the diet (PO, 2026-11-23): `huevo` and `pescado` are accepted for a vegan diet, `sulfitos` is not.
 - Observed in a local run: the stored profile had `pescado`, `sulfitos` and `huevo` that the test did not select, and the diet step showed them as selected. Whether the user sees them in the summary was not checked.
+- Retest 2026-11-26, local run at `fresco-app` `04ee5c6d`: passed. The vegan profile stored only `pescado` and `huevo`, vegetarian locked only `pescado`, and a stored `sulfitos` could be removed in the preferences. Turning a diet off kept its allergen (BUG-14).
 
 ### TC-17 A menu over the weekly budget shows a warning
-- Automated check: none. Status: Executed once, defect confirmed. Defect: BUG-02 (QAFRESCO-2).
+- Automated check: none. Status: Executed twice; passed for the current week, failed for the next week. Defect: BUG-02 (QAFRESCO-2, closed); BUG-13 (QAFRESCO-36, open).
 - Covers: AC-11. Persona B. Priority P2. Automation: UI and database.
 - Steps: set a weekly budget lower than the estimated cost of a menu, generate it, read the menu screens and the stored warnings.
 - Expected: a warning that the menu exceeds the budget, as the onboarding promises.
 - Observed in a local run: budget 35 EUR, estimated cost 94.95 EUR, no warning displayed and no warning stored. The two cost figures may come from different calculations.
+- Retest 2026-11-26, local run at `fresco-app` `04ee5c6d`: for the current week the warning matched the estimated cost minus the budget (127.82 minus 35 gave 92.82 EUR), appeared with a budget 0.01 EUR below the cost and not with one equal to or above it. The next week's menu showed no warning (BUG-13).
 
 ### TC-18 Recipe photos do not contradict the allergen data
 - Automated check: none. Status: Executed once, defect filed. Defect: BUG-03 (QAFRESCO-30).
