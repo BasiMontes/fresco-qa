@@ -22,7 +22,7 @@ Severity scale: Major (wrong behaviour on health or money data), Minor (wrong bu
 | Jira key | QAFRESCO-29 (filed 2026-11-23) |
 | Status | **Fixed; retest passed on 2026-11-26** (FRESCO-1308). Confirmed by the PO for `sulfitos` on 2026-11-23: `huevo` and `pescado` contradict a vegan diet and are accepted; `sulfitos` does not. Turning a diet off is a separate defect, BUG-14 |
 | Evidence | `docs/session-reports/ui-session.md` section 5 (U-02) and section 4 (stored profile of persona B); screenshot of the diet step with the locked allergens: `session-reports/screenshots/ui/06-onboarding-vegano-bloquea-alergenos.png`; the summary screen lists them too (`08-onboarding-resumen-13-personas.png`) |
-| Automated coverage | `UI-TC-16-1`, `UI-TC-16-2`, `UI-TC-16-3`, `UI-TC-16-4` (passed locally on 2026-11-27, first CI run pending) |
+| Automated coverage | `UI-TC-16-1`, `UI-TC-16-2`, `UI-TC-16-3`, `UI-TC-16-4` (passed in CI on 2026-11-27, run 45991044433) |
 
 Preconditions: local stack running, no existing account for persona B.
 
@@ -312,7 +312,7 @@ Note: from a reading of the code, not confirmed, the warning is computed only wh
 | Jira key | QAFRESCO-37 (filed 2026-11-26, Jira priority Low) |
 | Status | **Closed; retest passed on 2026-11-27** (FRESCO-1321) against a narrower expected result than the one QA proposed. Only an allergen that the diet added in the same edit is removed. A saved one stays, unlocked and removable, so the steps below still end with `pescado` selected, now on purpose |
 | Evidence | Evidence in the Jira issue; its screenshot is kept outside this repository |
-| Automated coverage | `UI-TC-16-1`, `UI-TC-16-2`, `UI-TC-16-3`, `UI-TC-16-4` (passed locally on 2026-11-27, first CI run pending) |
+| Automated coverage | `UI-TC-16-1`, `UI-TC-16-2`, `UI-TC-16-3`, `UI-TC-16-4` (passed in CI on 2026-11-27, run 45991044433) |
 
 Preconditions: local stack running, an account with the diet vegetarian, so `pescado` is selected and locked.
 
