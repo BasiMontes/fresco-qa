@@ -35,9 +35,9 @@ Legend. Priority: P1 must run before release, P2 should run, P3 nice to have. Au
 | TC-13 | A free-text allergy is honoured or the user is warned | AC-9 | Negative | P2 | Manual | Designed |
 | TC-14 | A Free user can use diet and allergy filters | AC-10 | Positive | P2 | UI | Designed |
 | TC-15 | A user cannot request another user's filtered recipes | Security | Negative | P1 | API | Executed once, passed |
-| TC-16 | Choosing a vegan diet does not silently add allergens | AC-1, AC-8 | Negative | P2 | UI + DB | Executed twice, retest passed (QAFRESCO-29); related open defect QAFRESCO-37 |
-| TC-17 | A menu over the weekly budget shows a warning | AC-11 | Negative | P2 | UI + DB | Executed twice: current week passed (QAFRESCO-2), next week fails (QAFRESCO-36) |
-| TC-18 | Recipe photos do not contradict the allergen data | AC-1 | Exploratory | P3 | Manual | Executed once, defect filed (QAFRESCO-30) |
+| TC-16 | Choosing a vegan diet does not silently add allergens | AC-1, AC-8 | Negative | P2 | UI + DB | Executed twice, retest passed (QAFRESCO-29); related defect QAFRESCO-37 closed |
+| TC-17 | A menu over the weekly budget shows a warning | AC-11 | Negative | P2 | UI + DB | Executed three times, retest passed for the current and next week (QAFRESCO-2, QAFRESCO-36) |
+| TC-18 | Recipe photos do not contradict the allergen data | AC-1 | Exploratory | P3 | Manual | Executed once, defect filed and closed (QAFRESCO-30); full case not repeated |
 
 ## Case details
 
@@ -167,28 +167,31 @@ Legend. Priority: P1 must run before release, P2 should run, P3 nice to have. Au
 - Expected: the call fails with "caller does not own profile".
 
 ### TC-16 Choosing a vegan diet does not silently add allergens
-- Automated check: none. Status: Executed twice, retest passed. Defect: BUG-01 (QAFRESCO-29, closed); related BUG-14 (QAFRESCO-37, open).
+- Automated check: none. Status: Executed twice, retest passed. Defect: BUG-01 (QAFRESCO-29, closed); related BUG-14 (QAFRESCO-37, closed).
 - Covers: AC-1, AC-8. Persona B. Priority P2. Automation: UI and database.
 - Steps: sign up, choose only the diets vegano and sin lactosa and no allergen, tick the consent, finish the onboarding, read the summary and the stored profile.
 - Expected: no allergen is stored unless it contradicts the diet (PO, 2026-11-23): `huevo` and `pescado` are accepted for a vegan diet, `sulfitos` is not.
 - Observed in a local run: the stored profile had `pescado`, `sulfitos` and `huevo` that the test did not select, and the diet step showed them as selected. Whether the user sees them in the summary was not checked.
 - Retest 2026-11-26, local run at `fresco-app` `04ee5c6d`: passed. The vegan profile stored only `pescado` and `huevo`, vegetarian locked only `pescado`, and a stored `sulfitos` could be removed in the preferences. Turning a diet off kept its allergen (BUG-14).
+- Retest of BUG-14 on 2026-11-27, local run at `fresco-app` `08dda5d6`: a diet switched on and off in one edit left none of its allergens, in the preferences and in the onboarding; a saved allergen stayed, unlocked. A `sulfitos` chosen by hand survived. TC-16 itself was not executed again.
 
 ### TC-17 A menu over the weekly budget shows a warning
-- Automated check: none. Status: Executed twice; passed for the current week, failed for the next week. Defect: BUG-02 (QAFRESCO-2, closed); BUG-13 (QAFRESCO-36, open).
+- Automated check: none. Status: Executed three times; the last run passed for the current and next week. Defects: BUG-02 (QAFRESCO-2, closed); BUG-13 (QAFRESCO-36, closed).
 - Covers: AC-11. Persona B. Priority P2. Automation: UI and database.
 - Steps: set a weekly budget lower than the estimated cost of a menu, generate it, read the menu screens and the stored warnings.
 - Expected: a warning that the menu exceeds the budget, as the onboarding promises.
 - Observed in a local run: budget 35 EUR, estimated cost 94.95 EUR, no warning displayed and no warning stored. The two cost figures may come from different calculations.
 - Retest 2026-11-26, local run at `fresco-app` `04ee5c6d`: for the current week the warning matched the estimated cost minus the budget (127.82 minus 35 gave 92.82 EUR), appeared with a budget 0.01 EUR below the cost and not with one equal to or above it. The next week's menu showed no warning (BUG-13).
+- Retest 2026-11-27, local run at `fresco-app` `08dda5d6`, 10 adults and a budget of 35 EUR: the next week's calendar warned on first load (449.84 EUR over). There was no warning with 600 EUR or with 484.84 EUR (the cost), and 0.01 EUR was reported with 484.83. The current week cost 248.90 EUR and warned 213.90 over. A past week kept its stored warning.
 
 ### TC-18 Recipe photos do not contradict the allergen data
-- Automated check: none. Status: Executed once, defect filed. Defect: BUG-03 (QAFRESCO-30).
+- Automated check: none. Status: Executed once, defect filed. Defect: BUG-03 (QAFRESCO-30, closed).
 - Covers: AC-1. Persona A. Priority P3. Automation: manual.
 - Steps: for each recipe in the menu of an allergic persona, compare the photo with the recipe's ingredients and allergens.
 - Expected: no photo shows a declared allergen that the recipe does not list.
 - Observed in a local run: "Ensalada de kale con manzana" shows halved boiled eggs in an external stock photo, while its ingredients are kale, apple and walnuts.
 - On 2026-11-26 the photo in the hosted database showed no egg; the seed data still pointed to the old photo. The case was not executed again.
+- Retest 2026-11-27, local run at `fresco-app` `08dda5d6`: the two reviewed photos showed no egg and no prawns. The case over every recipe of a menu was not executed again.
 
 ## Notes on execution
 

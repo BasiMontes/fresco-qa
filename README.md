@@ -66,24 +66,24 @@ This project measures test-case coverage, not code coverage; no code-coverage pe
 
 ### Bugs found
 
-The product owner decided on the candidates on 2026-11-23. A retest on 2026-11-26, on a local stack of the product, passed BUG-01, 02, 07, 08 and 12 and found BUG-13 and BUG-14. A second one the same day passed BUG-05, 09, 10 and 11 and failed BUG-06 (`docs/bugs-found.md`).
+The product owner decided on the candidates on 2026-11-23. A retest on 2026-11-26, on a local stack of the product, passed BUG-01, 02, 07, 08 and 12 and found BUG-13 and BUG-14. A second one the same day passed BUG-05, 09, 10 and 11 and failed BUG-06. A third one on 2026-11-27 passed BUG-03, 06, 13 and 14, so no filed defect is open (`docs/bugs-found.md`).
 
 | ID | Title | Severity | Status | Jira |
 |---|---|---|---|---|
 | BUG-01 | Vegan and vegetarian diets store the allergen sulfitos the user did not choose | Medium | Fixed, retest passed | QAFRESCO-29 |
-| BUG-02 | Menu over the weekly budget shows no warning | Major | Fixed for the current week, retest passed; next week is BUG-13 | QAFRESCO-2 |
-| BUG-03 | Recipe photo shows egg on a recipe without egg | Minor | Open; photo replaced in the hosted database, the seed data still has the old one | QAFRESCO-30 |
+| BUG-02 | Menu over the weekly budget shows no warning | Major | Fixed, retest passed; the next week was BUG-13 | QAFRESCO-2 |
+| BUG-03 | Recipe photo shows egg on a recipe without egg | Minor | Fixed, retest passed | QAFRESCO-30 |
 | BUG-04 | Menu generated mid-week leaves the past days empty | n/a | Not a defect: by design (weeks start on Monday) | QAFRESCO-5 covered only the label: fixed, retest passed |
 | BUG-05 | Inactive recipes are readable without a session | Question | Fixed, retest passed | QAFRESCO-31 |
-| BUG-06 | Active catalogue holds recipes with a repeated name | Minor | Open; retest failed, one pair differs only by an accent | QAFRESCO-3 |
+| BUG-06 | Active catalogue holds recipes with a repeated name | Minor | Fixed, second retest passed | QAFRESCO-3 |
 | BUG-07 | Onboarding summary does not reflect the meals chosen per day | Minor | Fixed, retest passed | QAFRESCO-4 |
 | BUG-08 | Vegan recipes are tagged only "Vegetariano" for a vegan profile | Minor | Fixed, retest passed | QAFRESCO-6 |
 | BUG-09 | Reconcile cron may downgrade Pro plans granted without a subscription | Medium | Fixed, retest passed | QAFRESCO-7 |
 | BUG-10 | No recipe carries the altramuces tag, so declaring lupin excludes nothing | Medium | Closed, retest passed: no recipe names lupin, so none is tagged | QAFRESCO-32 |
 | BUG-11 | The FAQ promises regenerating one slot and the product does not offer it | Minor | Text corrected, retest passed | QAFRESCO-33 |
 | BUG-12 | The onboarding accepts more than 10 people in total and shows an unrelated error | Minor | Fixed, retest passed | QAFRESCO-34 |
-| BUG-13 | The next week's menu gets no budget warning | Medium | Open | QAFRESCO-36 |
-| BUG-14 | Turning a diet off keeps its allergen selected and saved | Minor | Open; the PO still has to confirm the expected result | QAFRESCO-37 |
+| BUG-13 | The next week's menu gets no budget warning | Medium | Fixed, retest passed | QAFRESCO-36 |
+| BUG-14 | Turning a diet off keeps its allergen selected and saved | Minor | Closed, retest passed: only what the diet added in that edit is removed | QAFRESCO-37 |
 
 ## Learnings
 

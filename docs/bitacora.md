@@ -137,3 +137,9 @@ Append-only project log. Every relevant milestone adds one entry at the bottom: 
 **What**: Runs 45888973401 (second attempt) and 45902431272 passed their tests but did not publish the results page: the deploy step listed the artifacts in the same second the page was uploaded, did not find it, and `continue-on-error` kept the job green. `tests.yml` now builds and uploads the page in one job and deploys it in the next, and a failed deploy adds a warning to the run. Run 45905759562 passed 64 of 64 and the live page showed commit 7c5d255. The fix has been seen working in that one run.
 **Why**: A green run was hiding an outdated public page.
 **Next**: Retest QAFRESCO-3, 30, 36 and 37 when the product session reports them.
+
+## 2026-11-27 - Third retest: the last four defects closed
+
+**What**: Retested QAFRESCO-3, 30, 36 and 37 with the app built from fresco-app commit 08dda5d6 on a separate local stack. All 27 checks passed and the integration and e2e suites passed 64 of 64; the four cards were commented and closed with the owner approval, so no filed defect is open. QAFRESCO-37 closed against a narrower expected result: only an allergen added by the diet in the same edit is removed. Read-only queries checked the hosted database. The interface was not tried on production or staging. Updated README.md, docs/bugs-found.md, docs/test-cases.md, docs/traceability-matrix.md, docs/automation-eval.md and docs/portfolio/post-dojo-plan.md.
+**Why**: Cards close only after an observed retest.
+**Next**: Automate TC-16 and both halves of TC-17.
