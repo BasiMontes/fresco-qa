@@ -161,3 +161,9 @@ Append-only project log. Every relevant milestone adds one entry at the bottom: 
 **What**: Commit 7eb3779 ran in CI (run 45979520910): 66 of 66, with `UI-TC-17-1` and `UI-TC-17-2` passing on their first run there; the unit tests passed and the results page shows the commit.
 **Why**: A test counts as coverage once it runs in the pipeline.
 **Next**: Automate TC-16, TC-07 and TC-12 (`docs/portfolio/post-dojo-plan.md`).
+
+## 2026-11-27 - TC-16 automated: diets add only the allergens they should
+
+**What**: Added `UI-TC-16-1` to `16-4` in `tests/e2e/menu-safety/keepDietAllergensHonest.test.ts` with an onboarding screen component; each of the four tests signs up its own account. A separate reviewer rejected the first version (stale test manifest, no case for a hand-chosen allergen that a diet also implies, and ten smaller findings) and the findings were corrected. The tests passed twice on fresco-app 1cfac440 and failed on the versions before each fix and on a copy altered to delete hand-chosen allergens. Not yet run in CI.
+**Why**: Both defects were checked only by hand and touch health data.
+**Next**: Push the change and check the CI run. TC-07 needs its scaling rule and TC-12 a disposable account.

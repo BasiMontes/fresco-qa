@@ -46,6 +46,45 @@ export class PreferencesPage extends UiBase {
     await expect(this.allergenChip(label), `allergen chip ${label} after reload`).toHaveAttribute('aria-pressed', 'true');
   }
 
+  @atc('UI-TC-16-3')
+  async keepSavedAllergenWhenItsDietIsSwitchedOff(selection: FilterSelection): Promise<void> {
+    const diet = this.dietChip(selection.diet);
+    const allergen = this.allergenChip(selection.allergen);
+    await expect(diet, `saved diet ${selection.diet}`).toHaveAttribute('aria-pressed', 'true');
+    await expect(allergen, `saved allergen ${selection.allergen}`).toHaveAttribute('aria-pressed', 'true');
+    await expect(allergen, `${selection.allergen} locked by the diet`).toBeDisabled();
+
+    await diet.click();
+    await expect(diet).toHaveAttribute('aria-pressed', 'false');
+    await expect(allergen, `${selection.allergen} after the diet is off`).toHaveAttribute('aria-pressed', 'true');
+    await expect(allergen, `${selection.allergen} unlocked`).toBeEnabled();
+
+    const save = this.page.getByTestId('actualizar_preferencias_button');
+    await expect(save).toBeEnabled();
+    await save.click();
+    await expect(this.page.getByTestId('preferencias_saved_message')).toBeVisible();
+
+    await this.page.reload();
+    await expect(diet, `diet ${selection.diet} after reload`).toHaveAttribute('aria-pressed', 'false');
+    await expect(allergen, `allergen ${selection.allergen} after reload`).toHaveAttribute('aria-pressed', 'true');
+  }
+
+  @atc('UI-TC-16-4')
+  async takeBackAllergenWhenTheDietThatAddedItIsSwitchedOff(selection: FilterSelection): Promise<void> {
+    const diet = this.dietChip(selection.diet);
+    const allergen = this.page.getByTestId('preferencia_alergeno_option').filter({ hasText: new RegExp(`^${selection.allergen}$`) });
+    await expect(allergen, `${selection.allergen} before the diet`).toHaveAttribute('aria-pressed', 'false');
+
+    await diet.click();
+    await expect(allergen, `${selection.allergen} added by the diet`).toHaveAttribute('aria-pressed', 'true');
+    await expect(allergen, `${selection.allergen} locked by the diet`).toBeDisabled();
+
+    await diet.click();
+    await expect(diet).toHaveAttribute('aria-pressed', 'false');
+    await expect(allergen, `${selection.allergen} after the diet is off`).toHaveAttribute('aria-pressed', 'false');
+    await expect(allergen).toBeEnabled();
+  }
+
   @atc('UI-TC-05')
   async saveLupinAllergen(): Promise<void> {
     const lupin = this.allergenChip('Altramuces');

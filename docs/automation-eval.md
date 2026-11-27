@@ -9,8 +9,8 @@ Evaluation of the test automation built for the Fresco menu feature: what was au
 | Framework | KATA on Playwright and TypeScript, run with Bun (`package.json`) |
 | Target | Local copy of the product (local Supabase, edge functions, web app). Staging is excluded because its login and auth API require a captcha (`docs/bitacora.md`) |
 | API suite | 12 files in `tests/integration/menu-safety/`, 33 new ATC ids (`kata-manifest.json`) |
-| UI suite | 5 files in `tests/e2e/menu-safety/`, 9 new ATC ids (`kata-manifest.json`) |
-| ATCs in the manifest | 50 in total: 33 API (`TC-*`, `CHK-*`), 9 UI (`UI-TC-*`), 8 from the boilerplate samples (`PROJ-*`) (`kata-manifest.json`, `summary.totalATCs` = 50) |
+| UI suite | 6 files in `tests/e2e/menu-safety/`, 13 new ATC ids (`kata-manifest.json`) |
+| ATCs in the manifest | 54 in total: 33 API (`TC-*`, `CHK-*`), 13 UI (`UI-TC-*`), 8 from the boilerplate samples (`PROJ-*`) (`kata-manifest.json`, `summary.totalATCs` = 54) |
 | Pipeline | `.github/workflows/tests.yml`, passing on a GitHub runner on a fresh database (see section 5) |
 | Jira | Not used for tests. Owner decision, see section 7 |
 
@@ -39,13 +39,13 @@ The "28 ATCs" figure in `docs/bitacora.md` and in the API progress log was the m
 | TC-13 | Free text flagged as unused | AC-9 | none | none | Manual |
 | TC-14 | Free user can use filters | AC-10 | none | `UI-TC-14` | Automated. No paywall element is known, so the test asserts the save persists after reload and that the checkout dialog never opens (`ui-menu-safety/automation-plan.md` risk R6) |
 | TC-15 | Cannot request another user's recipes | Security | `TC-15` | none | Automated |
-| TC-16 | Vegan diet adds no silent allergens | AC-1, AC-8 | none | none | Not automated. The defect for `sulfitos` (BUG-01, QAFRESCO-29) passed its retest on 2026-11-26; BUG-14 (QAFRESCO-37) passed its retest on 2026-11-27 |
+| TC-16 | Vegan diet adds no silent allergens | AC-1, AC-8 | none | `UI-TC-16-1`, `UI-TC-16-2`, `UI-TC-16-3`, `UI-TC-16-4` | Automated, first CI run pending: what a diet adds, what it takes back in the same edit (onboarding and preferences), and that a hand-chosen or saved allergen stays. Each test signs up its own account |
 | TC-17 | Over-budget warning | AC-11 | none | `UI-TC-17-1`, `UI-TC-17-2`, `UI-TC-17-3` | Automated for the current and next week, with the budget at 1 EUR, at the cost and one cent under it. The next week shows no cost, so its amount is not verified on its own: the threshold is derived from the first warning and checked for consistency (`budget-warning/spec.md`) |
 | TC-18 | Photo contradicts allergen data | AC-1 | none | none | Manual, exploratory |
 
-Totals from the table: 12 of 18 TCs have an automated ATC (TC-01, 02, 03, 04, 05, 08, 09, 10, 11, 14, 15, 17). 6 of 18 are not automated; 3 of those are manual by design (TC-06, 13, 18).
+Totals from the table: 13 of 18 TCs have an automated ATC (TC-01, 02, 03, 04, 05, 08, 09, 10, 11, 14, 15, 16, 17). 5 of 18 are not automated; 3 of those are manual by design (TC-06, 13, 18).
 
-Acceptance criteria with at least one automated check: AC-1, AC-2, AC-3, AC-4, AC-6, AC-7, AC-10, AC-11 and the security criterion. No automated check covers AC-5, AC-8 or AC-9 (`docs/feature-test-plan.md`).
+Acceptance criteria with at least one automated check: AC-1, AC-2, AC-3, AC-4, AC-6, AC-7, AC-8 (consent gate and stored allergens only), AC-10, AC-11 and the security criterion. No automated check covers AC-5 or AC-9 (`docs/feature-test-plan.md`).
 
 ### 2.2 Extra API checks without a TC
 
@@ -74,8 +74,8 @@ The automated set was chosen on food-safety risk first: an allergen in a menu is
 |---|---|
 | Config | `config/variables.ts`: environment map, `auth.roles` (`alergia`, `vegano`, `familia`, `presupuesto`), `roleCredentials(role)` reading `<ENV>_<ROLE>_EMAIL` and `_PASSWORD` by variable name, `supabaseAnonKey` |
 | Base | `ApiBase` (request helper, `apikey` header added when set, `RateLimitError` thrown on 429), `UiBase` |
-| Domain | API: `RecipesApi`, `MealPlansApi`, `ProfilesApi`, `AccessControlApi` (new, approved by the owner), `AuthApi` (extended). UI: `CalendarPage`, `MenuPage`, `PreferencesPage`, `RecipesPage`, `LoginPage` (selectors fixed) |
-| Fixture | `ApiFixture` registers the new components and offers `asRole(role)`; `UiFixture` registers `calendar`, `menu`, `preferences` and `recipes`; `TestFixture` has a `role` option |
+| Domain | API: `RecipesApi`, `MealPlansApi`, `ProfilesApi`, `AccessControlApi` (new, approved by the owner), `AuthApi` (extended). UI: `CalendarPage`, `MenuPage`, `OnboardingPage`, `PreferencesPage`, `RecipesPage`, `LoginPage` (selectors fixed) |
+| Fixture | `ApiFixture` registers the new components and offers `asRole(role)`; `UiFixture` registers `calendar`, `menu`, `onboarding`, `preferences` and `recipes`; `TestFixture` has a `role` option |
 
 (`api-menu-safety/automation-plan.md` sections 2.2 and 2.3; `ui-menu-safety/automation-plan.md` sections 3.2 to 3.4.) No ATC calls another ATC. No Steps module was added because Steps need 3 or more ATCs repeated in 3 or more files.
 
@@ -104,6 +104,7 @@ The product allows 5 menu generations per user per UTC hour (`docs/session-repor
 | Household (API), diets and allergens (UI-TC-14) | Modify | Snapshot first, restore in `finally` through the API |
 | Personas | Seeded | `scripts/ci/seed-personas.ts` creates the four profiles in CI. The first three were created locally through the signup form because the repository doctrine forbids admin-created accounts (`docs/bitacora.md`). `presupuesto` is used only by the budget tests |
 | Current and next week menu, weekly budget | Generate, Modify | `presupuesto` only: menus are deleted before and after each test and the budget is restored to empty |
+| Accounts of the diet tests | Generate | One new account per test through the onboarding form, with generated credentials. They are not deleted |
 
 A crash can leave at most one menu in a far-future week, which later runs never reuse (`ui-menu-safety/automation-plan.md` section 5). The budget tests are the exception: a crash can leave a menu on the current or next week and a budget on `presupuesto`, which the next run replaces and removes.
 
@@ -145,6 +146,7 @@ UI suite: 4 reviewers reported no blocker. Fixes applied afterwards: `revealDay`
 | CI workflow, first run with the schema and CRUD ATCs | Failed, 62 of 63. `CHK-D2` received 429 because `CHK-E8` added a sixth menu request for `familia` in the same hour; in CI a spent quota is a failure, not NOT RUN | GitHub Actions run 45157377686, commit `6b87836` |
 | CI workflow, with the schema and CRUD ATCs | Passed, 64 of 64 entries (3 setup and teardown steps and 61 tests: 55 API and 6 UI), 0 skipped, 0 not run. `CHK-E8` moved to `vegano` | GitHub Actions run 45158678926, commit `1bf0700` |
 | Budget tests, local, 2026-11-27, after the review fixes | Passed twice on fresco-app `08dda5d6` and left no menu and no budget. On `8575a2d9`, before the BUG-13 fix, both failed: the next week showed no warning and the calendar kept a stale one. With the budget deliberately set one cent under the cost, both failed at the no-warning check. Full `integration` and `e2e` run on a reset database: 66 of 66. Also passed in CI, 66 of 66 | Local runs, and GitHub Actions run 45979520910, commit `7eb3779` |
+| Diet tests, local, 2026-11-27, after the review fixes | Four tests passed twice on fresco-app `1cfac440`. On `0d3ff944`, before the BUG-01 fix, all four failed. On `8575a2d9`, before the BUG-14 fix, the tests of `16-2` and of the preferences (`16-3`, `16-4`) failed. On a copy of `1cfac440` changed so that a diet claims hand-chosen allergens, the same two failed. Full `integration` and `e2e` run on a reset database: 70 of 70. Not yet run in CI | Local runs |
 
 State of the suite: 66 of 66 passing in CI on a fresh database at commit `7eb3779` (run 45979520910). The three runs before commit `ba7eb2a` (run 45165651506) failed for other reasons: a GitHub Pages deployment error after 64 of 64 tests passed, a runner crash while starting Supabase (`Bus error`), and a names comparison in `UI-TC-11` that the catalogue's repeated names (BUG-06) can break. That workflow runs the `integration` and `e2e` projects only. `smoke-ui` (one `@critical` test, UI-TC-14) was verified locally on 22 Nov and no workflow runs it on its own, and repeated runs inside the same UTC hour are not covered. The inherited `smoke.yml` and `regression.yml` only run on manual dispatch, because their daily schedule failed against staging.
 
@@ -201,7 +203,7 @@ Additional limits from the plans:
 
 - `TC-15` and `CHK-*` do not match a Jira key under project `QAFRESCO`. Harmless while `tms.autoSync` is `false`; revisit before enabling sync.
 - The three-ATC split of TC-01, TC-03 and TC-11 in the UI suite, and TC-01 and TC-02 in the API suite, follows the owner's rule that the TC key is the id. Equivalence partitioning would use one parameterized ATC per behaviour (`ui-menu-safety/automation-plan.md` section 4).
-- UI findings U-02 and U-05 (BUG-01, BUG-03) have no test; U-04 (BUG-02) is covered by TC-17. U-03 (BUG-04) is not a defect. `docs/bugs-found.md` records each PO decision.
+- UI finding U-05 (BUG-03) has no test; U-02 (BUG-01) is covered by TC-16 and U-04 (BUG-02) by TC-17. U-03 (BUG-04) is not a defect. `docs/bugs-found.md` records each PO decision.
 - Of the database findings, `TC-02` checks F-02 by recipe name, and `UI-TC-11` checks for repeated comida or cena (the F-04 behaviour) on a future week. `UI-TC-05` covers F-06 (BUG-10) only in part. F-03 is unresolved, the F-05 row is left out of TC-08, and F-01 was dropped as a defect (`docs/session-reports/db-session.md`, `docs/bugs-found.md`).
 
 ## 8. ROI and maintenance
@@ -224,7 +226,7 @@ Cheapest next gains: the controls and safety checks that need no quota. Costlies
 ## 9. Next steps
 
 1. Remove or exclude the boilerplate sample tests so module path filters are no longer needed (proposed `/framework-development` chore in `api-menu-safety/automation-plan.md` section 2.1).
-2. Automate TC-16. TC-17 was automated on 2026-11-27. Decide with the PO whether the 4/1/0 household row is accepted or rejected.
+2. TC-16 and TC-17 were automated on 2026-11-27. Decide with the PO whether the 4/1/0 household row is accepted or rejected.
 3. Add the negative sibling of TC-09 (an egg recipe assigned through the RPC must be refused) and decide with the product owner whether the drag swap needs a case. The FAQ promise of regenerating one slot was BUG-11 (QAFRESCO-33), closed on 2026-11-26 after the text changed.
 7. Decide whether the `CHK-*` ids become test cases in `docs/test-cases.md` (question Q2 of the API plan).
 8. If Jira sync is ever enabled, rename the ids to tracker keys first.

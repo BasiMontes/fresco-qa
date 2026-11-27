@@ -35,7 +35,7 @@ Legend. Priority: P1 must run before release, P2 should run, P3 nice to have. Au
 | TC-13 | A free-text allergy is honoured or the user is warned | AC-9 | Negative | P2 | Manual | Designed |
 | TC-14 | A Free user can use diet and allergy filters | AC-10 | Positive | P2 | UI | Designed |
 | TC-15 | A user cannot request another user's filtered recipes | Security | Negative | P1 | API | Executed once, passed |
-| TC-16 | Choosing a vegan diet does not silently add allergens | AC-1, AC-8 | Negative | P2 | UI + DB | Executed twice, retest passed (QAFRESCO-29); related defect QAFRESCO-37 closed |
+| TC-16 | Choosing a vegan diet does not silently add allergens | AC-1, AC-8 | Negative | P2 | UI + DB | Automated; retest passed (QAFRESCO-29, QAFRESCO-37) |
 | TC-17 | A menu over the weekly budget shows a warning | AC-11 | Negative | P2 | UI + DB | Automated; retest passed for the current and next week (QAFRESCO-2, QAFRESCO-36) |
 | TC-18 | Recipe photos do not contradict the allergen data | AC-1 | Exploratory | P3 | Manual | Executed once, defect filed and closed (QAFRESCO-30); full case not repeated |
 
@@ -167,8 +167,8 @@ Legend. Priority: P1 must run before release, P2 should run, P3 nice to have. Au
 - Expected: the call fails with "caller does not own profile".
 
 ### TC-16 Choosing a vegan diet does not silently add allergens
-- Automated check: none. Status: Executed twice, retest passed. Defect: BUG-01 (QAFRESCO-29, closed); related BUG-14 (QAFRESCO-37, closed).
-- Covers: AC-1, AC-8. Persona B. Priority P2. Automation: UI and database.
+- Automated check: `UI-TC-16-1`, `UI-TC-16-2`, `UI-TC-16-3`, `UI-TC-16-4` (UI). Status: Automated. Defect: BUG-01 (QAFRESCO-29, closed); related BUG-14 (QAFRESCO-37, closed).
+- Covers: AC-1, AC-8. Persona B in the manual runs; the ATCs sign up a new account in each test. Priority P2. Automation: UI and database.
 - Steps: sign up, choose only the diets vegano and sin lactosa and no allergen, tick the consent, finish the onboarding, read the summary and the stored profile.
 - Expected: no allergen is stored unless it contradicts the diet (PO, 2026-11-23): `huevo` and `pescado` are accepted for a vegan diet, `sulfitos` is not.
 - Observed in a local run: the stored profile had `pescado`, `sulfitos` and `huevo` that the test did not select, and the diet step showed them as selected. Whether the user sees them in the summary was not checked.

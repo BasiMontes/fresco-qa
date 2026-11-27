@@ -1,6 +1,6 @@
 {
   "version": "1.0",
-  "generatedAt": "2026-11-27T09:47:48.305Z",
+  "generatedAt": "2026-11-27T10:58:44.917Z",
   "components": {
     "api": [
       {
@@ -311,6 +311,23 @@
         ]
       },
       {
+        "name": "OnboardingPage",
+        "file": "OnboardingPage.ts",
+        "relativePath": "tests/components/ui/OnboardingPage.ts",
+        "atcs": [
+          {
+            "id": "UI-TC-16-1",
+            "method": "showOnlyAllergensImpliedByDiets",
+            "line": 83
+          },
+          {
+            "id": "UI-TC-16-2",
+            "method": "keepOnlyHandChosenAllergensWhenDietsAreSwitchedOff",
+            "line": 98
+          }
+        ]
+      },
+      {
         "name": "PreferencesPage",
         "file": "PreferencesPage.ts",
         "relativePath": "tests/components/ui/PreferencesPage.ts",
@@ -318,12 +335,22 @@
           {
             "id": "UI-TC-05",
             "method": "saveLupinAllergen",
-            "line": 49
+            "line": 88
           },
           {
             "id": "UI-TC-14",
             "method": "saveDietAndAllergenFiltersOnFreePlan",
-            "line": 64
+            "line": 103
+          },
+          {
+            "id": "UI-TC-16-3",
+            "method": "keepSavedAllergenWhenItsDietIsSwitchedOff",
+            "line": 49
+          },
+          {
+            "id": "UI-TC-16-4",
+            "method": "takeBackAllergenWhenTheDietThatAddedItIsSwitchedOff",
+            "line": 72
           }
         ]
       },
@@ -354,10 +381,10 @@
     }
   ],
   "summary": {
-    "totalComponents": 12,
-    "totalATCs": 50,
+    "totalComponents": 13,
+    "totalATCs": 54,
     "apiComponents": 6,
-    "uiComponents": 6,
+    "uiComponents": 7,
     "stepsModules": 1
   }
 }

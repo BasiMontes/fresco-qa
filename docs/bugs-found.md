@@ -22,7 +22,7 @@ Severity scale: Major (wrong behaviour on health or money data), Minor (wrong bu
 | Jira key | QAFRESCO-29 (filed 2026-11-23) |
 | Status | **Fixed; retest passed on 2026-11-26** (FRESCO-1308). Confirmed by the PO for `sulfitos` on 2026-11-23: `huevo` and `pescado` contradict a vegan diet and are accepted; `sulfitos` does not. Turning a diet off is a separate defect, BUG-14 |
 | Evidence | `docs/session-reports/ui-session.md` section 5 (U-02) and section 4 (stored profile of persona B); screenshot of the diet step with the locked allergens: `session-reports/screenshots/ui/06-onboarding-vegano-bloquea-alergenos.png`; the summary screen lists them too (`08-onboarding-resumen-13-personas.png`) |
-| Automated coverage | None |
+| Automated coverage | `UI-TC-16-1`, `UI-TC-16-2`, `UI-TC-16-3`, `UI-TC-16-4` (passed locally on 2026-11-27, first CI run pending) |
 
 Preconditions: local stack running, no existing account for persona B.
 
@@ -312,7 +312,7 @@ Note: from a reading of the code, not confirmed, the warning is computed only wh
 | Jira key | QAFRESCO-37 (filed 2026-11-26, Jira priority Low) |
 | Status | **Closed; retest passed on 2026-11-27** (FRESCO-1321) against a narrower expected result than the one QA proposed. Only an allergen that the diet added in the same edit is removed. A saved one stays, unlocked and removable, so the steps below still end with `pescado` selected, now on purpose |
 | Evidence | Evidence in the Jira issue; its screenshot is kept outside this repository |
-| Automated coverage | None |
+| Automated coverage | `UI-TC-16-1`, `UI-TC-16-2`, `UI-TC-16-3`, `UI-TC-16-4` (passed locally on 2026-11-27, first CI run pending) |
 
 Preconditions: local stack running, an account with the diet vegetarian, so `pescado` is selected and locked.
 
@@ -353,7 +353,7 @@ Open point: whether "con especias" is filler text or those recipes miss ingredie
 
 | ID | Title | Severity | Priority | Area | Case | Jira | Evidence level | Automated |
 |---|---|---|---|---|---|---|---|---|
-| BUG-01 | Vegan and vegetarian diets store sulfitos unchosen | Medium | P2 | UI, DB | TC-16 | QAFRESCO-29 (closed 2026-11-26) | One UI run, stored profile read in the DB; retest passed | No |
+| BUG-01 | Vegan and vegetarian diets store sulfitos unchosen | Medium | P2 | UI, DB | TC-16 | QAFRESCO-29 (closed 2026-11-26) | One UI run, stored profile read in the DB; retest passed | `UI-TC-16-*` |
 | BUG-02 | No warning when the menu exceeds the budget | Major | P2 | UI, DB | TC-17 | QAFRESCO-2 (closed 2026-11-26) | One UI run, screenshot, stored warnings read in the DB; retest passed for the current week | `UI-TC-17-*` |
 | BUG-03 | Photo shows egg on a recipe without egg | Minor | P3 | UI | TC-18 | QAFRESCO-30 (closed 2026-11-27) | One UI run, screenshot; retest passed | No |
 | BUG-04 | Mid-week menu is partial (12 of 21): not a defect, by design | n/a | n/a | UI, API | TC-11 | Not a defect; QAFRESCO-5, about the label, closed 2026-11-26 | One UI run on all three personas, contrasted with the API | Partial (`UI-TC-11`, future week only) |
@@ -366,7 +366,7 @@ Open point: whether "con especias" is filler text or those recipes miss ingredie
 | BUG-11 | FAQ promises regenerating one slot; the product does not offer it | Minor | P3 | UI copy | TC-09 | QAFRESCO-33 (closed 2026-11-26) | `rg` on the product code, FAQ text; retest passed | Flow that exists: `UI-TC-09` |
 | BUG-12 | The onboarding accepts more than 10 people in total and shows an unrelated error | Minor | P3 | UI, validation | TC-08 | QAFRESCO-34 (closed 2026-11-26) | Reproduced live, two screenshots and the failing request; retest passed | No |
 | BUG-13 | The next week's menu gets no budget warning | Medium | P2 | UI, DB | TC-17 | QAFRESCO-36 (closed 2026-11-27) | One UI run, stored menu read in the DB; retest passed | `UI-TC-17-*` |
-| BUG-14 | Turning a diet off keeps its allergen selected and saved | Minor | P3 | UI, DB | TC-16 | QAFRESCO-37 (closed 2026-11-27) | One UI run, stored profile read in the DB; retest passed on the agreed result | No |
+| BUG-14 | Turning a diet off keeps its allergen selected and saved | Minor | P3 | UI, DB | TC-16 | QAFRESCO-37 (closed 2026-11-27) | One UI run, stored profile read in the DB; retest passed on the agreed result | `UI-TC-16-*` |
 | BUG-15 | Recipe descriptions without accents or announcing absent spices | Minor | P3 | DB, catalogue | none | QAFRESCO-38 (open) | Read-only queries on the hosted database | No |
 
 ## Observed in the retests, not filed

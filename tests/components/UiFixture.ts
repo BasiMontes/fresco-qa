@@ -4,6 +4,7 @@ import { CalendarPage } from '@ui/CalendarPage';
 import { ExamplePage } from '@ui/ExamplePage';
 import { LoginPage } from '@ui/LoginPage';
 import { MenuPage } from '@ui/MenuPage';
+import { OnboardingPage } from '@ui/OnboardingPage';
 import { PreferencesPage } from '@ui/PreferencesPage';
 import { RecipesPage } from '@ui/RecipesPage';
 import { UiBase } from '@ui/UiBase';
@@ -17,6 +18,8 @@ export class UiFixture extends UiBase {
 
   readonly menu: MenuPage;
 
+  readonly onboarding: OnboardingPage;
+
   readonly preferences: PreferencesPage;
 
   readonly recipes: RecipesPage;
@@ -28,6 +31,7 @@ export class UiFixture extends UiBase {
     this.example = new ExamplePage(options);
     this.calendar = new CalendarPage(options);
     this.menu = new MenuPage(options);
+    this.onboarding = new OnboardingPage(options);
     this.preferences = new PreferencesPage(options);
     this.recipes = new RecipesPage(options);
   }
