@@ -50,7 +50,7 @@ PO decision (2026-11-23): an implied allergen is fine when it contradicts the di
 | Jira key | QAFRESCO-2 (priority Medium). Same defect, different run: the Jira run shows 97.32 EUR against a 90 EUR budget and empty warnings, in the account `qa-alergia` of `fresco-pre`; this entry shows 94.95 EUR against 35 EUR on the local stack |
 | Status | **Fixed for the current week; retest passed on 2026-11-26** (FRESCO-1269). Confirmed by the PO on 2026-11-23. A menu for the next week still gets no warning: BUG-13 |
 | Evidence | [Menu, persona B](session-reports/screenshots/ui/05-local-vegano-menu.png) (estimated 94.95 EUR); `docs/session-reports/ui-session.md` section 5 (U-04) |
-| Automated coverage | `UI-TC-17-1`, `UI-TC-17-2`, `UI-TC-17-3` (passed locally on 2026-11-27, first CI run pending) |
+| Automated coverage | `UI-TC-17-1`, `UI-TC-17-2`, `UI-TC-17-3` (passed in CI on 2026-11-27, run 45979520910) |
 
 Preconditions: persona B with a weekly budget of 35 EUR.
 
@@ -288,7 +288,7 @@ Actual: the step says "se calculan para 13 personas" and lets the person continu
 | Jira key | QAFRESCO-36 (filed 2026-11-26) |
 | Status | **Fixed; retest passed on 2026-11-27** (FRESCO-1320). Found in the retest of QAFRESCO-2. The calendar warns for the week on screen, current or next, and a past week keeps its stored warning. The app still shows no cost for the next week |
 | Evidence | Evidence in the Jira issue; its screenshot is kept outside this repository |
-| Automated coverage | `UI-TC-17-1`, `UI-TC-17-2`, `UI-TC-17-3` (passed locally on 2026-11-27, first CI run pending) |
+| Automated coverage | `UI-TC-17-1`, `UI-TC-17-2`, `UI-TC-17-3` (passed in CI on 2026-11-27, run 45979520910) |
 
 Preconditions: local stack running, an account of 10 people with a weekly budget of 35 EUR and a menu for the current week that shows the warning (4 meals, 127.82 EUR).
 

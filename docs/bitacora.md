@@ -155,3 +155,9 @@ Append-only project log. Every relevant milestone adds one entry at the bottom: 
 **What**: A separate reviewer rejected the TC-17 change: the "no warning" check of the calendar could pass while the page was still hidden. That finding and eight smaller ones were corrected. Filed QAFRESCO-38 (BUG-15) from read-only queries on the hosted database.
 **Why**: A check that cannot fail reports coverage that does not exist.
 **Next**: Push the change and check the CI run.
+
+## 2026-11-27 - Budget tests pass in CI
+
+**What**: Commit 7eb3779 ran in CI (run 45979520910): 66 of 66, with `UI-TC-17-1` and `UI-TC-17-2` passing on their first run there; the unit tests passed and the results page shows the commit.
+**Why**: A test counts as coverage once it runs in the pipeline.
+**Next**: Automate TC-16, TC-07 and TC-12 (`docs/portfolio/post-dojo-plan.md`).

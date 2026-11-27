@@ -18,7 +18,7 @@ Legend. Coverage: Automated means at least one ATC runs the criterion in CI; Man
 | AC-8 | Consent, export and deletion of health data | TC-12, TC-16 | none | none | BUG-01 (TC-16, fixed), BUG-14 (TC-16, closed) | Gap for deletion: TC-12 never executed; TC-16 executed twice by hand |
 | AC-9 | Free text flagged as not used for filtering | TC-13 | none | none | none | Gap: manual only |
 | AC-10 | Diet and allergy filters available on the Free plan | TC-14 | none | `UI-TC-14` | none | Automated |
-| AC-11 | Over-budget menu shows a warning | TC-17 | none | `UI-TC-17-1`, `UI-TC-17-2`, `UI-TC-17-3` | BUG-02 (TC-17, fixed), BUG-13 (TC-17, fixed) | Automated for the current and next week, passed locally, first CI run pending; a past week is not covered |
+| AC-11 | Over-budget menu shows a warning | TC-17 | none | `UI-TC-17-1`, `UI-TC-17-2`, `UI-TC-17-3` | BUG-02 (TC-17, fixed), BUG-13 (TC-17, fixed) | Automated for the current and next week; a past week is not covered |
 | Security | A user cannot read another user's data | TC-15 | `TC-15`, `CHK-A1`, `CHK-A2`, `CHK-A5`, `CHK-U1-1`, `CHK-U1-2`, `CHK-U1-3`, `CHK-C1-1`, `CHK-C1-2` | none | none | Automated |
 
 ## 2. Test case to criterion to automated check
