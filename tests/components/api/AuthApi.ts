@@ -56,6 +56,17 @@ export class AuthApi extends ApiBase {
     };
   }
 
+  @step
+  async expectSignInRejected({ email, password }: LoginPayload): Promise<void> {
+    const [response, body] = await this.apiPOST<PasswordGrantResponse, LoginPayload>(
+      this.config.auth.loginEndpoint,
+      { email, password },
+      { headers: { apikey: this.config.auth.supabaseAnonKey }, sensitive: true },
+    );
+    expect(response.status(), 'status of a sign-in that must be rejected').toBe(400);
+    expect(body.msg ?? body.error_description, 'reason of the rejection').toBe('Invalid login credentials');
+  }
+
   @atc('PROJ-101')
   async authenticateSuccessfully(
     credentials: LoginPayload,

@@ -9,8 +9,8 @@ Evaluation of the test automation built for the Fresco menu feature: what was au
 | Framework | KATA on Playwright and TypeScript, run with Bun (`package.json`) |
 | Target | Local copy of the product (local Supabase, edge functions, web app). Staging is excluded because its login and auth API require a captcha (`docs/bitacora.md`) |
 | API suite | 12 files in `tests/integration/menu-safety/`, 33 new ATC ids (`kata-manifest.json`) |
-| UI suite | 6 files in `tests/e2e/menu-safety/`, 13 new ATC ids (`kata-manifest.json`) |
-| ATCs in the manifest | 54 in total: 33 API (`TC-*`, `CHK-*`), 13 UI (`UI-TC-*`), 8 from the boilerplate samples (`PROJ-*`) (`kata-manifest.json`, `summary.totalATCs` = 54) |
+| UI suite | 7 files in `tests/e2e/menu-safety/`, 16 new ATC ids (`kata-manifest.json`) |
+| ATCs in the manifest | 57 in total: 33 API (`TC-*`, `CHK-*`), 16 UI (`UI-TC-*`), 8 from the boilerplate samples (`PROJ-*`) (`kata-manifest.json`, `summary.totalATCs` = 57) |
 | Pipeline | `.github/workflows/tests.yml`, passing on a GitHub runner on a fresh database (see section 5) |
 | Jira | Not used for tests. Owner decision, see section 7 |
 
@@ -35,7 +35,7 @@ The "28 ATCs" figure in `docs/bitacora.md` and in the API progress log was the m
 | TC-09 | Swap one slot | AC-4 | none | `UI-TC-09` | Automated: one slot changes and stays egg-free. AC-4 is defined as the "Añadir al menú" flow (PO decision); dragging two slots and substituting an ingredient are separate flows and are not covered |
 | TC-10 | Allergen added after generation | AC-7 | `TC-10` | none | Automated as a step of the generation test, with no extra menu request: the conflicting slots go back to `pendiente` with no recipe and the plan gets a notice, as the PO confirmed |
 | TC-11 | 21 slots, no repeated comida or cena | AC-3 | none | `UI-TC-11` | Automated at UI level. Mid-week partial menus are not tested; the test uses a future week |
-| TC-12 | Account deletion removes health data | AC-8 | none | none | Not automated; needs a spare account and `delete-account` is never called by the suite |
+| TC-12 | Account deletion removes health data | AC-8 | none | `UI-TC-12-1`, `UI-TC-12-2`, `UI-TC-12-3` | Automated, first CI run pending: registered and guest deletion, and refusal with a wrong password. Rows are read from the local database with the service role key (`account-deletion/automation-plan.md`) |
 | TC-13 | Free text flagged as unused | AC-9 | none | none | Manual |
 | TC-14 | Free user can use filters | AC-10 | none | `UI-TC-14` | Automated. No paywall element is known, so the test asserts the save persists after reload and that the checkout dialog never opens (`ui-menu-safety/automation-plan.md` risk R6) |
 | TC-15 | Cannot request another user's recipes | Security | `TC-15` | none | Automated |
@@ -43,9 +43,9 @@ The "28 ATCs" figure in `docs/bitacora.md` and in the API progress log was the m
 | TC-17 | Over-budget warning | AC-11 | none | `UI-TC-17-1`, `UI-TC-17-2`, `UI-TC-17-3` | Automated for the current and next week, with the budget at 1 EUR, at the cost and one cent under it. The next week shows no cost, so its amount is not verified on its own: the threshold is derived from the first warning and checked for consistency (`budget-warning/spec.md`) |
 | TC-18 | Photo contradicts allergen data | AC-1 | none | none | Manual, exploratory |
 
-Totals from the table: 13 of 18 TCs have an automated ATC (TC-01, 02, 03, 04, 05, 08, 09, 10, 11, 14, 15, 16, 17). 5 of 18 are not automated; 3 of those are manual by design (TC-06, 13, 18).
+Totals from the table: 14 of 18 TCs have an automated ATC (TC-01, 02, 03, 04, 05, 08, 09, 10, 11, 12, 14, 15, 16, 17). 4 of 18 are not automated; 3 of those are manual by design (TC-06, 13, 18).
 
-Acceptance criteria with at least one automated check: AC-1, AC-2, AC-3, AC-4, AC-6, AC-7, AC-8 (consent gate and stored allergens only), AC-10, AC-11 and the security criterion. No automated check covers AC-5 or AC-9 (`docs/feature-test-plan.md`).
+Acceptance criteria with at least one automated check: AC-1, AC-2, AC-3, AC-4, AC-6, AC-7, AC-8 (consent gate, stored allergens and deletion; not export), AC-10, AC-11 and the security criterion. No automated check covers AC-5 or AC-9 (`docs/feature-test-plan.md`).
 
 ### 2.2 Extra API checks without a TC
 
@@ -74,8 +74,8 @@ The automated set was chosen on food-safety risk first: an allergen in a menu is
 |---|---|
 | Config | `config/variables.ts`: environment map, `auth.roles` (`alergia`, `vegano`, `familia`, `presupuesto`), `roleCredentials(role)` reading `<ENV>_<ROLE>_EMAIL` and `_PASSWORD` by variable name, `supabaseAnonKey` |
 | Base | `ApiBase` (request helper, `apikey` header added when set, `RateLimitError` thrown on 429), `UiBase` |
-| Domain | API: `RecipesApi`, `MealPlansApi`, `ProfilesApi`, `AccessControlApi` (new, approved by the owner), `AuthApi` (extended). UI: `CalendarPage`, `MenuPage`, `OnboardingPage`, `PreferencesPage`, `RecipesPage`, `LoginPage` (selectors fixed) |
-| Fixture | `ApiFixture` registers the new components and offers `asRole(role)`; `UiFixture` registers `calendar`, `menu`, `onboarding`, `preferences` and `recipes`; `TestFixture` has a `role` option |
+| Domain | API: `RecipesApi`, `MealPlansApi`, `ProfilesApi`, `AccessControlApi` (new, approved by the owner), `ErasureApi` (database reads of a deleted account), `AuthApi` (extended). UI: `CalendarPage`, `MenuPage`, `OnboardingPage`, `PreferencesPage`, `ProfilePage`, `RecipesPage`, `LoginPage` (selectors fixed) |
+| Fixture | `ApiFixture` registers the new components and offers `asRole(role)`; `UiFixture` registers `calendar`, `menu`, `onboarding`, `preferences`, `profile` and `recipes`; `TestFixture` has a `role` option |
 
 (`api-menu-safety/automation-plan.md` sections 2.2 and 2.3; `ui-menu-safety/automation-plan.md` sections 3.2 to 3.4.) No ATC calls another ATC. No Steps module was added because Steps need 3 or more ATCs repeated in 3 or more files.
 
@@ -105,6 +105,7 @@ The product allows 5 menu generations per user per UTC hour (`docs/session-repor
 | Personas | Seeded | `scripts/ci/seed-personas.ts` creates the four profiles in CI. The first three were created locally through the signup form because the repository doctrine forbids admin-created accounts (`docs/bitacora.md`). `presupuesto` is used only by the budget tests |
 | Current and next week menu, weekly budget | Generate, Modify | `presupuesto` only: menus are deleted before and after each test and the budget is restored to empty |
 | Accounts of the diet tests | Generate | One new account per test through the onboarding form, with generated credentials. They are not deleted |
+| Accounts of the deletion tests | Generate | One registered or guest account per test. Two are deleted by the test; the wrong-password one stays |
 
 A crash can leave at most one menu in a far-future week, which later runs never reuse (`ui-menu-safety/automation-plan.md` section 5). The budget tests are the exception: a crash can leave a menu on the current or next week and a budget on `presupuesto`, which the next run replaces and removes.
 
@@ -147,6 +148,7 @@ UI suite: 4 reviewers reported no blocker. Fixes applied afterwards: `revealDay`
 | CI workflow, with the schema and CRUD ATCs | Passed, 64 of 64 entries (3 setup and teardown steps and 61 tests: 55 API and 6 UI), 0 skipped, 0 not run. `CHK-E8` moved to `vegano` | GitHub Actions run 45158678926, commit `1bf0700` |
 | Budget tests, local, 2026-11-27, after the review fixes | Passed twice on fresco-app `08dda5d6` and left no menu and no budget. On `8575a2d9`, before the BUG-13 fix, both failed: the next week showed no warning and the calendar kept a stale one. With the budget deliberately set one cent under the cost, both failed at the no-warning check. Full `integration` and `e2e` run on a reset database: 66 of 66. Also passed in CI, 66 of 66 | Local runs, and GitHub Actions run 45979520910, commit `7eb3779` |
 | Diet tests, local, 2026-11-27, after the review fixes | Four tests passed twice on fresco-app `1cfac440`. On `0d3ff944`, before the BUG-01 fix, all four failed. On `8575a2d9`, before the BUG-14 fix, the tests of `16-2` and of the preferences (`16-3`, `16-4`) failed. On a copy of `1cfac440` changed so that a diet claims hand-chosen allergens, the same two failed. Full `integration` and `e2e` run on a reset database: 70 of 70. Also passed in CI, 70 of 70 | Local runs, and GitHub Actions run 45991044433, commit `3415b42` |
+| Deletion tests, local, 2026-11-27, after the review fixes | Three tests passed twice on fresco-app `0d295110`. On a copy that reports a deletion without deleting, `UI-TC-12-1` and `12-2` failed on the rows left behind; on a copy that skips the password check, `12-3` failed. Full `integration` and `e2e` run on a reset database: 73 of 73, with 34 requests to the sign-up and token endpoints and none refused, although the local configuration allows 30 per 5 minutes; the owner decided to leave it so. A failing run may record the service role key of the local stack in the Playwright trace that CI uploads; the owner accepted that on 2026-11-27 (`account-deletion/automation-plan.md`). Not yet run in CI | Local runs |
 
 State of the suite: 70 of 70 passing in CI on a fresh database at commit `3415b42` (run 45991044433). The three runs before commit `ba7eb2a` (run 45165651506) failed for other reasons: a GitHub Pages deployment error after 64 of 64 tests passed, a runner crash while starting Supabase (`Bus error`), and a names comparison in `UI-TC-11` that the catalogue's repeated names (BUG-06) can break. That workflow runs the `integration` and `e2e` projects only. `smoke-ui` (one `@critical` test, UI-TC-14) was verified locally on 22 Nov and no workflow runs it on its own, and repeated runs inside the same UTC hour are not covered. The inherited `smoke.yml` and `regression.yml` only run on manual dispatch, because their daily schedule failed against staging.
 

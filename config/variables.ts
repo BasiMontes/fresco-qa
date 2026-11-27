@@ -167,6 +167,14 @@ function readSupabaseAnonKey(): string {
   return process.env[`${env.current.toUpperCase()}_SUPABASE_ANON_KEY`] ?? '';
 }
 
+function readSupabaseServiceRoleKey(): string {
+  const key = process.env.SUPABASE_SERVICE_ROLE_KEY ?? '';
+  if (key === '') {
+    throw new Error('SUPABASE_SERVICE_ROLE_KEY is not set: the account deletion tests read the local database with it.');
+  }
+  return key;
+}
+
 // ============================================
 // Main Configuration Object
 // ============================================
@@ -191,6 +199,9 @@ export const config = {
     },
     get supabaseAnonKey(): string {
       return readSupabaseAnonKey();
+    },
+    get supabaseServiceRoleKey(): string {
+      return readSupabaseServiceRoleKey();
     },
   },
 

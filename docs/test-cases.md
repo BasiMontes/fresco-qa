@@ -31,7 +31,7 @@ Legend. Priority: P1 must run before release, P2 should run, P3 nice to have. Au
 | TC-09 | Swapping one slot changes only that slot and stays safe | AC-4 | Positive | P1 | UI | Automated as UI ATC UI-TC-09 |
 | TC-10 | Adding an allergen after generation does not leave unsafe slots | AC-7 | State transition | P1 | API | Automated as API ATC TC-10 |
 | TC-11 | A normal profile gets 21 slots with no repeated comida or cena | AC-3 | Positive | P2 | UI + DB | Partial: no repeats, 12 of 21 filled |
-| TC-12 | Deleting the account removes the health data | AC-8 | Positive | P2 | UI + DB | Designed |
+| TC-12 | Deleting the account removes the health data | AC-8 | Positive | P2 | UI + DB | Automated |
 | TC-13 | A free-text allergy is honoured or the user is warned | AC-9 | Negative | P2 | Manual | Designed |
 | TC-14 | A Free user can use diet and allergy filters | AC-10 | Positive | P2 | UI | Designed |
 | TC-15 | A user cannot request another user's filtered recipes | Security | Negative | P1 | API | Executed once, passed |
@@ -142,11 +142,11 @@ Legend. Priority: P1 must run before release, P2 should run, P3 nice to have. Au
 - Observed in a local run: a menu created on a Thursday had 12 slots with a recipe and 9 empty (Monday to Wednesday). Two menus for future weeks, made through the API, had all 21 slots filled.
 
 ### TC-12 Deleting the account removes the health data
-- Automated check: none. Status: Designed. Defect: none.
+- Automated check: `UI-TC-12-1`, `UI-TC-12-2`, `UI-TC-12-3` (UI). Status: Automated. Defect: none.
 - Covers: AC-8. Priority P2. Automation: UI and a read-only database check.
 - Preconditions: a spare account created only for this case.
 - Steps: declare an allergy; delete the account; query the profile row.
-- Expected: no profile row remains, and an erasure record exists without the user id in clear text.
+- Expected: no profile, menu or consent row remains, and an erasure record exists under a hash of the user id. The id may be stored in clear only while its deletion in the analytics service is pending, so it can be retried (owner, 2026-11-27).
 
 ### TC-13 Free text is flagged as not used for filtering
 - Automated check: none. Status: Designed. Defect: none.
@@ -196,5 +196,5 @@ Legend. Priority: P1 must run before release, P2 should run, P3 nice to have. Au
 ## Notes on execution
 
 - Cases marked UI depend on the Turnstile check being passable from automation (risk R1 in the test plan).
-- Database checks use read-only queries on the shared project and never write.
+- Manual database checks use read-only queries on the shared project and never write. The automated account deletion checks read the local stack.
 - Defects go in the bugs report only after the case is executed and the PO question, if any, is answered.

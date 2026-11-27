@@ -6,6 +6,7 @@ import { LoginPage } from '@ui/LoginPage';
 import { MenuPage } from '@ui/MenuPage';
 import { OnboardingPage } from '@ui/OnboardingPage';
 import { PreferencesPage } from '@ui/PreferencesPage';
+import { ProfilePage } from '@ui/ProfilePage';
 import { RecipesPage } from '@ui/RecipesPage';
 import { UiBase } from '@ui/UiBase';
 
@@ -22,6 +23,8 @@ export class UiFixture extends UiBase {
 
   readonly preferences: PreferencesPage;
 
+  readonly profile: ProfilePage;
+
   readonly recipes: RecipesPage;
 
   constructor(options: TestContextOptions) {
@@ -33,6 +36,7 @@ export class UiFixture extends UiBase {
     this.menu = new MenuPage(options);
     this.onboarding = new OnboardingPage(options);
     this.preferences = new PreferencesPage(options);
+    this.profile = new ProfilePage(options);
     this.recipes = new RecipesPage(options);
   }
 }

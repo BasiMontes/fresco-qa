@@ -4,6 +4,7 @@ import type { TestContextOptions } from '@TestContext';
 import { expect } from '@playwright/test';
 import { UiBase } from '@ui/UiBase';
 import { atc, step } from '@utils/decorators';
+import { tokenSubject } from '@utils/token';
 
 export interface DietAllergens {
   diets: string[]
@@ -33,18 +34,27 @@ export class OnboardingPage extends UiBase {
 
   @step
   async createAccountAndOpenDietStep({ email, password }: LoginPayload): Promise<void> {
-    await this.page.addLocatorHandler(this.page.getByTestId('cookie_consent_banner'), async () => {
-      await this.page.getByTestId('cookie_consent_reject_button').click();
-    });
-    await this.page.goto(this.buildUrl('/onboarding'));
-    await this.page.getByTestId('confirm_age_checkbox').check();
-    await this.page.getByTestId('accept_terms_checkbox').check();
+    await this.acceptConsentsOnTheFirstScreen();
     await this.page.getByTestId('onboarding_create_account_button').click();
     await this.page.getByTestId('email_input').fill(email);
     await this.page.getByTestId('password_input').fill(password);
     await this.page.getByTestId('onboarding_create_account_submit_button').click();
     await this.page.getByTestId('next_button').click();
     await expect(this.dietChip('Vegano'), 'diet step of the onboarding').toBeVisible();
+  }
+
+  @step
+  async continueAsGuestAndOpenDietStep(): Promise<void> {
+    await this.acceptConsentsOnTheFirstScreen();
+    await this.page.getByTestId('onboarding_continue_as_guest_button').click();
+    await this.page.getByTestId('next_button').click();
+    await expect(this.dietChip('Vegano'), 'diet step of the onboarding').toBeVisible();
+  }
+
+  @step
+  async chooseAllergen(allergen: string): Promise<void> {
+    await this.allergenChip(allergen).click();
+    await expect(this.allergenChip(allergen), `allergen ${allergen}`).toHaveAttribute('aria-pressed', 'true');
   }
 
   @step
@@ -56,9 +66,16 @@ export class OnboardingPage extends UiBase {
   }
 
   @step
-  async finishAndOpenMenu(): Promise<void> {
+  async finishAndOpenMenu(): Promise<string> {
+    const generation = this.page.waitForRequest(request =>
+      request.url().includes('/functions/v1/generate-meal-plan') && request.method() === 'POST');
     await this.page.getByTestId('generate_menu_button').click();
+    const authorization = (await generation).headers().authorization ?? '';
     await this.page.waitForURL(url => url.pathname === '/menu', { timeout: MENU_GENERATION_TIMEOUT });
+
+    const accountId = tokenSubject(authorization.replace(/^Bearer /i, ''));
+    expect(accountId, 'account id carried by the menu generation request').not.toBeNull();
+    return accountId ?? '';
   }
 
   @step
@@ -119,6 +136,15 @@ export class OnboardingPage extends UiBase {
     await this.expectSelectedAllergens(['Pescado', 'Sulfitos'], 'vegetarian off over a hand-chosen pescado');
     await expect(this.allergenChip('Pescado'), 'pescado unlocked').toBeEnabled();
     await expect(this.selectedDiets(), 'diets left selected').toHaveCount(0);
+  }
+
+  private async acceptConsentsOnTheFirstScreen(): Promise<void> {
+    await this.page.addLocatorHandler(this.page.getByTestId('cookie_consent_banner'), async () => {
+      await this.page.getByTestId('cookie_consent_reject_button').click();
+    });
+    await this.page.goto(this.buildUrl('/onboarding'));
+    await this.page.getByTestId('confirm_age_checkbox').check();
+    await this.page.getByTestId('accept_terms_checkbox').check();
   }
 
   private async expectSelectedAllergens(labels: string[], moment: string): Promise<void> {

@@ -1,6 +1,6 @@
 {
   "version": "1.0",
-  "generatedAt": "2026-11-27T10:58:44.917Z",
+  "generatedAt": "2026-11-27T13:06:22.056Z",
   "components": {
     "api": [
       {
@@ -48,14 +48,20 @@
           {
             "id": "PROJ-101",
             "method": "authenticateSuccessfully",
-            "line": 59
+            "line": 70
           },
           {
             "id": "PROJ-102",
             "method": "loginWithInvalidCredentials",
-            "line": 83
+            "line": 94
           }
         ]
+      },
+      {
+        "name": "ErasureApi",
+        "file": "ErasureApi.ts",
+        "relativePath": "tests/components/api/ErasureApi.ts",
+        "atcs": []
       },
       {
         "name": "ExampleApi",
@@ -318,12 +324,12 @@
           {
             "id": "UI-TC-16-1",
             "method": "showOnlyAllergensImpliedByDiets",
-            "line": 83
+            "line": 100
           },
           {
             "id": "UI-TC-16-2",
             "method": "keepOnlyHandChosenAllergensWhenDietsAreSwitchedOff",
-            "line": 98
+            "line": 115
           }
         ]
       },
@@ -355,6 +361,28 @@
         ]
       },
       {
+        "name": "ProfilePage",
+        "file": "ProfilePage.ts",
+        "relativePath": "tests/components/ui/ProfilePage.ts",
+        "atcs": [
+          {
+            "id": "UI-TC-12-1",
+            "method": "deleteRegisteredAccount",
+            "line": 29
+          },
+          {
+            "id": "UI-TC-12-2",
+            "method": "deleteGuestAccount",
+            "line": 40
+          },
+          {
+            "id": "UI-TC-12-3",
+            "method": "keepAccountWhenPasswordIsWrong",
+            "line": 50
+          }
+        ]
+      },
+      {
         "name": "RecipesPage",
         "file": "RecipesPage.ts",
         "relativePath": "tests/components/ui/RecipesPage.ts",
@@ -381,10 +409,10 @@
     }
   ],
   "summary": {
-    "totalComponents": 13,
-    "totalATCs": 54,
-    "apiComponents": 6,
-    "uiComponents": 7,
+    "totalComponents": 15,
+    "totalATCs": 57,
+    "apiComponents": 7,
+    "uiComponents": 8,
     "stepsModules": 1
   }
 }

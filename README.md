@@ -42,7 +42,7 @@ The course layout folder named tests/api (API tests) corresponds to `tests/integ
 
 ## How to run
 
-Prerequisites: the product running locally (local Supabase stack and its web app), because the hosted environment enforces a captcha on login. Each persona (alergia, vegano, familia, presupuesto) logs in with the variables `LOCAL_<ROLE>_EMAIL` and `LOCAL_<ROLE>_PASSWORD` from `.env`; if one pair is missing, the setup step fails and no test runs. Locally each account is created through the signup form. `presupuesto` is used by the budget tests: two adults, no diet, no allergen and no weekly budget. The diet tests (`UI-TC-16-*`) sign up four new accounts through the onboarding on every run and leave them in the local database. In CI the workflow starts the stack and `scripts/ci/seed-personas.ts` creates the personas.
+Prerequisites: the product running locally (local Supabase stack and its web app), because the hosted environment enforces a captcha on login. Each persona (alergia, vegano, familia, presupuesto) logs in with the variables `LOCAL_<ROLE>_EMAIL` and `LOCAL_<ROLE>_PASSWORD` from `.env`; if one pair is missing, the setup step fails and no test runs. Locally each account is created through the signup form. `presupuesto` is used by the budget tests: two adults, no diet, no allergen and no weekly budget. The diet tests (`UI-TC-16-*`) sign up four new accounts through the onboarding on every run and leave them in the local database. The account deletion tests (`UI-TC-12-*`) also need `SUPABASE_SERVICE_ROLE_KEY` of the local stack in `.env`: they read the local database with it, never against a hosted one. In CI the workflow starts the stack and `scripts/ci/seed-personas.ts` creates the personas.
 
 | Goal | Command |
 |---|---|
@@ -57,10 +57,10 @@ Prerequisites: the product running locally (local Supabase stack and its web app
 
 | Metric | Value | Source |
 |---|---|---|
-| UI tests | 6 files, 13 ATCs (`UI-TC-01`, `03`, `05`, `09`, `11`, `14`, `16-1`, `16-2`, `16-3`, `16-4`, `17-1`, `17-2`, `17-3`) | `docs/automation-eval.md` section 1, `kata-manifest.json` |
+| UI tests | 7 files, 16 ATCs (`UI-TC-01`, `03`, `05`, `09`, `11`, `12-1`, `12-2`, `12-3`, `14`, `16-1`, `16-2`, `16-3`, `16-4`, `17-1`, `17-2`, `17-3`) | `docs/automation-eval.md` section 1, `kata-manifest.json` |
 | API tests | 12 files, 33 ATCs (`TC-*`, `CHK-*`), with schema validation (zod) | `docs/automation-eval.md` section 1, `kata-manifest.json` |
 | Tests reported by the last green CI run | 70 total, 70 passed, 0 skipped | [run 45991044433](https://github.com/BasiMontes/fresco-qa/actions/runs/45991044433), 2026-11-27 |
-| Test cases automated | 13 of 18 (3 of the 5 others are manual by design) | `docs/automation-eval.md` section 2.1 |
+| Test cases automated | 14 of 18 (3 of the 4 others are manual by design) | `docs/automation-eval.md` section 2.1 |
 
 This project measures test-case coverage, not code coverage; no code-coverage percentage is reported.
 
