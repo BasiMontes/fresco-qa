@@ -3,7 +3,7 @@ import { appendFileSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 
 interface Persona {
-  role: 'alergia' | 'vegano' | 'familia'
+  role: 'alergia' | 'vegano' | 'familia' | 'presupuesto'
   profile: Record<string, unknown>
 }
 
@@ -46,6 +46,10 @@ const PERSONAS: Persona[] = [
   {
     role: 'familia',
     profile: { ...BASE_PROFILE, num_personas: 4, adultos: 2, ninos: 2, objetivo: 'reducir_desperdicio' },
+  },
+  {
+    role: 'presupuesto',
+    profile: { ...BASE_PROFILE, num_personas: 2, adultos: 2, ninos: 0 },
   },
 ];
 

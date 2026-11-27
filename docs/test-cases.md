@@ -36,7 +36,7 @@ Legend. Priority: P1 must run before release, P2 should run, P3 nice to have. Au
 | TC-14 | A Free user can use diet and allergy filters | AC-10 | Positive | P2 | UI | Designed |
 | TC-15 | A user cannot request another user's filtered recipes | Security | Negative | P1 | API | Executed once, passed |
 | TC-16 | Choosing a vegan diet does not silently add allergens | AC-1, AC-8 | Negative | P2 | UI + DB | Executed twice, retest passed (QAFRESCO-29); related defect QAFRESCO-37 closed |
-| TC-17 | A menu over the weekly budget shows a warning | AC-11 | Negative | P2 | UI + DB | Executed three times, retest passed for the current and next week (QAFRESCO-2, QAFRESCO-36) |
+| TC-17 | A menu over the weekly budget shows a warning | AC-11 | Negative | P2 | UI + DB | Automated; retest passed for the current and next week (QAFRESCO-2, QAFRESCO-36) |
 | TC-18 | Recipe photos do not contradict the allergen data | AC-1 | Exploratory | P3 | Manual | Executed once, defect filed and closed (QAFRESCO-30); full case not repeated |
 
 ## Case details
@@ -176,8 +176,8 @@ Legend. Priority: P1 must run before release, P2 should run, P3 nice to have. Au
 - Retest of BUG-14 on 2026-11-27, local run at `fresco-app` `08dda5d6`: a diet switched on and off in one edit left none of its allergens, in the preferences and in the onboarding; a saved allergen stayed, unlocked. A `sulfitos` chosen by hand survived. TC-16 itself was not executed again.
 
 ### TC-17 A menu over the weekly budget shows a warning
-- Automated check: none. Status: Executed three times; the last run passed for the current and next week. Defects: BUG-02 (QAFRESCO-2, closed); BUG-13 (QAFRESCO-36, closed).
-- Covers: AC-11. Persona B. Priority P2. Automation: UI and database.
+- Automated check: `UI-TC-17-1`, `UI-TC-17-2`, `UI-TC-17-3` (UI). Status: Automated. Defects: BUG-02 (QAFRESCO-2, closed); BUG-13 (QAFRESCO-36, closed).
+- Covers: AC-11. Persona B in the manual runs; the ATCs use `presupuesto` (two adults, no diet). Priority P2. Automation: UI and database.
 - Steps: set a weekly budget lower than the estimated cost of a menu, generate it, read the menu screens and the stored warnings.
 - Expected: a warning that the menu exceeds the budget, as the onboarding promises.
 - Observed in a local run: budget 35 EUR, estimated cost 94.95 EUR, no warning displayed and no warning stored. The two cost figures may come from different calculations.

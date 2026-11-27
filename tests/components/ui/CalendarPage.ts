@@ -3,18 +3,27 @@ import type { TestContextOptions } from '@TestContext';
 
 import { expect } from '@playwright/test';
 import { UiBase } from '@ui/UiBase';
+import { BUDGET_WARNING_PREFIX, budgetWarningText, toCents } from '@utils/budgetWarning';
 import { atc, step } from '@utils/decorators';
 import { RateLimitError } from '@utils/quota';
 
 export type SlotNames = Record<string, string>;
+
+export interface UpcomingBudgetWarning {
+  cost: number
+  warning: string
+}
 
 const DAYS = ['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado', 'domingo'] as const;
 const MEALS = ['desayuno', 'comida', 'cena'] as const;
 const GENERATE_ENDPOINT = /\/functions\/v1\/generate-meal-plan/;
 const GENERATION_TIMEOUT = 60000;
 const LUNCH_AND_DINNER_SLOTS = 14;
+const BUDGET_EXCESS = /(\d+\.\d{2})€$/;
 
 export class CalendarPage extends UiBase {
+  private readonly budgetWarnings = () => this.page.getByTestId('calendar_advertencias_banner').getByRole('listitem').filter({ hasText: BUDGET_WARNING_PREFIX });
+
   private readonly slot = (dia: string, tipo: string) => this.page.getByTestId(`calendar_slot_${dia}_${tipo}`);
 
   constructor(options: TestContextOptions) {
@@ -77,6 +86,35 @@ export class CalendarPage extends UiBase {
     await this.dismissTourOverlayWhenShown();
     await this.page.goto(this.buildUrl(`/calendar?semana=${week.semana_iso}`));
     await expect(this.page.getByTestId('generate_week_button'), `generate button for ${week.semana_iso}`).toBeEnabled();
+  }
+
+  @step
+  async openWeekWithMenu(week: GenerateMealPlanPayload): Promise<void> {
+    await this.dismissTourOverlayWhenShown();
+    await this.page.goto(this.buildUrl(`/calendar?semana=${week.semana_iso}`));
+    const breakfasts = this.page.getByTestId(/^calendar_slot_[a-z]+_desayuno/).filter({ visible: true });
+    await expect(breakfasts, `visible menu grid of ${week.semana_iso}`).not.toHaveCount(0);
+  }
+
+  @step
+  async expectBudgetWarning(warning: string): Promise<void> {
+    await expect(this.budgetWarnings(), 'budget warning of the calendar').toHaveText([warning]);
+  }
+
+  @atc('UI-TC-17-2')
+  async showUpcomingWeekBudgetWarning(budget: number): Promise<UpcomingBudgetWarning> {
+    await expect(this.budgetWarnings(), `budget warning for a budget of ${budget}`).toHaveCount(1);
+    const text = (await this.budgetWarnings().innerText()).trim();
+    const excess = Number(BUDGET_EXCESS.exec(text)?.[1]);
+    expect(excess, `excess stated in "${text}"`).toBeGreaterThan(0);
+    expect(text).toBe(budgetWarningText(excess));
+
+    return { cost: toCents(budget + excess), warning: text };
+  }
+
+  @atc('UI-TC-17-3')
+  async showNoBudgetWarningWhenCostFitsBudget(): Promise<void> {
+    await expect(this.budgetWarnings(), 'budget warnings of a menu that fits the budget').toHaveCount(0);
   }
 
   @atc('UI-TC-01')

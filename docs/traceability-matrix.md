@@ -18,7 +18,7 @@ Legend. Coverage: Automated means at least one ATC runs the criterion in CI; Man
 | AC-8 | Consent, export and deletion of health data | TC-12, TC-16 | none | none | BUG-01 (TC-16, fixed), BUG-14 (TC-16, closed) | Gap for deletion: TC-12 never executed; TC-16 executed twice by hand |
 | AC-9 | Free text flagged as not used for filtering | TC-13 | none | none | none | Gap: manual only |
 | AC-10 | Diet and allergy filters available on the Free plan | TC-14 | none | `UI-TC-14` | none | Automated |
-| AC-11 | Over-budget menu shows a warning | TC-17 | none | none | BUG-02 (TC-17, fixed), BUG-13 (TC-17, fixed) | Gap: passed by hand, no automated check |
+| AC-11 | Over-budget menu shows a warning | TC-17 | none | `UI-TC-17-1`, `UI-TC-17-2`, `UI-TC-17-3` | BUG-02 (TC-17, fixed), BUG-13 (TC-17, fixed) | Automated for the current and next week, passed locally, first CI run pending; a past week is not covered |
 | Security | A user cannot read another user's data | TC-15 | `TC-15`, `CHK-A1`, `CHK-A2`, `CHK-A5`, `CHK-U1-1`, `CHK-U1-2`, `CHK-U1-3`, `CHK-C1-1`, `CHK-C1-2` | none | none | Automated |
 
 ## 2. Test case to criterion to automated check
@@ -41,7 +41,7 @@ Legend. Coverage: Automated means at least one ATC runs the criterion in CI; Man
 | TC-14 | AC-10 | P2 | none | `UI-TC-14` | Automated |
 | TC-15 | Security | P1 | `TC-15` | none | Automated |
 | TC-16 | AC-1, AC-8 | P2 | none | none | Executed twice by hand |
-| TC-17 | AC-11 | P2 | none | none | Executed three times by hand |
+| TC-17 | AC-11 | P2 | none | `UI-TC-17-1`, `UI-TC-17-2`, `UI-TC-17-3` | Automated |
 | TC-18 | AC-1 | P3 | none | none | Manual by design |
 
 ## 3. Checks without a test case
@@ -53,7 +53,7 @@ Legend. Coverage: Automated means at least one ATC runs the criterion in CI; Man
 | Gap | Criterion | Reason |
 |---|---|---|
 | No test case executed or automated | AC-5 | Designed only |
-| No automated check | AC-8, AC-9, AC-11 | AC-9 is manual by design; AC-8 needs a spare account; AC-11 passed by hand for the current and next week on 2026-11-27 |
+| No automated check | AC-8, AC-9 | AC-9 is manual by design; AC-8 needs a spare account |
 | Test cases designed but neither executed by hand nor automated | TC-06, TC-07, TC-12, TC-13 | Status Designed in `docs/test-cases.md` with no ATC |
 | Open criteria needing the PO | none | AC-6 was defined with the PO's acceptance of QA's recommendation |
 
@@ -62,9 +62,9 @@ Legend. Coverage: Automated means at least one ATC runs the criterion in CI; Man
 | Measure | Value |
 |---|---|
 | Criteria (AC-1 to AC-11 plus Security) | 12 |
-| Criteria with at least one automated check | 8 (AC-1, AC-2, AC-3, AC-4, AC-6, AC-7, AC-10, Security) |
-| Criteria with no automated check | 4 (AC-5, AC-8, AC-9, AC-11) |
+| Criteria with at least one automated check | 9 (AC-1, AC-2, AC-3, AC-4, AC-6, AC-7, AC-10, AC-11, Security) |
+| Criteria with no automated check | 3 (AC-5, AC-8, AC-9) |
 | Criteria with no test case | 0 |
 | Test cases | 18 |
-| Test cases with an automated check | 11 (TC-01, 02, 03, 04, 05, 08, 09, 10, 11, 14, 15) |
+| Test cases with an automated check | 12 (TC-01, 02, 03, 04, 05, 08, 09, 10, 11, 14, 15, 17) |
 | Defects linked to a test case | 8 of 13 (BUG-01, 02, 03, 10, 11, 12, 13, 14); BUG-04 is not a defect |

@@ -147,7 +147,7 @@ function readTestUser(): { email: string, password: string } {
   );
 }
 
-export type AuthRole = 'alergia' | 'vegano' | 'familia';
+export type AuthRole = 'alergia' | 'vegano' | 'familia' | 'presupuesto';
 
 function readRoleCredentials(role: AuthRole): { email: string, password: string } {
   const prefix = `${env.current.toUpperCase()}_${role.toUpperCase()}`;
@@ -184,7 +184,7 @@ export const config = {
     // Storage paths for authenticated sessions
     storageStatePath: '.auth/user.json',
     apiStatePath: '.auth/api-state.json',
-    roles: ['alergia', 'vegano', 'familia'] as const,
+    roles: ['alergia', 'vegano', 'familia', 'presupuesto'] as const,
     roleStateDir: '.auth/roles',
     roleCredentials(role: AuthRole): { email: string, password: string } {
       return readRoleCredentials(role);

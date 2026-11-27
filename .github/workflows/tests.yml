@@ -144,7 +144,7 @@ jobs:
           tail -n 100 "$RUNNER_TEMP/app.log" || true
           exit 1
 
-      - name: Seed the three personas
+      - name: Seed the test personas
         env:
           PRODUCT_DIR: ${{ github.workspace }}/fresco-app
         run: bun scripts/ci/seed-personas.ts

@@ -143,3 +143,15 @@ Append-only project log. Every relevant milestone adds one entry at the bottom: 
 **What**: Retested QAFRESCO-3, 30, 36 and 37 with the app built from fresco-app commit 08dda5d6 on a separate local stack. All 27 checks passed and the integration and e2e suites passed 64 of 64; the four cards were commented and closed with the owner approval, so no filed defect is open. QAFRESCO-37 closed against a narrower expected result: only an allergen added by the diet in the same edit is removed. Read-only queries checked the hosted database. The interface was not tried on production or staging. Updated README.md, docs/bugs-found.md, docs/test-cases.md, docs/traceability-matrix.md, docs/automation-eval.md and docs/portfolio/post-dojo-plan.md.
 **Why**: Cards close only after an observed retest.
 **Next**: Automate TC-16 and both halves of TC-17.
+
+## 2026-11-27 - TC-17 automated for the current and next week
+
+**What**: Added `UI-TC-17-1`, `17-2` and `17-3` in `tests/e2e/menu-safety/warnOverBudgetMenu.test.ts`, a menu screen component and a fourth persona, `presupuesto`. Both tests passed twice on fresco-app 08dda5d6 and failed on 8575a2d9, before the BUG-13 fix. The integration and e2e run passed 66 of 66. Not yet run in CI.
+**Why**: TC-17 was a defect area checked only by hand.
+**Next**: Review the change in a clean context, push it and check the CI run.
+
+## 2026-11-27 - Review of the budget tests, and a catalogue text defect
+
+**What**: A separate reviewer rejected the TC-17 change: the "no warning" check of the calendar could pass while the page was still hidden. That finding and eight smaller ones were corrected. Filed QAFRESCO-38 (BUG-15) from read-only queries on the hosted database.
+**Why**: A check that cannot fail reports coverage that does not exist.
+**Next**: Push the change and check the CI run.

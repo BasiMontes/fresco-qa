@@ -78,6 +78,19 @@ export class ProfilesApi extends ApiBase {
     return [response, body];
   }
 
+  @step
+  async setWeeklyBudget(budget: number | null): Promise<[APIResponse, UserProfile[]]> {
+    const [response, body] = await this.apiPATCH<UserProfile[], Pick<UserProfile, 'presupuesto_semana_euros'>>(
+      PROFILES_ENDPOINT,
+      { presupuesto_semana_euros: budget },
+      { params: { id: `eq.${this.callerId()}` }, headers: RETURN_REPRESENTATION },
+    );
+    expect(response.status()).toBe(200);
+    expect(body).toHaveLength(1);
+    expect(body[0].presupuesto_semana_euros, 'weekly budget stored by the write').toBe(budget);
+    return [response, body];
+  }
+
   @atc('CHK-S1')
   async readOwnProfileMatchesSchema(): Promise<[APIResponse, UserProfile]> {
     const [response, body] = await this.apiGET<UserProfile[]>(PROFILES_ENDPOINT, { params: { select: '*' } });

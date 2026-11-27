@@ -9,6 +9,7 @@ import { DataFactory } from '@data/DataFactory';
 import { expect } from '@playwright/test';
 import { mealPlansSchema, menuRecipeRowsSchema } from '@schemas/menu.schema';
 import { postgrestErrorSchema } from '@schemas/profiles.schema';
+import { BUDGET_WARNING_PREFIX } from '@utils/budgetWarning';
 import { atc, step } from '@utils/decorators';
 import { RateLimitError } from '@utils/quota';
 import { expectMatchesSchema } from '@utils/schema';
@@ -118,6 +119,14 @@ export class MealPlansApi extends ApiBase {
     const [, plans] = await this.listOwnMealPlans();
     const ids = plans.filter(plan => plan.semana_iso === week.semana_iso).map(plan => plan.id);
     return this.cleanupMenus(ids);
+  }
+
+  @step
+  async readStoredBudgetWarnings(week: GenerateMealPlanPayload): Promise<string[]> {
+    const [, plans] = await this.listOwnMealPlans();
+    const matching = plans.filter(plan => plan.semana_iso === week.semana_iso);
+    expect(matching, `exactly one plan for ${week.semana_iso}`).toHaveLength(1);
+    return (matching[0].advertencias ?? []).filter(notice => notice.startsWith(BUDGET_WARNING_PREFIX));
   }
 
   createdPlanIds(): string[] {

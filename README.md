@@ -42,7 +42,7 @@ The course layout folder named tests/api (API tests) corresponds to `tests/integ
 
 ## How to run
 
-Prerequisites: the product running locally (local Supabase stack and its web app), because the hosted environment enforces a captcha on login. Each persona (alergia, vegano, familia) logs in with the variables `LOCAL_<ROLE>_EMAIL` and `LOCAL_<ROLE>_PASSWORD` from `.env`. In CI the workflow starts the stack and `scripts/ci/seed-personas.ts` creates the personas.
+Prerequisites: the product running locally (local Supabase stack and its web app), because the hosted environment enforces a captcha on login. Each persona (alergia, vegano, familia, presupuesto) logs in with the variables `LOCAL_<ROLE>_EMAIL` and `LOCAL_<ROLE>_PASSWORD` from `.env`; if one pair is missing, the setup step fails and no test runs. Locally each account is created through the signup form. `presupuesto` is used by the budget tests: two adults, no diet, no allergen and no weekly budget. In CI the workflow starts the stack and `scripts/ci/seed-personas.ts` creates the personas.
 
 | Goal | Command |
 |---|---|
@@ -57,16 +57,16 @@ Prerequisites: the product running locally (local Supabase stack and its web app
 
 | Metric | Value | Source |
 |---|---|---|
-| UI tests | 4 files, 6 ATCs (`UI-TC-01`, `03`, `05`, `09`, `11`, `14`) | `docs/automation-eval.md` section 1, `kata-manifest.json` |
+| UI tests | 5 files, 9 ATCs (`UI-TC-01`, `03`, `05`, `09`, `11`, `14`, `17-1`, `17-2`, `17-3`) | `docs/automation-eval.md` section 1, `kata-manifest.json` |
 | API tests | 12 files, 33 ATCs (`TC-*`, `CHK-*`), with schema validation (zod) | `docs/automation-eval.md` section 1, `kata-manifest.json` |
 | Tests reported by the last green CI run | 64 total, 64 passed, 0 skipped | [run 45176908396](https://github.com/BasiMontes/fresco-qa/actions/runs/45176908396), 2026-11-23 |
-| Test cases automated | 11 of 18 (3 of the 7 others are manual by design) | `docs/automation-eval.md` section 2.1 |
+| Test cases automated | 12 of 18 (3 of the 6 others are manual by design) | `docs/automation-eval.md` section 2.1 |
 
 This project measures test-case coverage, not code coverage; no code-coverage percentage is reported.
 
 ### Bugs found
 
-The product owner decided on the candidates on 2026-11-23. A retest on 2026-11-26, on a local stack of the product, passed BUG-01, 02, 07, 08 and 12 and found BUG-13 and BUG-14. A second one the same day passed BUG-05, 09, 10 and 11 and failed BUG-06. A third one on 2026-11-27 passed BUG-03, 06, 13 and 14, so no filed defect is open (`docs/bugs-found.md`).
+The product owner decided on the candidates on 2026-11-23. A retest on 2026-11-26, on a local stack of the product, passed BUG-01, 02, 07, 08 and 12 and found BUG-13 and BUG-14. A second one the same day passed BUG-05, 09, 10 and 11 and failed BUG-06. A third one on 2026-11-27 passed BUG-03, 06, 13 and 14. BUG-15 was filed the same day and is open (`docs/bugs-found.md`).
 
 | ID | Title | Severity | Status | Jira |
 |---|---|---|---|---|
@@ -84,6 +84,7 @@ The product owner decided on the candidates on 2026-11-23. A retest on 2026-11-2
 | BUG-12 | The onboarding accepts more than 10 people in total and shows an unrelated error | Minor | Fixed, retest passed | QAFRESCO-34 |
 | BUG-13 | The next week's menu gets no budget warning | Medium | Fixed, retest passed | QAFRESCO-36 |
 | BUG-14 | Turning a diet off keeps its allergen selected and saved | Minor | Closed, retest passed: only what the diet added in that edit is removed | QAFRESCO-37 |
+| BUG-15 | Recipe descriptions without accents, or announcing spices the recipe does not list | Minor | Open | QAFRESCO-38 |
 
 ## Learnings
 

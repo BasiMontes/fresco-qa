@@ -8,7 +8,7 @@ Defects found while testing the Fresco allergy-safe weekly menu. Sources are the
 
 **Second retest on 2026-11-26.** BUG-05, BUG-09, BUG-10 and BUG-11 (QAFRESCO-31, 7, 32 and 33) passed and were closed. BUG-06 (QAFRESCO-3) failed and stays open. BUG-03 (QAFRESCO-30) was not retested. The app was built from `fresco-app` commit `096f47b2` and ran on a separate local stack, whose database was created at `04ee5c6d` and then upgraded with the two new migrations. The integration and e2e suites passed 64 of 64 there. Read-only queries checked the hosted database.
 
-**Third retest on 2026-11-27.** BUG-03, BUG-06, BUG-13 and BUG-14 (QAFRESCO-30, 3, 36 and 37) passed and were closed, so no filed defect stays open. The app was built from `fresco-app` commit `08dda5d6` and ran on a separate local stack, whose database was created at `8575a2d9`, upgraded with the new migration and then reset from the `08dda5d6` seed. The integration and e2e suites passed 64 of 64 there. Read-only queries checked the hosted database.
+**Third retest on 2026-11-27.** BUG-03, BUG-06, BUG-13 and BUG-14 (QAFRESCO-30, 3, 36 and 37) passed and were closed, so no filed defect stays open. The app was built from `fresco-app` commit `08dda5d6` and ran on a separate local stack, whose database was created at `8575a2d9`, upgraded with the new migration and then reset from the `08dda5d6` seed. The integration and e2e suites passed 64 of 64 there. Read-only queries checked the hosted database. The same day BUG-15 (QAFRESCO-38) was filed from those queries and is open.
 
 Severity scale: Major (wrong behaviour on health or money data), Minor (wrong but low impact), Question (behaviour that may be intended). Priority: P1 fix before release, P2 should fix, P3 nice to fix.
 
@@ -50,7 +50,7 @@ PO decision (2026-11-23): an implied allergen is fine when it contradicts the di
 | Jira key | QAFRESCO-2 (priority Medium). Same defect, different run: the Jira run shows 97.32 EUR against a 90 EUR budget and empty warnings, in the account `qa-alergia` of `fresco-pre`; this entry shows 94.95 EUR against 35 EUR on the local stack |
 | Status | **Fixed for the current week; retest passed on 2026-11-26** (FRESCO-1269). Confirmed by the PO on 2026-11-23. A menu for the next week still gets no warning: BUG-13 |
 | Evidence | [Menu, persona B](session-reports/screenshots/ui/05-local-vegano-menu.png) (estimated 94.95 EUR); `docs/session-reports/ui-session.md` section 5 (U-04) |
-| Automated coverage | None |
+| Automated coverage | `UI-TC-17-1`, `UI-TC-17-2`, `UI-TC-17-3` (passed locally on 2026-11-27, first CI run pending) |
 
 Preconditions: persona B with a weekly budget of 35 EUR.
 
@@ -288,7 +288,7 @@ Actual: the step says "se calculan para 13 personas" and lets the person continu
 | Jira key | QAFRESCO-36 (filed 2026-11-26) |
 | Status | **Fixed; retest passed on 2026-11-27** (FRESCO-1320). Found in the retest of QAFRESCO-2. The calendar warns for the week on screen, current or next, and a past week keeps its stored warning. The app still shows no cost for the next week |
 | Evidence | Evidence in the Jira issue; its screenshot is kept outside this repository |
-| Automated coverage | None |
+| Automated coverage | `UI-TC-17-1`, `UI-TC-17-2`, `UI-TC-17-3` (passed locally on 2026-11-27, first CI run pending) |
 
 Preconditions: local stack running, an account of 10 people with a weekly budget of 35 EUR and a menu for the current week that shows the warning (4 meals, 127.82 EUR).
 
@@ -327,12 +327,34 @@ Agreed result (recorded by the product session on 2026-11-26, accepted by the ow
 
 Actual: `pescado` stays selected and unlocked, and the profile is saved without the diet and with `pescado`. The onboarding shows the same on screen; that state was not saved there. The gluten-free diet was not tried.
 
+## BUG-15 Recipe descriptions without accents, or announcing spices the recipe does not list
+
+| Field | Value |
+|---|---|
+| Severity / Priority | Minor / P3 (Jira priority Low). Visible text; no effect on the allergen filter has been checked |
+| Area | DB, catalogue |
+| Linked case / AC | none in `docs/test-cases.md` |
+| Jira key | QAFRESCO-38 (filed 2026-11-27) |
+| Status | Open |
+| Evidence | Read-only queries on the hosted database on 2026-11-27, reproduced in the Jira issue. Not observed on screen; that the recipe page shows the field was read in the product code |
+| Automated coverage | None |
+
+Steps:
+1. Open the recipe page of "Tortitas" from the library.
+2. Read the description under the title.
+
+Expected (proposed by QA): the description is written with its accents and only names what the recipe has.
+
+Actual: 8 active recipes say "con especias" and list no spice in their ingredients or steps, salt and garlic aside. At least 38 active descriptions hold a word without its accent, mostly "mediterraneo" (17) and "guarnicion" (16).
+
+Open point: whether "con especias" is filler text or those recipes miss ingredients, in which case their allergens need a review.
+
 ## Summary
 
 | ID | Title | Severity | Priority | Area | Case | Jira | Evidence level | Automated |
 |---|---|---|---|---|---|---|---|---|
 | BUG-01 | Vegan and vegetarian diets store sulfitos unchosen | Medium | P2 | UI, DB | TC-16 | QAFRESCO-29 (closed 2026-11-26) | One UI run, stored profile read in the DB; retest passed | No |
-| BUG-02 | No warning when the menu exceeds the budget | Major | P2 | UI, DB | TC-17 | QAFRESCO-2 (closed 2026-11-26) | One UI run, screenshot, stored warnings read in the DB; retest passed for the current week | No |
+| BUG-02 | No warning when the menu exceeds the budget | Major | P2 | UI, DB | TC-17 | QAFRESCO-2 (closed 2026-11-26) | One UI run, screenshot, stored warnings read in the DB; retest passed for the current week | `UI-TC-17-*` |
 | BUG-03 | Photo shows egg on a recipe without egg | Minor | P3 | UI | TC-18 | QAFRESCO-30 (closed 2026-11-27) | One UI run, screenshot; retest passed | No |
 | BUG-04 | Mid-week menu is partial (12 of 21): not a defect, by design | n/a | n/a | UI, API | TC-11 | Not a defect; QAFRESCO-5, about the label, closed 2026-11-26 | One UI run on all three personas, contrasted with the API | Partial (`UI-TC-11`, future week only) |
 | BUG-05 | Inactive recipes readable anonymously | Question | P3 | API | none | QAFRESCO-31 (closed 2026-11-26) | One API run (script, not a test); retest passed | No |
@@ -343,8 +365,9 @@ Actual: `pescado` stays selected and unlocked, and the profile is saved without 
 | BUG-10 | No recipe carries the altramuces tag | Medium | P2 | DB | TC-05 | QAFRESCO-32 (closed 2026-11-26) | Read-only query, 0 recipes; retest passed | No |
 | BUG-11 | FAQ promises regenerating one slot; the product does not offer it | Minor | P3 | UI copy | TC-09 | QAFRESCO-33 (closed 2026-11-26) | `rg` on the product code, FAQ text; retest passed | Flow that exists: `UI-TC-09` |
 | BUG-12 | The onboarding accepts more than 10 people in total and shows an unrelated error | Minor | P3 | UI, validation | TC-08 | QAFRESCO-34 (closed 2026-11-26) | Reproduced live, two screenshots and the failing request; retest passed | No |
-| BUG-13 | The next week's menu gets no budget warning | Medium | P2 | UI, DB | TC-17 | QAFRESCO-36 (closed 2026-11-27) | One UI run, stored menu read in the DB; retest passed | No |
+| BUG-13 | The next week's menu gets no budget warning | Medium | P2 | UI, DB | TC-17 | QAFRESCO-36 (closed 2026-11-27) | One UI run, stored menu read in the DB; retest passed | `UI-TC-17-*` |
 | BUG-14 | Turning a diet off keeps its allergen selected and saved | Minor | P3 | UI, DB | TC-16 | QAFRESCO-37 (closed 2026-11-27) | One UI run, stored profile read in the DB; retest passed on the agreed result | No |
+| BUG-15 | Recipe descriptions without accents or announcing absent spices | Minor | P3 | DB, catalogue | none | QAFRESCO-38 (open) | Read-only queries on the hosted database | No |
 
 ## Observed in the retests, not filed
 
@@ -353,7 +376,7 @@ Actual: `pescado` stays selected and unlocked, and the profile is saved without 
 - The "how it works" section of the landing page still says "Cambia lo que no te convenza con un toque".
 - The photo of the vegan "Crema de calabacín" showed prawns in the seed data. Fixed with BUG-03 and checked on 2026-11-27.
 - The next week's menu stores no estimated cost and the app shows none for it (2026-11-27).
-- The seed describes "Crema de calabacín con queso fresco" as "Crema de calabacin con especias.": no accent, and no spice among its ingredients (2026-11-27).
+- The description of "Crema de calabacín con queso fresco", first seen in the seed, is part of BUG-15.
 
 ## Dropped after verification
 

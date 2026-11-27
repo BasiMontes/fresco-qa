@@ -1,6 +1,6 @@
 {
   "version": "1.0",
-  "generatedAt": "2026-11-23T12:41:48.353Z",
+  "generatedAt": "2026-11-27T09:47:48.305Z",
   "components": {
     "api": [
       {
@@ -82,52 +82,52 @@
           {
             "id": "CHK-D1",
             "method": "generateMenuWithMissingFields",
-            "line": 238
+            "line": 247
           },
           {
             "id": "CHK-D2",
             "method": "generateMenuWithInvalidWeek",
-            "line": 250
+            "line": 259
           },
           {
             "id": "CHK-D3",
             "method": "generateMenuForExistingWeekReturnsConflict",
-            "line": 367
+            "line": 376
           },
           {
             "id": "CHK-E7",
             "method": "deleteUnknownMealPlanDeletesNothing",
-            "line": 328
+            "line": 337
           },
           {
             "id": "CHK-E8",
             "method": "deleteOwnMenuRemovesIt",
-            "line": 346
+            "line": 355
           },
           {
             "id": "CHK-E9",
             "method": "insertMealPlanDirectlyIsDenied",
-            "line": 310
+            "line": 319
           },
           {
             "id": "TC-01",
             "method": "generateMenuForEggAllergicProfile",
-            "line": 193
+            "line": 202
           },
           {
             "id": "TC-02",
             "method": "generateMenuOnAnotherWeekStaysEggFree",
-            "line": 204
+            "line": 213
           },
           {
             "id": "TC-03",
             "method": "generateMenuForVeganLactoseFreeProfile",
-            "line": 219
+            "line": 228
           },
           {
             "id": "TC-10",
             "method": "addAllergenAfterGenerationRetiresConflictingSlots",
-            "line": 276
+            "line": 285
           }
         ]
       },
@@ -139,37 +139,37 @@
           {
             "id": "CHK-A1",
             "method": "listOwnProfilesReturnsOnlyOwnRow",
-            "line": 135
+            "line": 148
           },
           {
             "id": "CHK-A5",
             "method": "updateOtherUsersProfileChangesNothing",
-            "line": 146
+            "line": 159
           },
           {
             "id": "CHK-E5",
             "method": "updateProfileWithInvalidValueIsRejected",
-            "line": 93
+            "line": 106
           },
           {
             "id": "CHK-E6",
             "method": "insertDuplicateProfileIsRejected",
-            "line": 115
+            "line": 128
           },
           {
             "id": "CHK-S1",
             "method": "readOwnProfileMatchesSchema",
-            "line": 81
+            "line": 94
           },
           {
             "id": "TC-08-1",
             "method": "updateHouseholdWithinLimits",
-            "line": 163
+            "line": 176
           },
           {
             "id": "TC-08-2",
             "method": "updateHouseholdOutsideLimits",
-            "line": 181
+            "line": 194
           }
         ]
       },
@@ -240,17 +240,27 @@
           {
             "id": "UI-TC-01",
             "method": "generateMenuForEggAllergicPersona",
-            "line": 82
+            "line": 120
           },
           {
             "id": "UI-TC-03",
             "method": "generateMenuForVeganLactoseFreePersona",
-            "line": 87
+            "line": 125
           },
           {
             "id": "UI-TC-11",
             "method": "generateFullWeekWithoutRepeatedMeals",
-            "line": 92
+            "line": 130
+          },
+          {
+            "id": "UI-TC-17-2",
+            "method": "showUpcomingWeekBudgetWarning",
+            "line": 104
+          },
+          {
+            "id": "UI-TC-17-3",
+            "method": "showNoBudgetWarningWhenCostFitsBudget",
+            "line": 115
           }
         ]
       },
@@ -285,6 +295,18 @@
             "id": "PROJ-112",
             "method": "loginWithInvalidCredentials",
             "line": 37
+          }
+        ]
+      },
+      {
+        "name": "MenuPage",
+        "file": "MenuPage.ts",
+        "relativePath": "tests/components/ui/MenuPage.ts",
+        "atcs": [
+          {
+            "id": "UI-TC-17-1",
+            "method": "showCurrentWeekBudgetWarning",
+            "line": 36
           }
         ]
       },
@@ -332,10 +354,10 @@
     }
   ],
   "summary": {
-    "totalComponents": 11,
-    "totalATCs": 47,
+    "totalComponents": 12,
+    "totalATCs": 50,
     "apiComponents": 6,
-    "uiComponents": 5,
+    "uiComponents": 6,
     "stepsModules": 1
   }
 }

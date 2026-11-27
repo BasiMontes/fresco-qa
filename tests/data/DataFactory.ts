@@ -81,6 +81,11 @@ export class DataFactory {
     };
   }
 
+  static nextIsoWeekInMadrid(now: Date = new Date()): IsoWeek {
+    const { fecha_inicio } = this.currentIsoWeekInMadrid(now);
+    return this.futureIsoWeek(1, new Date(`${fecha_inicio}T00:00:00Z`));
+  }
+
   static currentIsoWeekInMadrid(now: Date = new Date()): IsoWeek {
     const madridDate = new Intl.DateTimeFormat('en-CA', {
       timeZone: 'Europe/Madrid',

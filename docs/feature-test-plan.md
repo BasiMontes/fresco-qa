@@ -58,7 +58,7 @@ Three test accounts, created by the project owner. Credentials are stored by var
 | B. Young vegan, lactose-free, saving money | 1 person; vegano and sin lactosa; weekly budget set | `STAGING_VEGANO_` | Stacked diets; the database forces vegano to imply vegetariano |
 | C. Family of 4 reducing waste | 4 people (2 adults, 2 children); no allergen; goal "reducir desperdicio" | `STAGING_FAMILIA_` | Household scaling; the owner noted the goal may not change the menu |
 
-Data rules: the database is shared by every environment, so tests write only through these three accounts. Database access is read-only. No test touches production.
+Data rules: the database is shared by every environment, so tests write only through these three accounts and, since 2026-11-27, a fourth local one for the budget tests. Database access is read-only. No test touches production.
 
 ## 6. Test design
 
@@ -87,7 +87,7 @@ Cases are listed in `docs/test-cases.md`. Each case names the criterion it cover
 
 ## 8. Entry and exit criteria
 
-Entry: the three accounts exist and each profile is declared on the local stack; the local app and its edge functions respond.
+Entry: the test accounts exist and each profile is declared on the local stack; the local app and its edge functions respond.
 
 Exit: every priority 1 case executed; every candidate finding reproduced or discarded with evidence; open PO questions listed in the final report.
 
