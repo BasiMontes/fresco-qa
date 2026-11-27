@@ -179,3 +179,9 @@ Append-only project log. Every relevant milestone adds one entry at the bottom: 
 **What**: Added `UI-TC-12-1` to `12-3` in `tests/e2e/menu-safety/deleteAccountData.test.ts`, a profile screen component and a database reader. The owner approved reading the local database with the service role key and decided that a clear-text user id in the erasure record is intended while the analytics deletion is pending. The tests passed twice on fresco-app 0d295110; on a copy that reports a deletion without deleting, `12-1` and `12-2` failed; on a copy that skips the password check, `12-3` failed. A separate reviewer rejected the first version: the expected erasure record copied the stored one, and a failing run would write the service role key to the trace. The first finding and eight smaller ones were corrected; the owner accepted the key in the trace, for a disposable local stack only. Not yet run in CI.
 **Why**: Deleting health data had been designed and never executed.
 **Next**: Push the change and check the CI run. TC-07 needs its scaling rule.
+
+## 2026-11-27 - Account deletion tests pass in CI
+
+**What**: Commit 4005ec8 ran in CI (run 46008428254): 73 of 73, with `UI-TC-12-1` to `12-3` passing on their first run there; the unit tests passed and the results page shows the commit. 14 of 18 test cases are automated.
+**Why**: A test counts as coverage once it runs in the pipeline.
+**Next**: TC-07 needs its scaling rule.
