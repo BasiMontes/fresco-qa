@@ -191,3 +191,9 @@ Append-only project log. Every relevant milestone adds one entry at the bottom: 
 **What**: Added `UI-TC-07-1` in `tests/e2e/menu-safety/scaleShoppingList.test.ts`, with a shopping list screen component, a list API component and two utilities with unit tests. The scaling rule was already recorded (proportional to the number of people, children count as adults, improvement QAFRESCO-35), although the previous entries listed it as missing. The test passed twice on fresco-app 9ee58eb8 and failed on a copy that does not scale, on a copy that files fruit and vegetables under drinks, and with the names hidden. A separate reviewer rejected the first version because the aisles were only compared with the stored list; that finding and three minor ones were corrected. Commit 005abf6 ran in CI (run 46163001864): the first attempt stopped before any test because the edge runtime crashed, the second passed 74 of 74. 15 of 18 test cases are automated.
 **Why**: It was the last test case not automated and not manual by design.
 **Next**: No test case is left to automate; TC-06, TC-13 and TC-18 stay manual.
+
+## 2026-11-28 - Partial retest of the recipe descriptions (QAFRESCO-38)
+
+**What**: Retested FRESCO-1323 on a disposable local stack built from fresco-app 9ee58eb8. The courgette cream now says what it contains, on the database and on the recipe screen, and its migration changes the old text without touching a different one. QAFRESCO-38 stays open: 7 of 8 recipes still announce spices they do not list, and 37 descriptions still hold a listed word without its accent. The owner approved the comment on the Jira issue. The hosted database was not queried.
+**Why**: One of the cases of the open defect had a fix on the product main branch.
+**Next**: Retest QAFRESCO-38 again when the other descriptions are fixed.

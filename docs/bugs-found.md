@@ -10,6 +10,8 @@ Defects found while testing the Fresco allergy-safe weekly menu. Sources are the
 
 **Third retest on 2026-11-27.** BUG-03, BUG-06, BUG-13 and BUG-14 (QAFRESCO-30, 3, 36 and 37) passed and were closed, so no filed defect stays open. The app was built from `fresco-app` commit `08dda5d6` and ran on a separate local stack, whose database was created at `8575a2d9`, upgraded with the new migration and then reset from the `08dda5d6` seed. The integration and e2e suites passed 64 of 64 there. Read-only queries checked the hosted database. The same day BUG-15 (QAFRESCO-38) was filed from those queries and is open.
 
+**Partial retest of BUG-15 on 2026-11-28.** The product fixed one of its descriptions (FRESCO-1323, commit `0d295110`). That change passed on a disposable local stack built from `fresco-app` commit `9ee58eb8`: stored text, ingredients, recipe screen, and the migration on the old text and on a different one inside a rolled back transaction. BUG-15 stays open. The hosted database was not queried.
+
 Severity scale: Major (wrong behaviour on health or money data), Minor (wrong but low impact), Question (behaviour that may be intended). Priority: P1 fix before release, P2 should fix, P3 nice to fix.
 
 ## BUG-01 Vegan diet silently stores allergens the user did not choose
@@ -335,8 +337,8 @@ Actual: `pescado` stays selected and unlocked, and the profile is saved without 
 | Area | DB, catalogue |
 | Linked case / AC | none in `docs/test-cases.md` |
 | Jira key | QAFRESCO-38 (filed 2026-11-27) |
-| Status | Open |
-| Evidence | Read-only queries on the hosted database on 2026-11-27, reproduced in the Jira issue. Not observed on screen; that the recipe page shows the field was read in the product code |
+| Status | Open. Partly fixed (FRESCO-1323): the description of "Crema de calabacín con queso fresco" passed a local retest on 2026-11-28. On that seeded database, 7 of the 8 "con especias" recipes remain and 37 descriptions still hold a listed word without its accent |
+| Evidence | Read-only queries on the hosted database on 2026-11-27, reproduced in the Jira issue. Retest of 2026-11-28 on a local seeded database, comment on the Jira issue; the corrected description was observed on screen. The remaining cases were counted by query and their steps were not rechecked |
 | Automated coverage | None |
 
 Steps:
@@ -367,7 +369,7 @@ Open point: whether "con especias" is filler text or those recipes miss ingredie
 | BUG-12 | The onboarding accepts more than 10 people in total and shows an unrelated error | Minor | P3 | UI, validation | TC-08 | QAFRESCO-34 (closed 2026-11-26) | Reproduced live, two screenshots and the failing request; retest passed | No |
 | BUG-13 | The next week's menu gets no budget warning | Medium | P2 | UI, DB | TC-17 | QAFRESCO-36 (closed 2026-11-27) | One UI run, stored menu read in the DB; retest passed | `UI-TC-17-*` |
 | BUG-14 | Turning a diet off keeps its allergen selected and saved | Minor | P3 | UI, DB | TC-16 | QAFRESCO-37 (closed 2026-11-27) | One UI run, stored profile read in the DB; retest passed on the agreed result | `UI-TC-16-*` |
-| BUG-15 | Recipe descriptions without accents or announcing absent spices | Minor | P3 | DB, catalogue | none | QAFRESCO-38 (open) | Read-only queries on the hosted database | No |
+| BUG-15 | Recipe descriptions without accents or announcing absent spices | Minor | P3 | DB, catalogue | none | QAFRESCO-38 (open) | Read-only queries on the hosted database; partial local retest | No |
 
 ## Observed in the retests, not filed
 

@@ -66,7 +66,7 @@ This project measures test-case coverage, not code coverage; no code-coverage pe
 
 ### Bugs found
 
-The product owner decided on the candidates on 2026-11-23. A retest on 2026-11-26, on a local stack of the product, passed BUG-01, 02, 07, 08 and 12 and found BUG-13 and BUG-14. A second one the same day passed BUG-05, 09, 10 and 11 and failed BUG-06. A third one on 2026-11-27 passed BUG-03, 06, 13 and 14. BUG-15 was filed the same day and is open (`docs/bugs-found.md`).
+The product owner decided on the candidates on 2026-11-23. A retest on 2026-11-26, on a local stack of the product, passed BUG-01, 02, 07, 08 and 12 and found BUG-13 and BUG-14. A second one the same day passed BUG-05, 09, 10 and 11 and failed BUG-06. A third one on 2026-11-27 passed BUG-03, 06, 13 and 14. BUG-15 was filed the same day and is open; a partial retest on 2026-11-28 passed the one description fixed so far (`docs/bugs-found.md`).
 
 | ID | Title | Severity | Status | Jira |
 |---|---|---|---|---|
