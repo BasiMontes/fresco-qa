@@ -1,6 +1,6 @@
 {
   "version": "1.0",
-  "generatedAt": "2026-11-27T13:06:22.056Z",
+  "generatedAt": "2026-11-28T15:38:43.178Z",
   "components": {
     "api": [
       {
@@ -145,37 +145,37 @@
           {
             "id": "CHK-A1",
             "method": "listOwnProfilesReturnsOnlyOwnRow",
-            "line": 148
+            "line": 155
           },
           {
             "id": "CHK-A5",
             "method": "updateOtherUsersProfileChangesNothing",
-            "line": 159
+            "line": 166
           },
           {
             "id": "CHK-E5",
             "method": "updateProfileWithInvalidValueIsRejected",
-            "line": 106
+            "line": 113
           },
           {
             "id": "CHK-E6",
             "method": "insertDuplicateProfileIsRejected",
-            "line": 128
+            "line": 135
           },
           {
             "id": "CHK-S1",
             "method": "readOwnProfileMatchesSchema",
-            "line": 94
+            "line": 101
           },
           {
             "id": "TC-08-1",
             "method": "updateHouseholdWithinLimits",
-            "line": 176
+            "line": 183
           },
           {
             "id": "TC-08-2",
             "method": "updateHouseholdOutsideLimits",
-            "line": 194
+            "line": 201
           }
         ]
       },
@@ -235,6 +235,12 @@
             "line": 136
           }
         ]
+      },
+      {
+        "name": "ShoppingListsApi",
+        "file": "ShoppingListsApi.ts",
+        "relativePath": "tests/components/api/ShoppingListsApi.ts",
+        "atcs": []
       }
     ],
     "ui": [
@@ -393,6 +399,18 @@
             "line": 22
           }
         ]
+      },
+      {
+        "name": "ShoppingListPage",
+        "file": "ShoppingListPage.ts",
+        "relativePath": "tests/components/ui/ShoppingListPage.ts",
+        "atcs": [
+          {
+            "id": "UI-TC-07-1",
+            "method": "showStoredRowsGroupedByAisle",
+            "line": 25
+          }
+        ]
       }
     ]
   },
@@ -409,10 +427,10 @@
     }
   ],
   "summary": {
-    "totalComponents": 15,
-    "totalATCs": 57,
-    "apiComponents": 7,
-    "uiComponents": 8,
+    "totalComponents": 17,
+    "totalATCs": 58,
+    "apiComponents": 8,
+    "uiComponents": 9,
     "stepsModules": 1
   }
 }

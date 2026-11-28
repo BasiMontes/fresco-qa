@@ -51,6 +51,13 @@ export class ProfilesApi extends ApiBase {
   }
 
   @step
+  async setHousehold(household: Household): Promise<[APIResponse, UserProfile[]]> {
+    const [response, body] = await this.restoreHousehold(household);
+    expect(toHousehold(body[0]), 'household stored by the write').toEqual(household);
+    return [response, body];
+  }
+
+  @step
   async setDietaryPreferences(preferences: DietaryPreferences): Promise<[APIResponse, UserProfile[]]> {
     const [response, body] = await this.apiPATCH<UserProfile[], DietaryPreferences>(
       PROFILES_ENDPOINT,

@@ -8,6 +8,7 @@ import { OnboardingPage } from '@ui/OnboardingPage';
 import { PreferencesPage } from '@ui/PreferencesPage';
 import { ProfilePage } from '@ui/ProfilePage';
 import { RecipesPage } from '@ui/RecipesPage';
+import { ShoppingListPage } from '@ui/ShoppingListPage';
 import { UiBase } from '@ui/UiBase';
 
 export class UiFixture extends UiBase {
@@ -27,6 +28,8 @@ export class UiFixture extends UiBase {
 
   readonly recipes: RecipesPage;
 
+  readonly shoppingList: ShoppingListPage;
+
   constructor(options: TestContextOptions) {
     super(options);
 
@@ -38,5 +41,6 @@ export class UiFixture extends UiBase {
     this.preferences = new PreferencesPage(options);
     this.profile = new ProfilePage(options);
     this.recipes = new RecipesPage(options);
+    this.shoppingList = new ShoppingListPage(options);
   }
 }

@@ -9,6 +9,7 @@ import { ExampleApi } from '@api/ExampleApi';
 import { MealPlansApi } from '@api/MealPlansApi';
 import { ProfilesApi } from '@api/ProfilesApi';
 import { RecipesApi } from '@api/RecipesApi';
+import { ShoppingListsApi } from '@api/ShoppingListsApi';
 import { loadRoleState } from '@utils/roleState';
 
 export class ApiFixture extends ApiBase {
@@ -26,6 +27,8 @@ export class ApiFixture extends ApiBase {
 
   readonly mealPlans: MealPlansApi;
 
+  readonly shoppingLists: ShoppingListsApi;
+
   constructor(options: TestContextOptions) {
     super(options);
 
@@ -36,6 +39,7 @@ export class ApiFixture extends ApiBase {
     this.access = new AccessControlApi(options);
     this.recipes = new RecipesApi(options);
     this.mealPlans = new MealPlansApi(options);
+    this.shoppingLists = new ShoppingListsApi(options);
   }
 
   asRole(role: AuthRole): ApiFixture {
@@ -57,6 +61,7 @@ export class ApiFixture extends ApiBase {
     this.access.setAuthToken(token);
     this.recipes.setAuthToken(token);
     this.mealPlans.setAuthToken(token);
+    this.shoppingLists.setAuthToken(token);
   }
 
   override clearAuthToken() {
@@ -68,5 +73,6 @@ export class ApiFixture extends ApiBase {
     this.access.clearAuthToken();
     this.recipes.clearAuthToken();
     this.mealPlans.clearAuthToken();
+    this.shoppingLists.clearAuthToken();
   }
 }
