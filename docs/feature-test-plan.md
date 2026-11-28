@@ -58,7 +58,7 @@ Three test accounts, created by the project owner. Credentials are stored by var
 | B. Young vegan, lactose-free, saving money | 1 person; vegano and sin lactosa; weekly budget set | `STAGING_VEGANO_` | Stacked diets; the database forces vegano to imply vegetariano |
 | C. Family of 4 reducing waste | 4 people (2 adults, 2 children); no allergen; goal "reducir desperdicio" | `STAGING_FAMILIA_` | Household scaling; the owner noted the goal may not change the menu |
 
-Data rules: the database is shared by every environment, so tests write only through these three accounts and, since 2026-11-27, a fourth local one for the budget tests; each diet and deletion test also creates a new local account, registered or guest. Database access is read-only; since 2026-11-27 the deletion tests read the local database with the service role key. No test touches production.
+Data rules: the database is shared by every environment, so tests write only through these three accounts and, since 2026-11-27, a fourth local one for the budget tests, also used by the shopping list test since 2026-11-28; each diet and deletion test also creates a new local account, registered or guest. Database access is read-only; since 2026-11-27 the deletion tests read the local database with the service role key. No test touches production.
 
 ## 6. Test design
 

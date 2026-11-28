@@ -26,7 +26,7 @@ Legend. Priority: P1 must run before release, P2 should run, P3 nice to have. Au
 | TC-04 | Several allergens exclude the union of all of them | AC-1 | Decision table | P1 | API + DB | Designed; automated as API ATC TC-04 |
 | TC-05 | Declaring lupin is accepted and the menu still generates | AC-1 | Edge | P3 | UI | Automated as UI ATC UI-TC-05 |
 | TC-06 | A very restrictive profile stays safe even if variety drops | AC-1, AC-3 | Edge | P2 | Manual | Designed |
-| TC-07 | Shopping list quantities scale with household size | AC-5 | Boundary | P2 | UI | Designed |
+| TC-07 | Shopping list quantities scale with household size | AC-5 | Boundary | P2 | UI | Automated |
 | TC-08 | Household size limits are enforced | AC-6 | Boundary | P2 | API | Designed |
 | TC-09 | Swapping one slot changes only that slot and stays safe | AC-4 | Positive | P1 | UI | Automated as UI ATC UI-TC-09 |
 | TC-10 | Adding an allergen after generation does not leave unsafe slots | AC-7 | State transition | P1 | API | Automated as API ATC TC-10 |
@@ -99,10 +99,10 @@ Legend. Priority: P1 must run before release, P2 should run, P3 nice to have. Au
 - Expected: no recipe violates any restriction. Either the menu is complete, or the app says that there are not enough recipes. A silent menu with unsafe recipes is a defect. Record whether comida or cena repeat (F-04).
 
 ### TC-07 Shopping list quantities scale with household size
-- Automated check: none. Status: Designed. Defect: none.
+- Automated check: `UI-TC-07-1` (UI). Status: Automated. Defect: none.
 - Covers: AC-5. Boundary. Priority P2. Automation: UI.
-- Steps: compare the list for persona C (4 people) with a 1-person profile on the same recipes.
-- Expected: quantities grow in proportion to the number of people. The product scales by the number of people only, so a child counts as an adult (improvement QAFRESCO-35).
+- Steps: list the same menu for 1 person, for 4 people (the household of persona C) and for 10 people.
+- Expected: ingredients and aisles stay the same, and quantities grow in proportion to the number of people, rounded up once per ingredient. The product scales by the number of people only, so a child counts as an adult (improvement QAFRESCO-35).
 
 ### TC-08 Household size limits are enforced
 - Automated check: `TC-08-1`, `TC-08-2` (API). Status: Automated; row 4/1/0 not tested (the database accepts it, the app cannot produce it). Defect: BUG-12 for the total above 10 in the onboarding (fixed, retest passed 2026-11-26).

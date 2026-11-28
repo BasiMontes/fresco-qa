@@ -185,3 +185,9 @@ Append-only project log. Every relevant milestone adds one entry at the bottom: 
 **What**: Commit 4005ec8 ran in CI (run 46008428254): 73 of 73, with `UI-TC-12-1` to `12-3` passing on their first run there; the unit tests passed and the results page shows the commit. 14 of 18 test cases are automated.
 **Why**: A test counts as coverage once it runs in the pipeline.
 **Next**: TC-07 needs its scaling rule.
+
+## 2026-11-28 - TC-07 automated: the shopping list scales with the household
+
+**What**: Added `UI-TC-07-1` in `tests/e2e/menu-safety/scaleShoppingList.test.ts`, with a shopping list screen component, a list API component and two utilities with unit tests. The scaling rule was already recorded (proportional to the number of people, children count as adults, improvement QAFRESCO-35), although the previous entries listed it as missing. The test passed twice on fresco-app 9ee58eb8 and failed on a copy that does not scale, on a copy that files fruit and vegetables under drinks, and with the names hidden. A separate reviewer rejected the first version because the aisles were only compared with the stored list; that finding and three minor ones were corrected. Commit 005abf6 ran in CI (run 46163001864): the first attempt stopped before any test because the edge runtime crashed, the second passed 74 of 74. 15 of 18 test cases are automated.
+**Why**: It was the last test case not automated and not manual by design.
+**Next**: No test case is left to automate; TC-06, TC-13 and TC-18 stay manual.

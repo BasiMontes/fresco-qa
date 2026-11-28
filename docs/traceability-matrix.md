@@ -12,7 +12,7 @@ Legend. Coverage: Automated means at least one ATC runs the criterion in CI; Man
 | AC-2 | Every recipe satisfies all active diets | TC-03 | `TC-03`, `CHK-B2-2` | `UI-TC-03` | none | Automated; shopping list content not checked |
 | AC-3 | One slot per day and meal, no repeated comida or cena | TC-06, TC-11 | none | `UI-TC-11` | none (BUG-04 was by design) | Automated for a future week; the PO confirmed that a mid-week menu leaves the past days empty |
 | AC-4 | Swapping a slot changes only that slot and stays safe | TC-09 | none | `UI-TC-09` | BUG-11 (FAQ promise, closed) | Automated: AC-4 is the "Añadir al menú" flow (PO decision) |
-| AC-5 | Shopping list grouped by aisle, quantities scale with N | TC-07 | none | none | none | Gap: designed, never executed or automated |
+| AC-5 | Shopping list grouped by aisle, quantities scale with N | TC-07 | none | `UI-TC-07-1` | none | Automated for 1, 4 and 10 people on the current week; children count as adults (improvement QAFRESCO-35) |
 | AC-6 | Household limits: people 1 to 10, adults, children | TC-08 | `TC-08-1`, `TC-08-2` | none | BUG-12 (total above 10 in the onboarding, fixed) | Automated; row 4 people, 1 adult, 0 children not tested: the database accepts it and the app cannot produce it |
 | AC-7 | Allergen added after generation: pending slots emptied and the user warned | TC-10 | `TC-10` | none | none | Automated; behaviour confirmed by the PO |
 | AC-8 | Consent, export and deletion of health data | TC-12, TC-16 | none | `UI-TC-12-1`, `UI-TC-12-2`, `UI-TC-12-3`, `UI-TC-16-1`, `UI-TC-16-2`, `UI-TC-16-3`, `UI-TC-16-4` | BUG-01 (TC-16, fixed), BUG-14 (TC-16, closed) | Partly automated: consent gate, stored allergens and deletion. Export is not covered |
@@ -31,7 +31,7 @@ Legend. Coverage: Automated means at least one ATC runs the criterion in CI; Man
 | TC-04 | AC-1 | P1 | `TC-04` | none | Automated |
 | TC-05 | AC-1 | P3 | none | `UI-TC-05` | Automated |
 | TC-06 | AC-1, AC-3 | P2 | none | none | Manual by design |
-| TC-07 | AC-5 | P2 | none | none | Not automated |
+| TC-07 | AC-5 | P2 | none | `UI-TC-07-1` | Automated |
 | TC-08 | AC-6 | P2 | `TC-08-1`, `TC-08-2` | none | Automated |
 | TC-09 | AC-4 | P1 | none | `UI-TC-09` | Automated, add-to-menu flow |
 | TC-10 | AC-7 | P1 | `TC-10` | none | Automated |
@@ -52,10 +52,9 @@ Legend. Coverage: Automated means at least one ATC runs the criterion in CI; Man
 
 | Gap | Criterion | Reason |
 |---|---|---|
-| No test case executed or automated | AC-5 | Designed only |
 | No automated check | AC-9 | Manual by design |
 | Export not covered | AC-8 | No test case asks for the data export |
-| Test cases designed but neither executed by hand nor automated | TC-06, TC-07, TC-13 | Status Designed in `docs/test-cases.md` with no ATC |
+| Test cases designed but neither executed by hand nor automated | TC-06, TC-13 | Status Designed in `docs/test-cases.md` with no ATC |
 | Open criteria needing the PO | none | AC-6 was defined with the PO's acceptance of QA's recommendation |
 
 ## 5. Totals
@@ -63,9 +62,9 @@ Legend. Coverage: Automated means at least one ATC runs the criterion in CI; Man
 | Measure | Value |
 |---|---|
 | Criteria (AC-1 to AC-11 plus Security) | 12 |
-| Criteria with at least one automated check | 10 (AC-1, AC-2, AC-3, AC-4, AC-6, AC-7, AC-8, AC-10, AC-11, Security) |
-| Criteria with no automated check | 2 (AC-5, AC-9) |
+| Criteria with at least one automated check | 11 (AC-1, AC-2, AC-3, AC-4, AC-5, AC-6, AC-7, AC-8, AC-10, AC-11, Security) |
+| Criteria with no automated check | 1 (AC-9) |
 | Criteria with no test case | 0 |
 | Test cases | 18 |
-| Test cases with an automated check | 14 (TC-01, 02, 03, 04, 05, 08, 09, 10, 11, 12, 14, 15, 16, 17) |
+| Test cases with an automated check | 15 (TC-01, 02, 03, 04, 05, 07, 08, 09, 10, 11, 12, 14, 15, 16, 17) |
 | Defects linked to a test case | 8 of 13 (BUG-01, 02, 03, 10, 11, 12, 13, 14); BUG-04 is not a defect |

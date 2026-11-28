@@ -9,8 +9,8 @@ Evaluation of the test automation built for the Fresco menu feature: what was au
 | Framework | KATA on Playwright and TypeScript, run with Bun (`package.json`) |
 | Target | Local copy of the product (local Supabase, edge functions, web app). Staging is excluded because its login and auth API require a captcha (`docs/bitacora.md`) |
 | API suite | 12 files in `tests/integration/menu-safety/`, 33 new ATC ids (`kata-manifest.json`) |
-| UI suite | 7 files in `tests/e2e/menu-safety/`, 16 new ATC ids (`kata-manifest.json`) |
-| ATCs in the manifest | 57 in total: 33 API (`TC-*`, `CHK-*`), 16 UI (`UI-TC-*`), 8 from the boilerplate samples (`PROJ-*`) (`kata-manifest.json`, `summary.totalATCs` = 57) |
+| UI suite | 8 files in `tests/e2e/menu-safety/`, 17 new ATC ids (`kata-manifest.json`) |
+| ATCs in the manifest | 58 in total: 33 API (`TC-*`, `CHK-*`), 17 UI (`UI-TC-*`), 8 from the boilerplate samples (`PROJ-*`) (`kata-manifest.json`, `summary.totalATCs` = 58) |
 | Pipeline | `.github/workflows/tests.yml`, passing on a GitHub runner on a fresh database (see section 5) |
 | Jira | Not used for tests. Owner decision, see section 7 |
 
@@ -30,7 +30,7 @@ The "28 ATCs" figure in `docs/bitacora.md` and in the API progress log was the m
 | TC-04 | Several allergens, union excluded | AC-1 | `TC-04` | none | Automated at API level: six parameterized rows through the filter RPC, with the profile snapshotted and restored (`test-specs/menu-safety-p1-gaps/`). Passes in CI |
 | TC-05 | Lupin accepted | AC-1 | none | `UI-TC-05` | Automated at UI level: saves `altramuces` from the preferences screen, then generates a menu for the vegan persona. No recipe carries the tag, so the test cannot prove the exclusion (F-06). The retest of BUG-10 on 2026-11-26 saw it by hand with a recipe tagged inside a rolled back transaction |
 | TC-06 | Very restrictive profile | AC-1, AC-3 | none | none | Manual by design (exploratory) |
-| TC-07 | Shopping list scales | AC-5 | none | none | Not automated. The exact scaling rule is not documented |
+| TC-07 | Shopping list scales | AC-5 | none | `UI-TC-07-1` | Automated: one menu of the current week listed for 1, 4 and 10 people. Same ingredients and aisles, every quantity consistent with one amount per person under the round-up of the product, common ingredients in their aisle, and the screen equal to the stored list. Children count as adults (QAFRESCO-35) |
 | TC-08 | Household limits | AC-6 | `TC-08-1`, `TC-08-2` | none | Automated; row 4/1/0 excluded until the PO answers question 1 |
 | TC-09 | Swap one slot | AC-4 | none | `UI-TC-09` | Automated: one slot changes and stays egg-free. AC-4 is defined as the "Añadir al menú" flow (PO decision); dragging two slots and substituting an ingredient are separate flows and are not covered |
 | TC-10 | Allergen added after generation | AC-7 | `TC-10` | none | Automated as a step of the generation test, with no extra menu request: the conflicting slots go back to `pendiente` with no recipe and the plan gets a notice, as the PO confirmed |
@@ -43,9 +43,9 @@ The "28 ATCs" figure in `docs/bitacora.md` and in the API progress log was the m
 | TC-17 | Over-budget warning | AC-11 | none | `UI-TC-17-1`, `UI-TC-17-2`, `UI-TC-17-3` | Automated for the current and next week, with the budget at 1 EUR, at the cost and one cent under it. The next week shows no cost, so its amount is not verified on its own: the threshold is derived from the first warning and checked for consistency (`budget-warning/spec.md`) |
 | TC-18 | Photo contradicts allergen data | AC-1 | none | none | Manual, exploratory |
 
-Totals from the table: 14 of 18 TCs have an automated ATC (TC-01, 02, 03, 04, 05, 08, 09, 10, 11, 12, 14, 15, 16, 17). 4 of 18 are not automated; 3 of those are manual by design (TC-06, 13, 18).
+Totals from the table: 15 of 18 TCs have an automated ATC (TC-01, 02, 03, 04, 05, 07, 08, 09, 10, 11, 12, 14, 15, 16, 17). 3 of 18 are not automated, all manual by design (TC-06, 13, 18).
 
-Acceptance criteria with at least one automated check: AC-1, AC-2, AC-3, AC-4, AC-6, AC-7, AC-8 (consent gate, stored allergens and deletion; not export), AC-10, AC-11 and the security criterion. No automated check covers AC-5 or AC-9 (`docs/feature-test-plan.md`).
+Acceptance criteria with at least one automated check: AC-1, AC-2, AC-3, AC-4, AC-5, AC-6, AC-7, AC-8 (consent gate, stored allergens and deletion; not export), AC-10, AC-11 and the security criterion. No automated check covers AC-9 (`docs/feature-test-plan.md`).
 
 ### 2.2 Extra API checks without a TC
 
@@ -74,8 +74,8 @@ The automated set was chosen on food-safety risk first: an allergen in a menu is
 |---|---|
 | Config | `config/variables.ts`: environment map, `auth.roles` (`alergia`, `vegano`, `familia`, `presupuesto`), `roleCredentials(role)` reading `<ENV>_<ROLE>_EMAIL` and `_PASSWORD` by variable name, `supabaseAnonKey` |
 | Base | `ApiBase` (request helper, `apikey` header added when set, `RateLimitError` thrown on 429), `UiBase` |
-| Domain | API: `RecipesApi`, `MealPlansApi`, `ProfilesApi`, `AccessControlApi` (new, approved by the owner), `ErasureApi` (database reads of a deleted account), `AuthApi` (extended). UI: `CalendarPage`, `MenuPage`, `OnboardingPage`, `PreferencesPage`, `ProfilePage`, `RecipesPage`, `LoginPage` (selectors fixed) |
-| Fixture | `ApiFixture` registers the new components and offers `asRole(role)`; `UiFixture` registers `calendar`, `menu`, `onboarding`, `preferences`, `profile` and `recipes`; `TestFixture` has a `role` option |
+| Domain | API: `RecipesApi`, `MealPlansApi`, `ProfilesApi`, `AccessControlApi` (new, approved by the owner), `ErasureApi` (database reads of a deleted account), `ShoppingListsApi`, `AuthApi` (extended). UI: `CalendarPage`, `MenuPage`, `OnboardingPage`, `PreferencesPage`, `ProfilePage`, `RecipesPage`, `ShoppingListPage`, `LoginPage` (selectors fixed) |
+| Fixture | `ApiFixture` registers the new components and offers `asRole(role)`; `UiFixture` registers `calendar`, `menu`, `onboarding`, `preferences`, `profile`, `recipes` and `shoppingList`; `TestFixture` has a `role` option |
 
 (`api-menu-safety/automation-plan.md` sections 2.2 and 2.3; `ui-menu-safety/automation-plan.md` sections 3.2 to 3.4.) No ATC calls another ATC. No Steps module was added because Steps need 3 or more ATCs repeated in 3 or more files.
 
@@ -92,7 +92,7 @@ The product allows 5 menu generations per user per UTC hour (`docs/session-repor
 
 - `ApiBase` throws `RateLimitError` on 429 before any assertion. The UI intercepts the real `generate-meal-plan` response for the same reason, because the screen shows one generic message.
 - Tests wrap generation calls in `runUnlessRateLimited`: skip locally with a reason (reported as not run), fail when `CI` is set (`tests/utils/quota.ts`, `automation-plan.md` section 4).
-- Menu requests per CI run and persona: `vegano` 5 of 5 (`TC-03`, `CHK-A2`, `UI-TC-03`, `UI-TC-05`, `CHK-E8`); `familia` 5 of 5 (`CHK-A2`, `UI-TC-11`, `UI-TC-09` and the two `CHK-D2` rows); `alergia` runs `TC-01`, `TC-02`, `CHK-D3` and `UI-TC-01`. A sixth request for `familia` received 429 in CI (run 45157377686), which suggests that a rejected request also counts; that is not isolated (API-03). At most one run of both suites per hour, and no new test may add a menu request for `vegano` or `familia`. `presupuesto` uses 2 of 5 (`UI-TC-17-1`, `UI-TC-17-2`).
+- Menu requests per CI run and persona: `vegano` 5 of 5 (`TC-03`, `CHK-A2`, `UI-TC-03`, `UI-TC-05`, `CHK-E8`); `familia` 5 of 5 (`CHK-A2`, `UI-TC-11`, `UI-TC-09` and the two `CHK-D2` rows); `alergia` runs `TC-01`, `TC-02`, `CHK-D3` and `UI-TC-01`. A sixth request for `familia` received 429 in CI (run 45157377686), which suggests that a rejected request also counts; that is not isolated (API-03). At most one run of both suites per hour, and no new test may add a menu request for `vegano` or `familia`. `presupuesto` uses 3 of 5 (`UI-TC-07-1`, `UI-TC-17-1`, `UI-TC-17-2`).
 
 ### 3.4 Data strategy and cleanup
 
@@ -102,12 +102,13 @@ The product allows 5 menu generations per user per UTC hour (`docs/session-repor
 | Future ISO week | Generate | `MealPlansApi.findFreeWeek()` draws a week 2 to 40 weeks ahead and re-draws while a menu exists |
 | Generated menu | Generate (by the product) | Plan ids recorded at generation; `afterEach` deletes by id or by week and asserts nothing is left |
 | Household (API), diets and allergens (UI-TC-14) | Modify | Snapshot first, restore in `finally` through the API |
-| Personas | Seeded | `scripts/ci/seed-personas.ts` creates the four profiles in CI. The first three were created locally through the signup form because the repository doctrine forbids admin-created accounts (`docs/bitacora.md`). `presupuesto` is used only by the budget tests |
+| Personas | Seeded | `scripts/ci/seed-personas.ts` creates the four profiles in CI. The first three were created locally through the signup form because the repository doctrine forbids admin-created accounts (`docs/bitacora.md`). `presupuesto` is used only by the budget and shopping list tests |
 | Current and next week menu, weekly budget | Generate, Modify | `presupuesto` only: menus are deleted before and after each test and the budget is restored to empty |
+| Current week menu, household, shopping list | Generate, Modify | `UI-TC-07-1` on `presupuesto`: the menu is deleted before and after, the list is deleted before each generation and the household is restored after the test |
 | Accounts of the diet tests | Generate | One new account per test through the onboarding form, with generated credentials. They are not deleted |
 | Accounts of the deletion tests | Generate | One registered or guest account per test. Two are deleted by the test; the wrong-password one stays |
 
-A crash can leave at most one menu in a far-future week, which later runs never reuse (`ui-menu-safety/automation-plan.md` section 5). The budget tests are the exception: a crash can leave a menu on the current or next week and a budget on `presupuesto`, which the next run replaces and removes.
+A crash can leave at most one menu in a far-future week, which later runs never reuse (`ui-menu-safety/automation-plan.md` section 5). The budget tests are the exception: a crash can leave a menu on the current or next week and a budget on `presupuesto`, which the next run replaces and removes. A crash of the shopping list test can also leave the household changed, and the next run would keep it as found.
 
 ## 4. Quality gates
 
@@ -149,8 +150,9 @@ UI suite: 4 reviewers reported no blocker. Fixes applied afterwards: `revealDay`
 | Budget tests, local, 2026-11-27, after the review fixes | Passed twice on fresco-app `08dda5d6` and left no menu and no budget. On `8575a2d9`, before the BUG-13 fix, both failed: the next week showed no warning and the calendar kept a stale one. With the budget deliberately set one cent under the cost, both failed at the no-warning check. Full `integration` and `e2e` run on a reset database: 66 of 66. Also passed in CI, 66 of 66 | Local runs, and GitHub Actions run 45979520910, commit `7eb3779` |
 | Diet tests, local, 2026-11-27, after the review fixes | Four tests passed twice on fresco-app `1cfac440`. On `0d3ff944`, before the BUG-01 fix, all four failed. On `8575a2d9`, before the BUG-14 fix, the tests of `16-2` and of the preferences (`16-3`, `16-4`) failed. On a copy of `1cfac440` changed so that a diet claims hand-chosen allergens, the same two failed. Full `integration` and `e2e` run on a reset database: 70 of 70. Also passed in CI, 70 of 70 | Local runs, and GitHub Actions run 45991044433, commit `3415b42` |
 | Deletion tests, local, 2026-11-27, after the review fixes | Three tests passed twice on fresco-app `0d295110`. On a copy that reports a deletion without deleting, `UI-TC-12-1` and `12-2` failed on the rows left behind; on a copy that skips the password check, `12-3` failed. Full `integration` and `e2e` run on a reset database: 73 of 73, with 34 requests to the sign-up and token endpoints and none refused, although the local configuration allows 30 per 5 minutes; the owner decided to leave it so. A failing run may record the service role key of the local stack in the Playwright trace that CI uploads; the owner accepted that on 2026-11-27 (`account-deletion/automation-plan.md`). Also passed in CI, 73 of 73 | Local runs, and GitHub Actions run 46008428254, commit `4005ec8` |
+| Shopping list test, local, 2026-11-28, after the review fixes | Passed twice on fresco-app `9ee58eb8`. It failed on a copy with the number of people fixed at 1, on a copy that files fruit and vegetables under drinks, and with the names hidden on the screen. Full `integration` and `e2e` run on a reset database: 74 of 74. One separate review rejected the first version (the aisles were only compared with the stored list, plus four minor findings); four findings were corrected, and two selectors still depend on the markup because the screen has no test id for them. In CI the first attempt stopped before any test (the edge runtime of the local stack crashed with `Bus error`); the second passed, 74 of 74 | Local runs, and GitHub Actions run 46163001864, commit `005abf6` |
 
-State of the suite: 73 of 73 passing in CI on a fresh database at commit `4005ec8` (run 46008428254). The three runs before commit `ba7eb2a` (run 45165651506) failed for other reasons: a GitHub Pages deployment error after 64 of 64 tests passed, a runner crash while starting Supabase (`Bus error`), and a names comparison in `UI-TC-11` that the catalogue's repeated names (BUG-06) can break. That workflow runs the `integration` and `e2e` projects only. `smoke-ui` (one `@critical` test, UI-TC-14) was verified locally on 22 Nov and no workflow runs it on its own, and repeated runs inside the same UTC hour are not covered. The inherited `smoke.yml` and `regression.yml` only run on manual dispatch, because their daily schedule failed against staging.
+State of the suite: 74 of 74 passing in CI on a fresh database at commit `005abf6` (run 46163001864, second attempt). The three runs before commit `ba7eb2a` (run 45165651506) failed for other reasons: a GitHub Pages deployment error after 64 of 64 tests passed, a runner crash while starting Supabase (`Bus error`), and a names comparison in `UI-TC-11` that the catalogue's repeated names (BUG-06) can break. That workflow runs the `integration` and `e2e` projects only. `smoke-ui` (one `@critical` test, UI-TC-14) was verified locally on 22 Nov and no workflow runs it on its own, and repeated runs inside the same UTC hour are not covered. The inherited `smoke.yml` and `regression.yml` only run on manual dispatch, because their daily schedule failed against staging.
 
 ## 6. Flakiness and quota risks
 
@@ -164,6 +166,7 @@ State of the suite: 73 of 73 passing in CI on a fresh database at commit `4005ec
 | Calendar day columns | Not all days may render at 1920 px; `revealDay` pages through days | Fixed once after review; re-verified locally and in CI (section 5) |
 | Selectors from product source | Written from source, probed live only partly | Role and test-id locators; no `waitForTimeout` |
 | Personas must be onboarded | Control checks need each persona to own a menu and consent rows | `scripts/ci/seed-personas.ts` in CI; manual setup locally |
+| Shopping list across midnight | The product leaves past days out of the list, so a run that crosses midnight in Madrid between two generations can fail | None; the three generations take seconds |
 | Local stack stops | Docker went down at 14:08 UTC on 19 Nov and stopped all services | Recovery steps in `docs/bitacora.md` |
 | Sample tests fail on this backend | `tests/integration/auth`, `module-example`, parts of `tests/e2e` | Path-filtered module runs; the dashboard sample is excluded from `e2e` |
 

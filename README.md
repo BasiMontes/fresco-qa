@@ -57,10 +57,10 @@ Prerequisites: the product running locally (local Supabase stack and its web app
 
 | Metric | Value | Source |
 |---|---|---|
-| UI tests | 7 files, 16 ATCs (`UI-TC-01`, `03`, `05`, `09`, `11`, `12-1`, `12-2`, `12-3`, `14`, `16-1`, `16-2`, `16-3`, `16-4`, `17-1`, `17-2`, `17-3`) | `docs/automation-eval.md` section 1, `kata-manifest.json` |
+| UI tests | 8 files, 17 ATCs (`UI-TC-01`, `03`, `05`, `07-1`, `09`, `11`, `12-1`, `12-2`, `12-3`, `14`, `16-1`, `16-2`, `16-3`, `16-4`, `17-1`, `17-2`, `17-3`) | `docs/automation-eval.md` section 1, `kata-manifest.json` |
 | API tests | 12 files, 33 ATCs (`TC-*`, `CHK-*`), with schema validation (zod) | `docs/automation-eval.md` section 1, `kata-manifest.json` |
-| Tests reported by the last green CI run | 73 total, 73 passed, 0 skipped | [run 46008428254](https://github.com/BasiMontes/fresco-qa/actions/runs/46008428254), 2026-11-27 |
-| Test cases automated | 14 of 18 (3 of the 4 others are manual by design) | `docs/automation-eval.md` section 2.1 |
+| Tests reported by the last green CI run | 74 total, 74 passed, 0 skipped | [run 46163001864](https://github.com/BasiMontes/fresco-qa/actions/runs/46163001864), 2026-11-28 |
+| Test cases automated | 15 of 18 (the 3 others are manual by design) | `docs/automation-eval.md` section 2.1 |
 
 This project measures test-case coverage, not code coverage; no code-coverage percentage is reported.
 
